@@ -1,5 +1,6 @@
 # My-coding-journey-with-AI
 My coding journey with AI (ChatGPT)
+
 This repository documents my Python learning journey since July 2025.  
 
 I post:  
