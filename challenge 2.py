@@ -68,6 +68,22 @@ if search == "yes":
         print("Name not found.")
 else:
     print("You have exited successfully")
+#New Mini-Challenge
+#Update your code so that after the user enters all the names, you also:
+#Sort the names alphabetically and print them.
+#Sort the names in reverse order (Z → A) and print them.
+#Tell the user how many names were stored in total.
+# ❌My attempt
+#Reverse order
+print(loop[::-1]) 
+#Total number of names
+print(len(loop))
+ # ✅ Corrected Version (after AI Tutor feedback)
+print("\nAlphabetical order:", sorted(loop))
+print("Reverse order:", sorted(loop, reverse=True))
+
+
+    
 
 
 
