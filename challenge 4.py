@@ -32,13 +32,15 @@ else:
     exit()
 
 # ✅ Corrected Version (after AI Tutor feedback)
+# Ask user how many students they want to enter
 student = int(input("How many students do you want to enter: "))
 count = 0
 store = []
 
+# Collect student names and scores
 while student > count:
-    name = input("Enter your name: ")
-    score = int(input("Enter your score: "))
+    name = input("Enter student name: ")
+    score = int(input("Enter student score: "))
     store.append([name, score])
     count += 1
 
@@ -47,6 +49,12 @@ print("\nAll students and scores:", store)
 
 # Print sorted list by names
 print("Alphabetical order:", sorted(store))
+
+# Show highest, lowest, and average
+scores = [s[1] for s in store]  # extract only the score
+print(f"Highest score: {max(scores)}")
+print(f"Lowest score: {min(scores)}")
+print(f"Average score: {sum(scores)/len(scores):.2f}")
 
 # Search feature
 choice = input("\nDo you want to search for a student score? (yes/no): ").lower()
@@ -61,6 +69,7 @@ if choice == "yes":
         print("Student not found.")
 else:
     print("Thank you, goodbye!")
+
 
 
 
