@@ -69,6 +69,63 @@ if choice == "yes":
         print("Student not found.")
 else:
     print("Thank you, goodbye!")
+     
+#New Mini-Challenge
+#Update your code so that the users get a meun of what to do:
+print("Check Highest score(1)")
+print("Check Lowest score(2)")
+print("Check Average score(3)")
+options=input("What do you want to do?:")
+while options not in ("1","2","3"):
+    print("invalid input,enter the three valid options available")
+    options=input("What do you want to do?:")
+
+# Ask user how many stud
+# ents they want to enter
+student = int(input("How many students do you want to enter: "))
+count = 0
+store = []
+
+# Collect student names and scores
+while student > count:
+    name = input("Enter student name: ")
+    score = int(input("Enter student score: "))
+    store.append([name, score])
+    count += 1
+
+# Print all data
+print("\nAll students and scores:", store)
+
+# Print sorted list by names
+print("Alphabetical order:", sorted(store))
+
+# Show highest, lowest, and average
+scores = [s[1] for s in store]  # extract only the score
+
+if options=="1":
+    print(f"Highest score: {max(scores)}")
+elif options=="2":
+     print(f"Lowest score: {min(scores)}")
+elif options=="3":
+     print(f"Average score: {sum(scores)/len(scores):.2f}")
+
+# Search feature
+choice = input("\nDo you want to search for a student score? (yes/no): ").lower()
+if choice == "yes":
+    search = input("Enter name to search for student’s score: ")
+    found = False
+    for i, b in store:
+        if i == search:
+            print(f"{i} scored {b}")
+            found = True
+    if not found:
+        print("Student not found.")
+else:
+    print("Thank you, goodbye!")
+# we printed the options available to user
+#if the user picked option 1 (we print the highest score)
+#if the user picked option 2(we print the lowest score)
+#if the user picked option 3(we print the average score)
 
 
 
