@@ -147,5 +147,125 @@ while True:
     else:
         print("❌ Invalid choice, please try again.")
 
+#Challenge: Budget Tracker — Stage 2
+#Goal: Upgrade your existing Budget Tracker so each transaction saves a description and the date/time.
+#🪙 Requirements
+#When adding income:
+#Ask:
+#Enter income amount:
+#What is this income for?:
+#Save it in transactions.txt like:
+#+5000 (Salary) → balance: 5000 [2025-10-05 19:23:45]
+#When adding expense:
+#Ask:
+#Enter expense amount:
+#What is this expense for?:
+#Save it like:
+#-2000 (Food) → balance: 3000 [2025-10-05 19:25:10]
+#Use from datetime import datetime
+#To get current time:
+#time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+#MY Attempt
+import datetime
+time=datetime.datetime.now() 
+print("Welcome to Budget Tracker")
+while True:
+    print("\n")
+    print("---Option available---")
+    print("1.)Add income")
+    print("2.)Add Expense")
+    print("3.)View Balance")
+    print("4).View Transactions")
+    print("5).Exit")
+    choice=input("What do you want to do?:")
+    if choice=="1":
+       amount=float(input("Enter income amount:"))
+       details=input("Where is the income from?:")
+      #reading turning file to a float and adding new value to balance
+       try:
+          with open("balance.txt","r") as file:
+              content=file.read().strip()
+              balance=float(content) if content else 0.0
+       except FileNotFoundError:
+           balance=0.0
+       balance+=amount
+       #turing add updated balance to the balance file
+       with open("balance.txt","w") as file:
+           file.write(str(balance))
+           # saving change in balance
+           print(f'Added ${amount}. New balance is ${balance}')
+           #save transactions history
+       with open("transactions.txt","a") as file:
+           file.write(f'\n{time}\n{details}\n+{amount} balance:{balance}')
+
+    elif choice=="2":
+       amount=float(input("Enter the expense amount:"))
+       details=input("What is this expense for?:")
+
+       #reading turning file to a float and adding new value to balance
+       try:
+         with open("balance.txt","r") as file:
+              content=file.read().strip()
+              balance=float(content) if content else 0.0
+       except FileNotFoundError:
+           balance=0.0
+
+       if balance>=amount:
+            balance-=amount
+            with open("balance.txt", "w") as file:
+                file.write(str(balance) + " \n")
+            print(f'Your total balance after adding {amount} is  {balance}')
+                # Recording transaction history
+            with open("transactions.txt", "a") as file:
+                file.write(f'\n{time}\n{details} \n-{amount} balance:{balance}')
+       else:
+            print(f'{amount} is to low to remove from balance')
+
+
+    elif choice=="3":
+        try:
+          with open("balance.txt","r")as file:
+               balance=file.read().strip()
+               print(f'\nYour current balance is ${balance}')
+        except FileNotFoundError:
+            print("No balance record found yet!")
+
+
+    elif choice=="4":
+        try:
+           with open("transactions.txt","r")as file:
+            transactions=file.read().strip()
+            if transactions:
+               print(f"\nTransaction History:")
+               print(transactions)
+            else:
+                print(f'No transactions recorded yet.')
+        except FileNotFoundError:
+            print("No balance record found yet!")
+
+    elif choice=="5":
+        print("Thank you for using our application")
+        exit()
+
+    else:
+        print("invalid choice, please try again")
+
+#AI Correction 
+1)# Small issue: time never updates
+#Right now, you wrote this line once at the top:
+#time = datetime.datetime.now()
+#✅ Fix:
+#Move it inside the income and expense sections:
+#time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+2)# Right now, transactions look like this:
+#2025-10-05 19:00:00
+#Salary
+#+5000 balance:5000
+#Here’s how to do that:
+#file.write(f'\n+{amount} ({details}) → balance: {balance} [{time}]')
+
+
+
+
 
 
