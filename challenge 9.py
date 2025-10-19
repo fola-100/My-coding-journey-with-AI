@@ -356,12 +356,32 @@ while True:
 
      elif choice=="4":
          print("Thank you and goodbye.")
+         break
+#Ai correction
+#2️⃣ Small spelling / mismatch issue
+#You wrote:
+#print("iii.)tried")
+#and also check:
+#if mood not in ["sad", "happy", "tried", "sleepy", "angry", "lazy"]:
+#3️⃣ Reversed list display might look confusing
+#This line:
+#print(save[::-1])
+#reverses and prints the entire list object — but it’ll look like:
+#['2025-10-19 happy sunny\n']
+#instead of a clean list of lines.
+#✅ Fix:
+#Use a loop to print each saved line nicely:
+#for entry in save[::-1]:
+    #print(entry.strip())
 
-
-
-
-
-
+##️⃣ When showing monthly summary
+#You print:
+#print(f'Here is the full list of past entries')
+#print(f'{saved}\n')
+#That saved variable is a string (one line), so printing it inside {} adds extra symbols.
+#✅ Fix:
+#print("Here is the full list of past entries:")
+#print(saved.strip()
 
 
 
