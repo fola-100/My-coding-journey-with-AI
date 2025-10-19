@@ -264,6 +264,105 @@ while True:
 #Here’s how to do that:
 #file.write(f'\n+{amount} ({details}) → balance: {balance} [{time}]')
 
+#stage 2
+#my challenge 
+import datetime
+
+while True:
+     print("\nOption Available")
+     print("1.)Add new weather entry")
+     print("2.)View past entries")
+     print("3).View Monthly Summary")
+     print("4.)Exit program")
+     choice=input("Enter choice:")
+     #Add new weather entry
+     if choice=="1":
+         print("---Weather Condition---")
+         print("i.)Sunny")
+         print("ii.)Rainy")
+         print("iii.)Cloudy")
+         print("iv.)Mist")
+         weather=input("Enter weather condition:").lower()
+         if weather not in ["sunny","rainy","cloudy","mist"]:
+             print("Invalid weather condition")
+             continue
+         print("What is your mood right mood?")
+         print("i.)Happy")
+         print("ii.)sad")
+         print("iii.)tried")
+         print("iv.)lazy")
+         print("v.)sleepy")
+         mood=input("Enter mood:").lower().strip()
+         if mood not in ["sad","happy","tried","sleepy","angry","lazy"]:
+             print("Invalid mood")
+             continue
+         time = datetime.datetime.now().strftime("%Y-%m-%d")
+         with open("weather.txt","a")as file:
+             file.write(f'\n{time} {mood} {weather}')
+         print(f'{time} Weather condition {weather} and your current mood {mood} has been logged')
+     elif choice=="2":
+         save=[]
+         print("Enter the date, year and month")
+         search=input("What date are you searching for?:")
+         found = False
+         try:
+            with open("weather.txt","r") as file:
+                saved=file.readlines()
+                for line in saved:
+                    if search in line:
+                       save.append(line)
+                       found = True
+            print(f'Here is the full list of past Entries')
+            print(save[::-1])
+
+            if not found:
+                  print("No weather record found for that date.")
+         except FileNotFoundError:
+              print("No weather records found yet.pls log something first.")
+
+     elif choice=="3":
+         weather_counts={"sunny":0,"rainy":0,"cloudy":0,"mist":0}
+
+         search=input("Enter the month and year to view(e.g.,2025-10):").strip()
+         found = False
+         try:
+           with open("weather.txt","r") as file:
+               line=file.readlines()
+               for saved in line:
+                   if search in saved:
+                     print(f'Here is the full list of past entries')
+                     print(f'{saved}\n')
+                     found = True
+                     if "sunny" in saved :
+                         weather_counts["sunny"]+=1
+                     elif "rainy" in saved:
+                          weather_counts["rainy"]+=1
+                     elif "cloudy" in saved:
+                          weather_counts["cloudy"]+=1
+                     elif "mist" in saved :
+                           weather_counts["mist"]+=1
+               if not found:
+                 print("No weather record found for that date.")
+         except FileNotFoundError:
+                print("No weather records found yet.")
+
+
+         print(f'\nSummary for {search}')
+
+         print(f'\n Sunny:{weather_counts["sunny"]} days')
+         print(f'\n Rainy:{weather_counts["rainy"]} days')
+         print(f'\n Cloudy:{weather_counts["cloudy"]} days')
+         print(f'\n Mist:{weather_counts["mist"]} days')
+
+     elif choice=="4":
+         print("Thank you and goodbye.")
+
+
+
+
+
+
+
 
 
 
