@@ -23,4 +23,15 @@ auto_generate=datetime.datetime.now().strftime('%y,%m,%d')
 with open("weather_log.txt","a") as file:
     file.write(f'{auto_generate},{temperature},{weather_description}')
     print(f'Weather date {auto_generate},temperature {temperature},and description {weather_description} has been saved')
+#AI corrections
+#Date format
+#You used '%y,%m,%d', which adds commas.
+#Example: 25,10,05
+#It’s better to use '%Y-%m-%d' → 2025-10-05, easier to read.
+#File formatting
+#Right now, all logs might appear on one line since there’s no newline (\n).
+#Add \n before writing the entry.
+#User experience
+#When asking for input, it’s good to add a space at the end (so it looks neat).
+
  
