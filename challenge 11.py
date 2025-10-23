@@ -90,6 +90,32 @@ while True:
         break
      else:
         print("invalid option.Try again.")
+#AI CORRECTION 
+#Excellent job, Olamide! You just built a two-feature weather journal — one for logging and one for searching past entries.
+#here are a few improvement or correction 
+#Small Fix (Logic in history_checker)
+#Inside your loop:
+#➡️ The if not found: should be after the for loop, not inside it.
+#Right now, it prints “No record found” for every line that doesn’t match — even if one later matches.
+def history_checker():
+    try:
+        search = input("What date are you searching for? Entry format (YYYY-MM-DD): ")
+        found = False
+        with open("weather_log.txt", "r") as file:
+            save = file.readlines()
+        for line in save:
+            if search in line:
+                if not found:
+                    print("\nHere is your past Weather Entries:")
+                print(line.strip())
+                found = True
+        if not found:
+            print("No record found for that date.")
+    except FileNotFoundError:
+        print("No record found yet. Please log something first.")
+
+        
+
 
 
 
