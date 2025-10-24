@@ -114,6 +114,72 @@ def history_checker():
     except FileNotFoundError:
         print("No record found yet. Please log something first.")
 
+#🧠 CHALLENGE 3: Monthly Weather Summary
+#You’ll add a new menu option:
+#3.) View Monthly Summary”
+#This feature should:
+#Ask the user for a month in this format → YYYY-MM (for example, 2025-10)
+#Go through the "weather_log.txt" file and find all entries that start with that month.
+#Example log lines:
+#2025-10-01,32°C,Sunny
+#2025-10-02,28°C,Rainy
+#2025-10-03,30°C,Sunny
+#Count how many days were Sunny, Rainy, Windy, or Snowing.
+Then print something like this:
+#Summary for 2025-10
+#Sunny: 2 days
+#Rainy: 1 day
+#Windy: 0 days
+#Snowing: 0 days
+#MY Attempt 
+import datetime
+def temperature_checker():
+    temperature=int(input("Enter weather condition in Celsius:"))
+    print("\nWeather description available")
+    print("Sunny","Rainy","Windy","Snowing")
+    weather_description=input("Enter weather description:").lower().strip()
+    while weather_description not in ["sunny","rainy","windy","snowing"]:
+        print("Enter the three weather description available")
+        weather_description=input("Enter weather description:").lower().strip()
+    auto_generate=datetime.datetime.now().strftime("%Y-%m-%d")
+    with open("weather_log.txt","a") as file:
+        file.write(f'{auto_generate},{temperature}°C,{weather_description.capitalize()}\n')
+        print(f'Weather date {auto_generate},temperature {temperature},and description {weather_description.capitalize()} has been saved')
+def history_checker():
+    try:
+       search=input("What date are you searching for? Entry formate:(YYYY-MM-DD):")
+       found=False
+       with open("weather_log.txt","r") as file:
+        save=file.readlines()
+       for char in save:
+        if search in char:
+            print("\nHere is your past Weather Entries")
+            print(char)
+            found=True
+        if not found:
+           print("No record found for that date")
+    except FileNotFoundError:
+        print("No record found for that date.")
+
+
+
+while True:
+     print("Available options\n")
+     print("1.)Log weather condition")
+     print("2.)Show past Logs")
+     print("3.)EXIT Program")
+     option=input("What do you want to do?:")
+     if option=="1":
+        temperature_checker()
+     elif option=="2":
+        history_checker()
+     elif option=="3":
+        print("Goodbye")
+        break
+     else:
+        print("invalid option.Try again.")
+
+
         
 
 
