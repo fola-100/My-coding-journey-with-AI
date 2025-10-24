@@ -125,7 +125,7 @@ def history_checker():
 #2025-10-02,28°C,Rainy
 #2025-10-03,30°C,Sunny
 #Count how many days were Sunny, Rainy, Windy, or Snowing.
-Then print something like this:
+#Then print something like this:
 #Summary for 2025-10
 #Sunny: 2 days
 #Rainy: 1 day
