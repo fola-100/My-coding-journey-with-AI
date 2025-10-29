@@ -284,7 +284,36 @@ while True:
      else:
         print("invalid option.Try again.")
 
-        
+#AI Correction
+#Small Issues to Fix:
+#1. Temperature extraction runs for all lines — not just the searched month.
+#You’re doing this:
+#if search in char:
+#    save.append(char)
+#part = char.split(',')
+#temp = int(part[1].replace('°C','').strip())
+#temps.append(temp)
+#✅ Fix: Move the temperature lines inside the if search in char: block:
+#if search in char:
+#   save.append(char)
+#   part = char.split(',')
+#   temp = int(part[1].replace('°C','').strip())
+#    temps.append(temp)
+#    found = True
+#    for weather in weather_count:
+#        if weather in char.lower():
+#            weather_count[weather] += 1
+#Handle case when there are no temperature entries
+#if temps:
+#    avg_temp = sum(temps) / len(temps)
+#    lowest_temp = min(temps)
+#    highest_temp = max(temps)
+#    print("\nWeather statistics:")
+#    print(f'Average temperature: {avg_temp:.1f}°C')
+#    print(f'Lowest temperature: {lowest_temp}°C')
+#   print(f'Highest temperature: {highest_temp}°C')
+#else:
+    #print("\nNo temperature data available for this month.")        
 
 
 
