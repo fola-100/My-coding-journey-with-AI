@@ -423,6 +423,36 @@ while True:
         break
      else:
         print("invalid option.Try again.")
+#AI Correction
+#for char in line:
+#   if not char.startswith(search):
+#        with open("weather_log.txt","w")as new_file:
+#             file.writelines(f'{char}')
+#Here’s what happens:
+#For every line, you open the file in “write” mode ('w'), which erases everything that was written before.
+#So at the end, only the last line survives in your file 😅
+#correct version
+def deleting_file():
+    search = input("Enter record date to delete (YYYY-MM-DD): ").strip()
+    try:
+        with open("weather_log.txt", "r") as file:
+            lines = file.readlines()
+
+        found = False
+        with open("weather_log.txt", "w") as new_file:
+            for line in lines:
+                if search not in line:
+                   new_file.write(line)
+                else:
+                    found = True
+
+        if found:
+            print(f"✅ Weather record for {search} deleted successfully.")
+        else:
+            print(f"❌ No record found for {search}.")
+    except FileNotFoundError:
+        print("⚠️ No weather log file exists yet. Please log some entries first.")
+
 
 
 
