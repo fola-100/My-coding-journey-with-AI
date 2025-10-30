@@ -313,7 +313,118 @@ while True:
 #    print(f'Lowest temperature: {lowest_temp}°C')
 #   print(f'Highest temperature: {highest_temp}°C')
 #else:
-    #print("\nNo temperature data available for this month.")        
+    #print("\nNo temperature data available for this month.")   
+#Challenge 5
+# enhancement idea (for Challenge 5 😉)
+#Add a “delete log entry” or “update entry” feature to practice reading, editing, and rewriting a file — that’s going to be our next step 😎
+#My Attempt
+import datetime
+def temperature_checker():
+    temperature=int(input("Enter weather condition in Celsius:"))
+    print("\nWeather description available")
+    print("Sunny","Rainy","Windy","Snowing")
+    weather_description=input("Enter weather description:").lower().strip()
+    while weather_description not in ["sunny","rainy","windy","snowing"]:
+        print("Please enter one of the available weather descriptions:")
+        weather_description=input("Enter weather description:").lower().strip()
+    auto_generate=datetime.datetime.now().strftime("%Y-%m-%d")
+    with open("weather_log.txt","a") as file:
+        file.write(f'{auto_generate},{temperature}°C,{weather_description.capitalize()}\n')
+        print(f'Weather date {auto_generate},temperature {temperature},and description {weather_description.capitalize()} has been saved')
+def history_checker():
+    try:
+       search=input("What date are you searching for? Entry formate:(YYYY-MM-DD):")
+       found=False
+       with open("weather_log.txt","r") as file:
+           save=file.readlines()
+       for char in save:
+           if search in char:
+            print("\nHere is your past Weather Entries")
+            print(char)
+            found=True
+       if not found:
+           print("No record found for that date")
+    except FileNotFoundError:
+        print("No record found for that date.")
+
+def summary_review():
+    save=[]
+    temps=[]
+    weather_count={"sunny":0,"rainy":0,"windy":0,"snowing":0}
+    search=input("Enter the month you are searching for in this format(YYYY-MM):")
+    found=False
+    try:
+        with open("weather_log.txt","r")as file:
+            line=file.readlines()
+        for char in line:
+            if search in char:
+               save.append(char)
+               part=char.split(',')
+               temp=int(part[1].replace('°C','').strip())
+               temps.append(temp)
+               found = True
+               for weather in weather_count:
+                   if weather in char.lower() :
+                       weather_count[weather]+=1
+        if found:
+         print("\nHere is the month summary for " + search)
+         for entry in save:
+            print(entry.strip())
+         print(f'\nWeather description for {search}')
+         for weather,count in weather_count.items():
+            print(f'{weather.capitalize()} {count} days')
+        #Tempeture_cal
+         if temps:
+          avg_temp=sum(temps)/len(temps)
+          lowest_temp=min(temps)
+          highest_temp=max(temps)
+          print("\nWeather statistics")
+          print(f'average temp:{avg_temp}')
+          print(f'lowest temp:{lowest_temp}')
+          print(f'highest temp:{highest_temp}')
+        else:
+            print("No date on temp for the month of "+search)
+        if not found:
+            print("No record found for " + search)
+
+    except FileNotFoundError:
+        print("No file exists for that date")
+
+def deleting_file():
+   search=input("Enter record of the month you are searching for in this format(YYYY-MM-DD):")
+   try:
+      with open("weather_log.txt","r")as file:
+       line=file.readlines()
+       for char in line:
+           if not char.startswith(search):
+              with open("weather_log.txt","w")as new_file:
+                    file.writelines(f'{char}')
+                    print("Weather record for "+search+" deleted successfully.")
+   except FileNotFoundError:
+       print("No file exist for that date yet.")
+while True:
+     print("Available options\n")
+     print("1.)Log weather condition")
+     print("2.)Show past Logs")
+     print("3.)View monthly summary")
+     print("4.)Delete entry")
+     print("5.)EXIT Program")
+     option=input("What do you want to do?:")
+     if option=="1":
+        temperature_checker()
+     elif option=="2":
+        history_checker()
+     elif option=="3":
+         summary_review()
+     elif option =="4":
+         deleting_file()
+     elif option=="5":
+        print("Goodbye")
+        break
+     else:
+        print("invalid option.Try again.")
+
+
 
 
 
