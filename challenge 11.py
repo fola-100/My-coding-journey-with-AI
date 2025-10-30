@@ -453,6 +453,69 @@ def deleting_file():
     except FileNotFoundError:
         print("⚠️ No weather log file exists yet. Please log some entries first.")
 
+#🧠 CHALLENGE 6: Auto Summary Backup System
+#When the user views a monthly summary (option 3),
+#your program should automatically save that summary into a new text file named:
+#summary_YYYY-MM.txt
+#⚙️ Requirements
+#When the user views the monthly summary (option 3):
+#Collect the same information you already print (temperatures, weather counts, averages, etc.)
+#Then write it into a new file (e.g., summary_2025-10.txt).
+#If the file already exists for that month, overwrite it with the updated summary.
+#Display a message like:
+#Monthly summary for 2025-10 saved to summary_2025-10.txt
+#My Attempt
+  save=[]
+    temps=[]
+    weather_count={"sunny":0,"rainy":0,"windy":0,"snowing":0}
+    search=input("Enter the month you are searching for in this format(YYYY-MM):")
+    found=False
+    try:
+        with open("weather_log.txt","r")as file:
+            line=file.readlines()
+        for char in line:
+            if search in char:
+               save.append(char)
+               part=char.split(',')
+               temp=int(part[1].replace('°C','').strip())
+               temps.append(temp)
+               found = True
+               for weather in weather_count:
+                   if weather in char.lower() :
+                       weather_count[weather]+=1
+        if found:
+         print("\nHere is the month summary for " + search)
+         for entry in save:
+            print(entry.strip())
+         print(f'\nWeather description for {search}')
+         for weather,count in weather_count.items():
+            print(f'{weather.capitalize()} {count} days')
+        #Tempeture_cal
+         if temps:
+          avg_temp=sum(temps)/len(temps)
+          lowest_temp=min(temps)
+          highest_temp=max(temps)
+          print("\nWeather statistics")
+          print(f'average temp:{avg_temp:.2f}')
+          print(f'lowest temp:{lowest_temp}')
+          print(f'highest temp:{highest_temp}')
+          #collecting summary:I put it here because of avg_temp
+          with open(f'summary{search}.txt,'"r") as file:
+              lines=file.readlines()
+              for line in lines:
+                  if search not in line:
+                    with open(f'summary{search}.txt','a')as new_file:
+                      file.write(f'Monthly Summary for {search}\n')
+                      file.write(f'{temps} {weather_count} {avg_temp}')
+                  else: 
+        else:
+            print("No date on temp for the month of "+search)
+        if not found:
+            print("No record found for " + search)
+    except FileNotFoundError:
+        print("No file exists for that date")
+#i think of the logic to complete the code this is what i was able to write 
+
 
 
 
