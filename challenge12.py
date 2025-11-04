@@ -50,5 +50,22 @@ elif user_input=="what is the weather like?":
     print("i'm not sure, but i hope it's sunny where you are!")
 else:
     print("i don't understand that yet.")
+#AI correction
+#🩵 1. The weather check should use in instead of ==
+#Right now, your code only replies if the user types exactly “what is the weather like?”.
+#But what if they say “what’s the weather today?” or “tell me the weather”?
+#Your bot wouldn’t respond.
+#✅ Fix:
+elif "weather" in user_input:
+    print("I'm not sure, but I hope it's sunny where you are!"
+#🩷 2. Improve formatting and tone consistency
+#Tiny polish to make output feel smoother:
+#Start your bot’s name with a capital letter (“I’m ChatBot 2.0…”).
+#Add a space after commas for readability.
+#✅ Fix:
+elif user_input == "what is your name":
+    print("I'm ChatBot 2.0, your Python buddy.")          
+# (Optional improvement)
+#You could also make the bot respond to messages that contain those phrases (not just match exactly)         
 
 
