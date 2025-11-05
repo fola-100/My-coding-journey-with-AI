@@ -99,6 +99,24 @@ elif user_input in "what is the weather like?":
     print("i'm not sure, but i hope it's sunny where you are!")
 else:
     print("i don't understand that yet.")
+    
+#AI correction 
+while True:
+    user_input = input(f"What would you like to say, {name_log}? ").lower()
+
+    if 'hi' in user_input or 'hello' in user_input:
+        print(save, name_log)
+    elif "how are you" in user_input:
+        print(save2, name_log)
+    elif "bye" in user_input:
+        print(f"Goodbye {name_log}, talk soon!")
+        break
+    else:
+        print("I don't understand that yet.")
+#That way, the chatbot keeps chatting until the user says “bye.”
+#This turns it into a real conversation loop 🗣️      
+
+    
 
 
 
