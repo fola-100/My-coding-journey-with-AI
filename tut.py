@@ -1,8 +1,21 @@
+#Challenge: “Memory Chatbot (Smart Reply)”
+#We’ll make your chatbot remember the user’s name for next time and respond differently when they return.
+#🧩 Requirements
+#When the program starts:
+#It should check if a file called user_data.txt exists.
+#If it does, read the stored name and greet the user by name.
+#If it doesn’t, ask for their name, save it to the file, and greet them.
+#After greeting:
+#Ask the user how they’re doing.
+#If they say something like “good” or “fine”, reply positively.
+#If they say “bad” or “not good”, reply with something encouraging.
+#End the chat politely.
+
 import random
 reply_options=["Hello there!","Wassup","Hello buddy","HEY friend!"]
 reply_options2=["I'm doing great hope you are doing great to",
                 "I am doing fine,are you doing good to",
-                "just enjoying the day, are you enjoying your day"]
+                "just enjoying the day, are you enjoying your"]
 
 # user name
 try:
