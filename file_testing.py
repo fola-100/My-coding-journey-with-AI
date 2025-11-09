@@ -1,76 +1,31 @@
-#🧠 CHALLENGE 6: Auto Summary Backup System
-#🎯 Goal
-#When the user views a monthly summary (option 3),
-#your program should automatically save that summary into a new text file named:
-#summary_YYYY-MM.txt
-#⚙️ Requirements
-#When the user views the monthly summary (option 3):
-#Collect the same information you already print (temperatures, weather counts, averages, etc.)
-#Then write it into a new file (e.g., summary_2025-10.txt).
-#If the file already exists for that month, overwrite it with the updated summary.
-#Display a message like:
-def summary_review():
-    save = []
-    temps = []
-    weather_count = {"sunny": 0, "rainy": 0, "windy": 0, "snowing": 0}
-    search = input("Enter the month you are searching for in this format (YYYY-MM): ")
-    found = False
+#Stage 3 Challenge Description
+#Make your chatbot:
+#Ask the user for their name (if it doesn’t already know it).
+#Store it in a variable.
+#Use that name in its responses (e.g., “Hi Olamide! Nice to meet you!”).
+#Still respond to things like “hi”, “how are you”, etc., just like before — but now, include the user’s name when replying.
+import random
+reply_options=["Hello there!","Wassup","Hello buddy","HEY friend!"]
+reply_options2=["I'm doing great hope you are doing great to",
+                "I am doing fine,are you doing good to",
+                "just enjoying the day, are you enjoying the day1"]
 
-    try:
-        with open("weather_log.txt", "r") as file:
-            lines = file.readlines()
+save=random.choice(reply_options)
+save2=random.choice(reply_options2)
+#user name
+name_log=input("Hi buddy what your name:").strip().capitalize()
+print(f'Hi {name_log}!Nice to meet you, i have saved your name to '
+      f'to my memory and i will never forget ')
+user_input=input("Type something "+name_log+" (E.g,Hi,Hello):").lower()
 
-        for char in lines:
-            if search in char:
-                save.append(char)
-                part = char.split(',')
-                temp = int(part[1].replace('°C', '').strip())
-                temps.append(temp)
-                found = True
-                for weather in weather_count:
-                    if weather in char.lower():
-                        weather_count[weather] += 1
+if  'hi'in user_input or 'hello'in user_input :
+    print(save,name_log)
+elif "how are you" in user_input:
+    print(save2,name_log)
+elif  "what is your name"in user_input :
+     print("I'm Chatbot 2.0, your python buddy "+name_log+".")
 
-        if found:
-            print(f"\nHere is the month summary for {search}")
-            for entry in save:
-                print(entry.strip())
-
-            print(f"\nWeather description for {search}")
-            for weather, count in weather_count.items():
-                print(f"{weather.capitalize()}: {count} days")
-
-            # Temperature calculations
-            if temps:
-                avg_temp = sum(temps) / len(temps)
-                lowest_temp = min(temps)
-                highest_temp = max(temps)
-
-                print("\nWeather statistics")
-                print(f"Average temp: {avg_temp:.2f}°C")
-                print(f"Lowest temp: {lowest_temp}°C")
-                print(f"Highest temp: {highest_temp}°C")
-
-                # Save the summary to a new file
-                summary_file = f"summary_{search}.txt"
-                with open(summary_file, "w") as file:
-                    file.write(f"Monthly Weather Summary for {search}\n\n")
-                    for entry in save:
-                        file.write(entry)
-                    file.write("\nWeather Counts:\n")
-                    for weather, count in weather_count.items():
-                        file.write(f"{weather.capitalize()}: {count} days\n")
-                    file.write("\nTemperature Stats:\n")
-                    file.write(f"Average: {avg_temp:.2f}°C\n")
-                    file.write(f"Lowest: {lowest_temp}°C\n")
-                    file.write(f"Highest: {highest_temp}°C\n")
-
-                print(f"\n✅ Monthly summary saved to {summary_file}")
-
-            else:
-                print("No temperature data found for that month.")
-        else:
-            print("No record found for " + search)
-
-    except FileNotFoundError:
-        print("No file exists for that date.")
+elif user_input in "what is the weather like?":
+    print("i'm not sure, but i hope it's sunny where you are!")
+else:
+    print("i don't understand that yet.")
