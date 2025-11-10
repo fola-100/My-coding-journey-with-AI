@@ -220,11 +220,28 @@ while True:
         break
     elif any(word in user_input for word in ["yes","fine"]):
         print("I'm glade to hear that!")
-
     elif  "what is the weather like?" in user_input:
       print("i'm not sure, but i hope it's sunny where you are!")
     else:
       print("i don't understand that yet.")
+#AI Correction
+#1. Fix a small typo and logic in your color section
+#You accidentally left "test" inside this line:
+change_color = input("Do you want to change your fav color?:test").strip().lower()
+#✅ Replace it with:
+change_color = input("Do you want to change your fav color?: ").strip().lower()
+#2. Avoid calling color_check() twice
+#Right now you have:
+color_check()
+color = color_check()
+#That means it runs the function two times — so it might ask the question twice or behave oddly.
+#✅ Replace those two lines with just:
+color = color_check()
+#3. Small grammar and polish updates
+#You can slightly adjust your prints for smoother English:
+print(f"Hi {name_log}! Nice to meet you. I’ve saved your name to my memory and won’t forget it.")
+#and
+print(f"{name_log}, I’ve updated your name in my memory.")
 
 
 
