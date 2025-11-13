@@ -242,6 +242,150 @@ color = color_check()
 print(f"Hi {name_log}! Nice to meet you. I’ve saved your name to my memory and won’t forget it.")
 #and
 print(f"{name_log}, I’ve updated your name in my memory.")
+#👉 Create a chatbot that:
+#Checks if a file called user_data.json exists.
+#If it does, load it and greet the user by name.
+#If it doesn’t, ask for their name and favorite color,
+#then save both inside the file.
+#Allows the user to update their name or color if they choose to.
+#Replies to:
+#“hi” or “hello” → random greeting
+#“how are you” → random reply
+#“what is my favourite color” → read from file
+#“bye” → say goodbye and stop
+#Anything else → say you don’t understand
+#My first Attempt
+import random
+reply_options=["Hello there!","Wassup","Hello buddy","HEY friend!"]
+reply_options2=["I'm doing great hope you are doing great to",
+                "I am doing fine,are you doing good to",
+                "just enjoying the day, are you enjoying your day"]
+
+# user name
+try:
+    with open("Json.txt", "r") as f:
+        line = f.read()
+        if not line.strip():
+            name_log = input("Hi buddy what your name:").strip().capitalize()
+            print(f'Hi {name_log}! Nice to meet you,I have update your name in my memory ')
+            #saving data in a dic
+            data={"name":name_log}
+            # saving name_log
+            with open("Json.txt", "a") as file:
+                file.write(data["name"])
+        else:
+            change = input("Do you want to change your name?:").lower()
+            #checking input value
+            while change not in ['yes','no']:
+                print("pls enter yes or no.")
+                change = input("Do you want to change your name?:").lower()
+            if change == "yes":
+                name_log = input("Enter your new name:").strip().capitalize()
+                print(f'{name_log}!i have you name to memory')
+                data={"name":name_log}
+                with open("Json.txt", "w") as file:
+                    file.write(data["name"])
+            else:
+                with open("Json.txt", "r") as file:
+                    line = file.read()
+                print(f'OK {line}')
+except FileNotFoundError:
+    print("File not found, creating a new one")
+    name_log=input("Hi buddy what's your name:").strip().capitalize()
+    data={"name":name_log}
+    with open("Json.txt","w") as file:
+        file.write(data["name"])
+
+def color_check():
+    try:
+        with open("Json.txt","r") as new_file:
+         lines=new_file.readline()
+         if not lines .strip():
+            fav_color = input("What is your favourite color?:").strip().capitalize()
+            with open("Json.txt","w") as file_updated:
+                data={"fav_color":fav_color}
+                file_update.write(fav_color)
+            return fav_color
+         else:
+             change_color=input("Do you want to change your fav color?:").strip().lower()
+             while  change_color not in['no','yes']:
+                 change_color = input("Do you want to change your fav color?:").strip().lower()
+             if change_color=="yes":
+                 color_update=input("Enter your new color:").strip().capitalize()
+                 with open("color.txt","w")as file_change:
+                     file_change.write(color_update)
+                 return color_update
+             else:
+                 return lines.strip()
+
+
+    except FileNotFoundError:
+        print("File not found,creating a new one")
+        fav_color = input("What is your favourite color?:").strip().capitalize()
+        with open("color.txt", "w") as file_update:
+            file_update.write(fav_color)
+        return fav_color
+
+color=color_check()
+
+while True:
+    save = random.choice(reply_options)
+    save2 = random.choice(reply_options2)
+
+#chat loop
+    with open("name.txt", "r") as file:
+        name_log = file.read()
+    user_input=input("Type something "+name_log+" (E.g,Hi,Hello):").lower()
+    if  'hi'in user_input or 'hello'in user_input :
+      print(save,name_log)
+    elif "how are you" in user_input:
+      print(save2,name_log)
+    elif  "what is your name"in user_input :
+      print("I'm Chatbot 2.0, your python buddy "+name_log+".")
+    elif "what is my favourite color" in user_input:
+        print(f'Your favourite color is {color}')
+    elif "bye" in user_input:
+        print(f'Goodbye,{name_log},talk soon!')
+        break
+    elif any(word in user_input for word in ["yes","fine"]):
+        print("I'm glade to hear that!")
+
+    elif  "what is the weather like?" in user_input:
+      print("i'm not sure, but i hope it's sunny where you are!")
+    else:
+      print("i don't understand that yet.")
+
+#MAIN THINGS TO FIX / IMPROVE
+#You're using .txt but not JSON.
+#JSON files store data in dictionary format, not plain text.
+#You must use json.dump() and json.load() to read/write.
+#You’re mixing multiple files (Json.txt, color.txt, name.txt).
+#Instead, you’ll keep everything in one JSON file called user_data.json.
+#In color_check(), you wrote to wrong file variables and reused "color.txt".
+#We’ll fix that by reading and updating the same JSON file.
+#Your chatbot reads from "name.txt", but the file no longer exists.
+#You should read both name and color from your JSON file instead
+#Step 1 – Import modules
+import json
+import os
+import random
+#Step 2 – Try loading user data
+if os.path.exists("user_data.json"):
+    with open("user_data.json", "r") as file:
+        data = json.load(file)
+else:
+    data = {}
+#Step 3 – Ask for name & color if missing
+if "name" not in data:
+    data["name"] = input("Hi buddy, what's your name?: ").strip().capitalize()
+if "color" not in data:
+    data["color"] = input("What’s your favourite color?: ").strip().capitalize()
+#Step 4 – Save back to JSON
+with open("user_data.json", "w") as file:
+    json.dump(data, file)
+
+
+
 
 
 
