@@ -953,6 +953,212 @@ while True:
         chat_history.append(user_input)
         chat_respond(user_input, save, save2, save4, save5, responds, name_log, color, chat_history)
 #couldn't finsh the code because didn't know how to do the summary challenge
+#AI Advices in creating the summary logic
+#What kind of messages the user said
+#✔ Did they greet, ask questions, talk about feelings, etc.
+#⭐ SUMMARY LOGIC (Simple & Effective)
+#Create counters:
+greetings = 0
+questions = 0
+feelings = 0
+#Loop through chat_history and count what appears:
+for message in past_history:
+    if "hi" in message or "hello" in message:
+        greetings += 1
+    if "?" in message:
+        questions += 1
+    if any(word in message for word in ["sad", "happy", "good", "fine"]):
+        feelings += 1
+#Build the summary result:
+print("Here is your chat summary:")
+print(f"- You greeted me {greetings} times.")
+print(f"- You asked {questions} questions.")
+print(f"- You mentioned feelings {feelings} times.")
+#RE-Written the logic into the code
+import random
+import json
+reply_options=["Hello there!","Wassup","Hello buddy","HEY!"]
+reply_options2=["I'm doing great hope you are doing great to",
+                "I am doing fine,are you doing good to",
+                "just enjoying the day, are you enjoying your day"]
+reply_option3=["bye","goodbye","see you later","catch you later",'see you soon']
+reply_option4=["how has your day been?","did you do anything fun today?",
+               "what have you been up to?","how are you feeling today?"]
+reply_option5=["that good","glad to hear that","that awesome"]
+responds = ['fine', 'good', 'yes', 'been', ]
+
+# user name
+try:
+    with open("Json.txt", "r") as f:
+        line = json.load(f)
+        if "name" not in line:
+            name_log = input("Hi buddy what your name:").strip().capitalize()
+            print(f'Hi {name_log}! Nice to meet you,I have update your name in my memory ')
+            # reading the file
+            with open("Json.txt", "r") as file:
+               data=json.load(file)
+               data["name"]=name_log
+            with open("Json.txt","w")as file:
+                json.dump(data,file)
+        else:
+            change = input("Do you want to change your name?:").lower()
+            #checking input value
+            while change not in ['yes','no']:
+                print("pls enter yes or no.")
+                change = input("Do you want to change your name?:").lower()
+            if change == "yes":
+                name_log = input("Enter your new name:").strip().capitalize()
+                print(f'{name_log}!i have added you name to memory')
+                with open("Json.txt","r") as file:
+                    data=json.load(file)
+                    data["name"]=name_log
+                with open('Json.txt','w')as file:
+                    json.dump(data,file)
+            else:
+                with open("Json.txt", "r") as file:
+                  line=json.load(file)
+                  save=line["name"]
+                print(f'OK {save}')
+except FileNotFoundError:
+    print("File not found, creating a new one")
+    name_log=input("Hi buddy what's your name:").strip().capitalize()
+    data={"name":name_log}
+    with open("Json.txt","w") as file:
+        json.dump(data,file)
+
+def color_check():
+    try:
+        with open("Json.txt","r") as new_file:
+            lines=json.load(new_file)
+            if "color" not in lines:
+              color_type= input("What is your favourite color?:").strip().capitalize()
+              with open("Json.txt", "r") as lod_file:
+                  storing=json.load(lod_file)
+              storing["color"]=color_type
+              with open("Json.txt","w") as lod_file:
+                  json.dump(storing,lod_file)
+              return color_type
+            else:
+             change_color=input("Do you want to change your fav color?:").strip().lower()
+             while  change_color not in['no','yes']:
+                 change_color = input("Do you want to change your fav color?:").strip().lower()
+             if change_color=="yes":
+                 color_update=input("Enter your new color:").strip().capitalize()
+                 with open("Json.txt","r")as file_change:
+                     storing=json.load(file_change)
+                     storing["color"]=color_update
+                 with open("Json.txt","w") as file_change:
+                      json.dump(storing,file_change)
+                 return color_update
+             else:
+                 return lines["color"]
+    except FileNotFoundError:
+        print("File not found,creating a new one")
+        fav_color = input("What is your favourite color?:").strip().capitalize()
+        with open("Json.txt","w")as file_update:
+            storing={"color":fav_color}
+            json.dump(storing,file_update)
+
+        return fav_color
+
+def chat_respond(value_input,value1,value2,value4,value5,reply,name_value,color_value,past_history):
+    emotions=[]
+    if "what is the weather like?" in value_input:
+       print("I am not sure, but i hope it's sunny where you are!")
+
+    elif "history" in value_input:
+        words = ["sad", "blue", "bad"]
+        feelings = ["happy", "great", "joy"]
+        print("Here is everything you said so far")
+        for index,char in enumerate(past_history):
+            print(f'{index}. {char}' )
+
+        for i in emotions:
+            if i in words:
+                print("You also said you were "+i+",and i am sorry you feel that way")
+            elif i in feelings:
+                print("You also said you were "+i+",which makes me really happy to hear")
+            else:
+
+                print("test")
+
+    elif "hi" in value_input or "hello" in value_input:
+        print(value1)
+        user_active=(input(value4)+":")
+        emotions.append(user_active)
+        found=False
+        for respond in reply:
+            if respond in user_active:
+                print(value5)
+                found=True
+        if not found:
+            print("sorry to hear that.")
+
+    elif "how are you" in value_input:
+        print(value2,name_value)
+
+    elif "what is your name" in value_input:
+         print("I'm Chatbot,your python buddy"+name_value+".")
+
+    elif "what is my favourite color" in value_input:
+         print(f'Your favourite color is {color_value}')
+
+    elif any(word in value_input for word in ["yes","fine"]):
+        print("I'm glade to hear that!")
+    elif "summary" in value_input:
+        greetings = 0
+        questions = 0
+        feelings = 0
+
+        for msg in past_history:
+            if "hi" in msg or "hello" in msg:
+                greetings += 1
+            if "?" in msg:
+                questions += 1
+            if any(word in msg for word in ["sad", "happy", "good", "fine"]):
+                feelings += 1
+
+        print("Here is your chat summary so far:")
+        print(f"- You greeted me {greetings} times.")
+        print(f"- You asked {questions} questions.")
+        print(f"- You talked about feelings {feelings} times.")
+
+    else:
+        print("I don't understand that yet.")
+#saving user passed input
+chat_history=[]
+
+color=color_check()
+count=2
+while True:
+    count-=1
+    save = random.choice(reply_options)
+    save2 = random.choice(reply_options2)
+    save3=random.choice(reply_option3)
+    save4=random.choice(reply_option4)
+    save5=random.choice(reply_option5)
+
+#chat loop
+    with open("Json.txt", "r") as file:
+        data = json.load(file)
+        name_log=data["name"]
+
+
+    if count<=0:
+        question=input("Do you want to continue chatting?:").lower()
+        if question=="yes":
+            user_input=input("What else would you like to say?:")
+            chat_history.append(user_input)
+            chat_respond(user_input,save,save2,save4,save5,responds,name_log,color,chat_history)
+        elif question=="no":
+             print("Okay, goodbye!")
+             break
+        else:
+            print("invalid input,pls enter yes or no.")
+    else:
+        user_input=input("Type something "+name_log+" (E.g,Hi,Hello):").lower()
+        chat_history.append(user_input)
+        chat_respond(user_input, save, save2, save4, save5, responds, name_log, color,chat_history)
 
 
 
