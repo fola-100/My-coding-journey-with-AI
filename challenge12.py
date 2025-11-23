@@ -1159,6 +1159,102 @@ while True:
         user_input=input("Type something "+name_log+" (E.g,Hi,Hello):").lower()
         chat_history.append(user_input)
         chat_respond(user_input, save, save2, save4, save5, responds, name_log, color,chat_history)
+#AI correction
+#PROBLEM 1 — emotions = [] resets every time!
+def chat_respond(...):
+    emotions=[]
+#✅ FIX:
+#Move emotions = [] OUTSIDE the function and pass it the same way you pass chat_history.
+#❌ PROBLEM 2 — You append the entire user sentence as emotion
+#This line:
+#emotions.append(user_active)
+#I am feeling good today
+#Your code stores:
+#"I am feeling good today"
+#But later you compare:
+#if i in ["sad", "blue", "bad"]
+#⭐ I WILL FIX EVERYTHING FOR YOU CLEANLY
+#Here is the corrected version of your function and the few lines around it.
+#I will NOT rewrite your whole code — only the part you need.
+def chat_respond(value_input, value1, value2, value4, value5, reply, name_value, color_value, past_history, emotions):
+
+    if "what is the weather like?" in value_input:
+        print("I am not sure, but I hope it's sunny where you are!")
+        return
+
+    elif "history" in value_input:
+        print("Here is everything you said so far:")
+        for index, char in enumerate(past_history):
+            print(f"{index}. {char}")
+
+        # Emotion report
+        sad_words = ["sad", "blue", "bad"]
+        happy_words = ["happy", "great", "joy", "good", "fine"]
+
+        for emotion in emotions:
+            if emotion in sad_words:
+                print(f"You said you felt {emotion}. I'm sorry you're feeling that way.")
+            elif emotion in happy_words:
+                print(f"You said you felt {emotion}. I'm happy to hear that!")
+        return
+
+    elif "hi" in value_input or "hello" in value_input:
+        print(value1)
+        user_active = input(value4 + ": ").lower()
+
+        # Save emotion only, not full sentence
+        for word in ["sad", "happy", "good", "fine", "bad", "great"]:
+            if word in user_active:
+                emotions.append(word)
+
+        found = False
+        for respond in reply:
+            if respond in user_active:
+                print(value5)
+                found = True
+
+        if not found:
+            print("Sorry to hear that.")
+        return
+
+    elif "how are you" in value_input:
+        print(value2, name_value)
+        return
+
+    elif "what is your name" in value_input:
+        print("I'm Chatbot, your python buddy " + name_value + ".")
+        return
+
+    elif "what is my favourite color" in value_input:
+        print(f"Your favourite color is {color_value}")
+        return
+
+    elif any(word in value_input for word in ["yes", "fine"]):
+        print("I'm glad to hear that!")
+        return
+
+    elif "summary" in value_input:
+        greetings = 0
+        questions = 0
+        feelings = len(emotions)
+
+        for msg in past_history:
+            if "hi" in msg or "hello" in msg:
+                greetings += 1
+            if "?" in msg:
+                questions += 1
+
+        print("Here is your chat summary so far:")
+        print(f"- You greeted me {greetings} times.")
+        print(f"- You asked {questions} questions.")
+        print(f"- You talked about feelings {feelings} times.")
+        return
+
+    else:
+        print("I don't understand that yet.")
+        return
+
+
 
 
 
