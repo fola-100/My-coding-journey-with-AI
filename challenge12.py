@@ -1253,6 +1253,154 @@ def chat_respond(value_input, value1, value2, value4, value5, reply, name_value,
     else:
         print("I don't understand that yet.")
         return
+#🚀 STAGE 4 — MINI CHALLENGE A
+#Task: Make your chatbot remember the user’s likes
+#Add this outside your loop:
+#user_likes = []
+#Inside your main loop, detect when the user says:
+#I like ______
+#▶ What you must implement:
+#When user types something like:
+#i like music
+#Your bot should:
+#Extract the thing they like (“music”)
+#Save it to user_likes
+#Reply:
+#Cool! I'll remember that you like music.
+#Then add a new command:
+#what do i like?
+#And the bot shows the list of remembered likes.
+#My Attempt
+def chat_respond(value_input,value1,value2,value4,value5,reply,name_value,color_value,past_history,emotions,store_memories):
+    if "what is the weather like?" in value_input:
+       print("I am not sure, but i hope it's sunny where you are!")
+       return
+
+    elif "history" in value_input:
+        print("Here is everything you said so far")
+        for index,char in enumerate(past_history):
+            print(f'{index}. {char}' )
+
+        #Emotion report
+        sad_words  = ["sad", "blue", "bad"]
+        happy_words = ["happy", "great", "joy"]
+
+        for emotion in emotions:
+            if emotion in sad_words:
+                print("You also said you were "+emotion+",and i am sorry you feel that way")
+            elif emotion in happy_words:
+                print("You also said you were "+emotion+",which makes me really happy to hear")
+        return
+
+        # saving what your want to remember
+    elif any(value_input in word for word in ["i want you to remember this", "save this to memory"]):
+        key = input("Enter only the word you want me to remember?:")
+        value = input(f'What do you want to remember about your {key}?:')
+        store_memories[key] = value
+    # asking for what was saved
+
+
+    elif any(word in value_input for word in ["what is my","tell me ", "do you remember","what did"] ):
+        for memory_key, memory_value in store_memories.items():
+            if memory_key in value_input:
+               print(f'You said your {memory_key} is {memory_value}.')
+            else:
+                print("Your haven't told me that yet.")
+
+    elif "hi" in value_input or "hello" in value_input:
+        print(value1)
+        user_active=(input(value4)+":").lower()
+        for words in ["sad", "happy","fine","great","sad","bad","blue"]:
+            if words in user_active:
+             emotions.append(user_active)
+
+        found=False
+        for respond in reply:
+            if respond in user_active:
+                print(value5)
+                found=True
+        if not found:
+            print("sorry to hear that.")
+        return
+
+    elif "how are you" in value_input:
+        print(value2,name_value)
+        return
+
+
+
+    elif "what is your name" in value_input:
+         print("I'm Chatbot,your python buddy"+name_value+".")
+         return
+
+    elif "what is my favourite color" in value_input:
+         print(f'Your favourite color is {color_value}')
+         return
+
+    elif any(word in value_input for word in ["yes","fine"]):
+        print("I'm glade to hear that!")
+        return
+    elif "summary" in value_input:
+        greetings = 0
+        questions = 0
+        feelings = 0
+#not read come back after church
+        for msg in past_history:
+            if "hi" in msg or "hello" in msg:
+                greetings += 1
+            if "?" in msg:
+                questions += 1
+            if any(word in msg for word in ["sad", "happy", "good", "fine"]):
+                feelings += 1
+
+        print("Here is your chat summary so far:")
+        print(f"- You greeted me {greetings} times.")
+        print(f"- You asked {questions} questions.")
+        print(f"- You talked about feelings {feelings} times.")
+
+    else:
+        print("I don't understand that yet.")
+#saving user passed input
+chat_history=[]
+emotion_valut= []
+color=color_check()
+user_like=[]
+count=2
+#saving user data
+memory={}
+
+while True:
+    count-=1
+    save = random.choice(reply_options)
+    save2 = random.choice(reply_options2)
+    save3=random.choice(reply_option3)
+    save4=random.choice(reply_option4)
+    save5=random.choice(reply_option5)
+
+#chat loop
+    with open("Json.txt", "r") as file:
+        data = json.load(file)
+        name_log=data["name"]
+
+
+    if count<=0:
+        question=input("Do you want to continue chatting?:").lower()
+        if question=="yes":
+            user_input=input("What else would you like to say?:")
+            chat_history.append(user_input)
+            chat_respond(user_input,save,save2,save4,save5,responds,name_log,color,chat_history,emotion_valut,memory)
+        elif question=="no":
+             print("Okay, goodbye!")
+             break
+        else:
+            print("invalid input,pls enter yes or no.")
+    else:
+        user_input=input("Type something "+name_log+" (E.g,Hi,Hello):").lower()
+        chat_history.append(user_input)
+        chat_respond(user_input, save, save2, save4, save5, responds, name_log, color,chat_history,emotion_valut,memory)
+
+
+
 
 
 
