@@ -1398,6 +1398,28 @@ while True:
         user_input=input("Type something "+name_log+" (E.g,Hi,Hello):").lower()
         chat_history.append(user_input)
         chat_respond(user_input, save, save2, save4, save5, responds, name_log, color,chat_history,emotion_valut,memory)
+#AI correction
+#While you code works beautifully it dosen't
+#❌ Your bot still does NOT remember user likes such as:
+#I like music
+#I like football
+#I like pizza
+# remembering likes
+elif value_input.startswith("i like "):
+    thing = value_input.replace("i like ", "").strip()
+    store_memories.setdefault("likes", [])
+    store_memories["likes"].append(thing)
+    print(f"Cool! I'll remember that you like {thing}.")
+    return
+
+# checking likes
+elif "what do i like" in value_input:
+    user_likes = store_memories.get("likes", [])
+    if user_likes:
+        print("You like: " + ", ".join(user_likes))
+    else:
+        print("You haven't told me what you like yet.")
+    return
 
 
 
