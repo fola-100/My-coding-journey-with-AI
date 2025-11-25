@@ -1420,6 +1420,332 @@ elif "what do i like" in value_input:
     else:
         print("You haven't told me what you like yet.")
     return
+#(Stage4 part 2)
+#1️⃣ INTENT DETECTION SYSTEM
+#Create a function:
+#def detect_intent(user_input):
+#Inside this function, you must detect general categories like:
+#✔ Greeting
+#If input contains:
+#hi, hello, hey
+#✔ Asking information
+#Contains:
+#what, why, how, where, when
+#✔ Emotion / Feeling
+#Contains:
+#sad, happy, angry, tired, good, bad
+#✔ Goodbye
+#Contains:
+#bye, goodnight, see you, take care
+#✔ Unknown intention
+#If none match → return "unknown"
+#➡ Your job:
+#Return one of these strings:
+#greeting
+#"question"
+#etc
+#2️⃣ PERSONALITY SYSTEM
+#Add a variable:
+#chatbot_personality = "friendly"
+#Then create a function:
+#def apply_personality(intent, text):
+#This function must change how the chatbot speaks depending on personality.
+#At minimum, support 3 personalities:
+#🌟 friendly
+#warm
+#uses emojis
+#Example:
+#"Hey buddy! 😊 How can I help you today?"
+#😎 cool
+#short
+#confident
+#fewer emojis
+#Example:
+#"Yo. What’s up?"
+#🤖 robotic
+#no emotions
+#straight to the point
+#Example:
+#"Hello. State your request."
+#➡ Your job:
+#3️⃣ Add a command:
+#"change personality to ___"
+#If user types:
+#change personality to cool
+#You update:
+#chatbot_personality = "cool"
+#And the bot should answer:
+#Personality updated to cool.
+#My Attempt
+import random
+import json
+reply_options=["Hello there!","Wassup","Hello buddy","HEY!"]
+reply_options2=["I'm doing great hope you are doing great to",
+                "I am doing fine,are you doing good to",
+                "just enjoying the day, are you enjoying your day"]
+reply_option3=["bye","goodbye","see you later","catch you later",'see you soon']
+reply_option4=["how has your day been?","did you do anything fun today?",
+               "what have you been up to?","how are you feeling today?"]
+reply_option5=["that good","glad to hear that","that awesome"]
+responds = ['fine', 'good', 'yes', 'been', ]
+
+# user name
+try:
+    with open("Json.txt", "r") as f:
+        line = json.load(f)
+        if "name" not in line:
+            name_log = input("Hi buddy what your name:").strip().capitalize()
+            print(f'Hi {name_log}! Nice to meet you,I have update your name in my memory ')
+            # reading the file
+            with open("Json.txt", "r") as file:
+               data=json.load(file)
+               data["name"]=name_log
+            with open("Json.txt","w")as file:
+                json.dump(data,file)
+        else:
+            change = input("Do you want to change your name?:").lower()
+            #checking input value
+            while change not in ['yes','no']:
+                print("pls enter yes or no.")
+                change = input("Do you want to change your name?:").lower()
+            if change == "yes":
+                name_log = input("Enter your new name:").strip().capitalize()
+                print(f'{name_log}!i have added you name to memory')
+                with open("Json.txt","r") as file:
+                    data=json.load(file)
+                    data["name"]=name_log
+                with open('Json.txt','w')as file:
+                    json.dump(data,file)
+            else:
+                with open("Json.txt", "r") as file:
+                  line=json.load(file)
+                  save=line["name"]
+                print(f'OK {save}')
+except FileNotFoundError:
+    print("File not found, creating a new one")
+    name_log=input("Hi buddy what's your name:").strip().capitalize()
+    data={"name":name_log}
+    with open("Json.txt","w") as file:
+        json.dump(data,file)
+
+def color_check():
+    try:
+        with open("Json.txt","r") as new_file:
+            lines=json.load(new_file)
+            if "color" not in lines:
+              color_type= input("What is your favourite color?:").strip().capitalize()
+              with open("Json.txt", "r") as lod_file:
+                  storing=json.load(lod_file)
+              storing["color"]=color_type
+              with open("Json.txt","w") as lod_file:
+                  json.dump(storing,lod_file)
+              return color_type
+            else:
+             change_color=input("Do you want to change your fav color?:").strip().lower()
+             while  change_color not in['no','yes']:
+                 change_color = input("Do you want to change your fav color?:").strip().lower()
+             if change_color=="yes":
+                 color_update=input("Enter your new color:").strip().capitalize()
+                 with open("Json.txt","r")as file_change:
+                     storing=json.load(file_change)
+                     storing["color"]=color_update
+                 with open("Json.txt","w") as file_change:
+                      json.dump(storing,file_change)
+                 return color_update
+             else:
+                 return lines["color"]
+    except FileNotFoundError:
+        print("File not found,creating a new one")
+        fav_color = input("What is your favourite color?:").strip().capitalize()
+        with open("Json.txt","w")as file_update:
+            storing={"color":fav_color}
+            json.dump(storing,file_update)
+
+        return fav_color
+
+def chat_respond(value_input,value1,value2,value4,value5,reply,name_value,color_value,past_history,emotions,store_memories):
+    if "what is the weather like?" in value_input:
+       print("I am not sure, but i hope it's sunny where you are!")
+       return
+
+    elif "history" in value_input:
+        print("Here is everything you said so far")
+        for index,char in enumerate(past_history):
+            print(f'{index}. {char}' )
+
+        #Emotion report
+        sad_words  = ["sad", "blue", "bad"]
+        happy_words = ["happy", "great", "joy"]
+
+        for emotion in emotions:
+            if emotion in sad_words:
+                print("You also said you were "+emotion+",and i am sorry you feel that way")
+            elif emotion in happy_words:
+                print("You also said you were "+emotion+",which makes me really happy to hear")
+        return
+
+        # saving what your want to remember
+    elif any(value_input in word for word in ["i want you to remember this", "save this to memory"]):
+        key = input("Enter only the word you want me to remember?:")
+        value = input(f'What do you want to remember about your {key}?:')
+        store_memories[key] = value
+    # asking for what was saved
+
+
+    elif any(word in value_input for word in ["what is my","tell me ", "do you remember","what did"] ):
+        for memory_key, memory_value in store_memories.items():
+            if memory_key in value_input:
+               print(f'You said your {memory_key} is {memory_value}.')
+            else:
+                print("Your haven't told me that yet.")
+
+    elif "hi" in value_input or "hello" in value_input:
+        print(value1)
+        user_active=(input(value4)+":").lower()
+        for words in ["sad", "happy","fine","great","sad","bad","blue"]:
+            if words in user_active:
+             emotions.append(user_active)
+
+        found=False
+        for respond in reply:
+            if respond in user_active:
+                print(value5)
+                found=True
+        if not found:
+            print("sorry to hear that.")
+        return
+
+    elif "how are you" in value_input:
+        print(value2,name_value)
+        return
+
+    # remembering likes
+    elif value_input.startswith("i like "):
+        thing = value_input.replace("i like ", "").strip()
+        store_memories.setdefault("likes", [])
+        store_memories["likes"].append(thing)
+        print(f"Cool! I'll remember that you like {thing}.")
+        return
+
+    # checking likes
+    elif "what do i like" in value_input:
+        user_likes = store_memories.get("likes", [])
+        if user_likes:
+            print("You like: " + ", ".join(user_likes))
+        else:
+            print("You haven't told me what you like yet.")
+        return
+
+    elif "what is your name" in value_input:
+         print("I'm Chatbot,your python buddy"+name_value+".")
+         return
+
+    elif "what is my favourite color" in value_input:
+         print(f'Your favourite color is {color_value}')
+         return
+
+    elif any(word in value_input for word in ["yes","fine"]):
+        print("I'm glade to hear that!")
+        return
+    elif "summary" in value_input:
+        greetings = 0
+        questions = 0
+        feelings = 0
+#not read come back after church
+        for msg in past_history:
+            if "hi" in msg or "hello" in msg:
+                greetings += 1
+            if "?" in msg:
+                questions += 1
+            if any(word in msg for word in ["sad", "happy", "good", "fine"]):
+                feelings += 1
+
+        print("Here is your chat summary so far:")
+        print(f"- You greeted me {greetings} times.")
+        print(f"- You asked {questions} questions.")
+        print(f"- You talked about feelings {feelings} times.")
+
+    else:
+        print("I don't understand that yet.")
+    # Creating a function detection system
+
+
+def detect_intent(user_data):
+    user_message = {}
+    greetings = ["hi", "hello", "hey"]
+    asking_info = ["what", "why", "how", "where", "when"]
+    emotions = ["sad", "happy", "angry", "tried", "good", "bad"]
+    closing = ["bye", "goodnight", "see you", "take care"]
+    user_message["greeting"] = greetings
+    user_message["asking"] = asking_info
+    user_message["emotions"] = emotions
+    user_message["closing"] = closing
+
+    for msg_key, msg_value in user_message.items():
+        for save_msg in msg_value:
+            if save_msg in user_data:
+                return msg_key
+    return "none"
+def apply_personality(option,intent):
+    if intent == "greeting":
+        option
+
+#saving user passed input
+chat_history=[]
+emotion_valut= []
+color=color_check()
+user_like=[]
+count=2
+#saving user data
+memory={}
+
+while True:
+    count-=1
+    save = random.choice(reply_options)
+    save2 = random.choice(reply_options2)
+    save3=random.choice(reply_option3)
+    save4=random.choice(reply_option4)
+    save5=random.choice(reply_option5)
+
+#chat loop
+    with open("Json.txt", "r") as file:
+        data = json.load(file)
+        name_log=data["name"]
+
+
+    if count<=0:
+        question=input("Do you want to continue chatting?:").lower()
+        if question=="yes":
+            user_input = input("What else would you like to say?:")
+            chat_history.append(user_input)
+            detect_intent(user_input)
+            print("Choose a personal")
+            print("1).Friendly")
+            print("2).Friendly")
+            print("3).Robotic")
+            choice=input("Enter your choice:")
+            apply_personality(choice,user_input)
+
+
+            chat_respond(user_input,save,save2,save4,save5,responds,name_log,color,chat_history,emotion_valut,memory)
+        elif question=="no":
+             print("Okay, goodbye!")
+             break
+        else:
+            print("invalid input,pls enter yes or no.")
+    else:
+        user_input = input("Type something " + name_log + " (E.g,Hi,Hello):").lower()
+        chat_history.append(user_input)
+        detect_intent(user_input)
+        print("Choose a personal")
+        print("1).Friendly")
+        print("2).Friendly")
+        print("3).Robotic")
+        choice=input("Enter your choice:")
+        apply_personality(choice, user_input)
+
+        chat_respond(user_input, save, save2, save4, save5, responds, name_log, color,chat_history,emotion_valut,memory)
+        detect_intent(user_input)
 
 
 
