@@ -137,4 +137,14 @@ user_data={"name":user_name,"age":user_age,"favorite_number":fav_number}
 user(user_data,value)
 #
 menu_option()
+#AI Correction
+#❗ IMPORTANT: The big issue in your code
+def user(dic_data,user_storage_area):
+    user_count={"user1":"","user2":"","user3":""}
+    if user_storage_area == "user1":
+        user_count["user1"]=dic_data
+#This has one major problem:
+#❌ user_count is created INSIDE the function
+#That means every time the function runs, the dictionary resets, so you are not actually saving any user data anywhere.
+#Python throws the whole dictionary away when the function finishes
 
