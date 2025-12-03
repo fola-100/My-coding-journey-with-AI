@@ -327,5 +327,33 @@ with open("Data_vault","w") as file:
     json.dump(data,file,indent=4)
 #
 menu_option(value)
+#AI correction
+#import json
+#⚠ Things to improve / bugs to fix
+#1️⃣ User naming mismatch
+#In user_mode(), you return "users1", "users2", "users3" (with an extra “s”).
+#But in other places you use "user1", "user2", "user3".
+#This will break checks like:
+#if value not in data["users"]
+#Fix: Make the naming consistent (user1, user2, user3).
 
+#2️⃣ user_data resets every run
+user_data={"user":value,"name":{},"age":{},"favorite_number":{}}
+
+#Every time the program runs, this dictionary starts empty.
+#You already save users in data["users"], so you don’t need user_data to store them again globally.
+#Suggestion: Load users directly from data["users"] instead.
+
+#3️⃣ Favorite numbers saved as string
+#"favorite_number": str(fav_number)
+
+#Storing numbers as string in JSON is unnecessary.
+#You can store them as a list of integers, then load them back as list.
+#"favorite_number": fav_number
+
+#4️⃣ Menu still uses user_data
+#result = user_data["name"][mode_value]
+
+#After you add JSON storage, you should read from data["users"], not user_data.
+#Otherwise, if the program restarts, all previous users are lost.
 
