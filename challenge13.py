@@ -37,3 +37,24 @@ while True:
     elif choice=="4":
         print("Goodbye")
         break
+#AI correction
+# Points to improve:
+#Favorite number
+#fav_number = input("Enter your favorite number:")
+#Right now, this is a string. If the user enters multiple numbers (like 1,2,3), you need to convert it into a list of integers.
+#For example:
+fav_number = input("Enter your favorite numbers separated by commas: ")
+fav_number = [int(n.strip()) for n in fav_number.split(",")]
+
+#2)Age conversion
+result = data_storage["age"]
+int(result)
+print(result)
+#int(result) creates an integer, but you’re not saving it back — so result is still a string.
+#Better:
+result = int(data_storage["age"])
+print(result)
+
+#3)Minor naming / readability
+#data_storage could be called user_data — more meaningful.
+#Menu printing could be inside a function later, when we expand the project.
