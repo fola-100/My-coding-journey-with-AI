@@ -353,7 +353,123 @@ user_data={"user":value,"name":{},"age":{},"favorite_number":{}}
 
 #4️⃣ Menu still uses user_data
 #result = user_data["name"][mode_value]
-
 #After you add JSON storage, you should read from data["users"], not user_data.
 #Otherwise, if the program restarts, all previous users are lost.
+
+#✅ FEATURE 1 — Update User Data if User Already Exists
+#Right now, your code ignores updating when user exists:
+if value not in data["users"]:
+    data["users"][value] = {...}
+#We change it to:
+#If user exists → ask: “Do you want to update this user?”
+#If yes → overwrite values
+#If no → keep old values
+#✅ FEATURE 2 — Delete a User
+#We add a new option in the menu:
+#5) Delete this user
+#If user chooses delete → remove from JSON → save file → exit to avoid errors.
+#My Attempt
+import json
+#--------- main menu------
+def menu_option(mode_value,user_value):
+  while True:
+    print("Here are the option Available to use")
+    print("1)Check Name")
+    print("2)Check age")
+    print("3)Check favorite number")
+    print("4)Delete this user")
+    print("5)Exit")
+    choice=input("Enter your choice:")
+    if choice=="1":
+       result=user_value["users"][mode_value]["name"]
+       print(result)
+
+    elif choice=="2":
+        result=user_value["users"][mode_value]["age"]
+        print(result)
+
+    elif choice=="3":
+        result=user_value["users"][mode_value]["favorite_number"]
+        print(result)
+
+    elif choice=="4":
+        print("User data has been deleted")
+        return 'delete'
+
+    elif choice=="4":
+        print("Goodbye")
+        break
+
+
+def user_mode():
+   print("They is only three available user storage area,Tell me which you "
+         "will like to use and i will tell you if is available")
+   print('\n----Storage options----')
+   print("User1")
+   print("User2")
+   print("User3")
+
+   choice=input("Enter your choice:").lower().strip()
+   while choice not in ["user1","user2","user3"]:
+       print("invalid choice")
+       choice=input("Enter your choice").lower().strip()
+   if choice=="user1":
+       return "user1"
+   elif choice=="user2":
+       return "user2"
+   elif choice=="user3":
+        return "user3"
+   return None
+
+#asking for which mode they like to use
+value=user_mode()
+
+#saving user input data
+user_name = input("Enter your name:").lower().strip()
+user_age = input("Enter your age:")
+fav_number = input("Enter your favorite number and separated by a comma:")
+# turning fav_number into a integer
+fav_number = [int(f.strip()) for f in fav_number.split(",")]
+#creating a storage to store user value
+
+try:
+   with open("Data_vault", "r") as file:
+        data = json.load(file)
+except FileNotFoundError:
+    data={"users":{}}
+
+#if user does not exist create it
+if value not in data["users"]:
+    data["users"][value]={"name":user_name,"age":user_age,"favorite_number":fav_number}
+    #saving data in file
+    with open("Data_vault", "w") as file:
+        json.dump(data, file, indent=4)
+
+if value in data["users"]:
+    print("Data already exists for "+value)
+    question=input("Do you want to update this user?:").lower().strip()
+    while question not in ["yes","no"]:
+        question=input("Do you want to update this user?:")
+    if question=="yes":
+       data["users"][value]={"name":user_name,"age":user_age,"favorite_number":fav_number}
+       print("Data updated")
+       #saving new-data in file
+       with open("Data_vault","w") as file:
+           json.dump(data, file, indent=4)
+       #reading saved file
+
+    else:
+        print("Data Entered will not be saved")
+with open("Data_vault", "r") as file:
+    user_data = json.load(file)
+
+#
+return_value=menu_option(value,user_data)
+if return_value=="delete":
+    with open("Data_vault","r") as file:
+        delete_data=json.load(file)
+        delete_data["users"][value]={"name":"test","age":"test","favorite_number":""}
+    with open("Data_vault","w")as file:
+         json.dump(delete_data,file,indent=4)
+
 
