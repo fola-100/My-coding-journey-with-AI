@@ -148,3 +148,87 @@ def user(dic_data,user_storage_area):
 #That means every time the function runs, the dictionary resets, so you are not actually saving any user data anywhere.
 #Python throws the whole dictionary away when the function finishes
 
+#Side task
+#To continue the project, we need:
+#A SINGLE list or dictionary that stores all 3 users permanently.
+#My Attempt
+#--------- main menu------
+def menu_option(mode_value):
+  while True:
+    print("Here are the option Available to use")
+    print("1)Check Name")
+    print("2)Check age")
+    print("3)Check favorite number")
+    print("4)Exist")
+    choice=input("Enter your choice:")
+    if choice=="1":
+      result=user_data["name"][mode_value]
+      print(f'Your name is {result}')
+    elif choice=="2":
+       result=user_data["age"][mode_value]
+       int(result)
+       print(result)
+    elif choice=="3":
+        result=user_data["favorite_number"][mode_value]
+        print(result)
+    elif choice=="4":
+        print("Goodbye")
+        break
+
+
+def user_mode():
+   print("They is only three available user storage area,Tell me which you "
+         "will like to use and i will tell you if is available")
+   print('\n----Storage options----')
+   print("User1")
+   print("User2")
+   print("User3")
+
+   choice=input("Enter your choice:").lower().strip()
+   while choice not in ["user1","user2","user3"]:
+       print("invalid choice")
+       choice=input("Enter your choice").lower().strip()
+   if choice=="user1":
+       return "user1"
+   elif choice=="user2":
+       return "user2"
+   elif choice=="user3":
+        return "user3"
+   return None
+
+
+#asking for which mode they like to use
+value=user_mode()
+
+#saving user input data
+user_name = input("Enter your name:").lower().strip()
+user_age = input("Enter your age:")
+fav_number = input("Enter your favorite number and separated by a comma:")
+# turning fav_number into a integer
+fav_number = [int(f.strip()) for f in fav_number.split(",")]
+
+user_data={"name":{},"age":{},"favorite_number":{}}
+
+if value=="user1":
+  #saving users input using user mode 1
+  user_data["name"]["user1"]=user_name
+  user_data["age"]["user1"]=user_age
+  user_data["favorite_number"]["user1"]=fav_number
+
+elif value=="user2":
+    # saving users input user mode2
+   user_data["name"]["user2"]=user_name
+   user_data["age"]["user2"]=user_age
+   user_data["favorite_number"]["user2"]=fav_number
+
+elif value=="user3":
+    #saving users input using user mode 3
+    user_data["name"]["user3"]=user_name
+    user_data["age"]["user3"]=user_age
+    user_data["favorite_number"]["user3"]=fav_number
+
+#
+menu_option(value)
+
+
+
