@@ -580,6 +580,75 @@ with open("Data_vault", "r") as file:
 
 #
 menu_option(value,user_data)
+#NEXT CHAllENGE(Level up)
+#CHALLENGE: Add the ability to update only ONE field
+#Example:
+#Which field do you want to update?
+#1) Name
+#2) Age
+#3) Favorite Number
+#The user chooses ONE field, and only that field is updated in JSON.
+#MY ATTEMPT
+import json
+#--------- main menu------
+def menu_option(mode_value,user_value):
+  while True:
+    print("Here are the option Available to use")
+    print("1)Check Name")
+    print("2)Check age")
+    print("3)Check favorite number")
+    print("4)Delete this user")
+    print("5)Update this user")
+    print("6)Exit")
+    choice=input("Enter your choice:")
+    if choice=="1":
+       result=user_value["users"][mode_value]["name"]
+       print(result)
 
+    elif choice=="2":
+        result=user_value["users"][mode_value]["age"]
+        print(result)
+
+    elif choice=="3":
+        result=user_value["users"][mode_value]["favorite_number"]
+        print(result)
+
+    elif choice=="4":
+        ask=input("Are you sure you want to delete data stored in "+mode_value +":")
+        if ask=="yes":
+          with open ("Data_vault","r")as f:
+              delete_data=json.load(f)
+              del delete_data["users"][mode_value]
+          with open("Data_vault","w")as f:
+              json.dump(delete_data,f,indent=4)
+          print("User data has been deleted")
+
+          break
+
+    elif choice=="5":
+        print("What do you want to update?")
+        print("1)Name")
+        print("2)Age")
+        print("3)Favorite Number")
+        ask = input("Enter choice:")
+        if ask not in ["1","2","3"]:
+            ask = input("Enter choice:")
+        with open("Data_vault","r")as f:
+            if ask == "1":
+              name_update = input("Enter new name:").strip().lower()
+              loaded_data=json.load(f)
+              loaded_data["users"][value]["name"] = name_update
+            elif ask=="2":
+                age_update=input("Enter new age:").strip().lower()
+                loaded_data=json.load(f)
+                loaded_data["users"][value]["age"]=age_update
+            elif ask=="3":
+                fav_update=int(input("Enter new fav_number:").strip().lower())
+                fav_update=[fav_update]
+                loaded_data=json.load(f)
+                loaded_data["users"][value]["favorite_number"]=fav_update
+        with open("Data_vault","w")as f:
+            json.dump(loaded_data,f,indent=4)
+        break
 
 
