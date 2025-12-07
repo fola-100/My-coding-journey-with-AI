@@ -650,5 +650,86 @@ def menu_option(mode_value,user_value):
         with open("Data_vault","w")as f:
             json.dump(loaded_data,f,indent=4)
         break
+#AI correction
+def menu_option(mode_value, user_value):
+    while True:
+        print("Here are the options available:")
+        print("1) Check Name")
+        print("2) Check Age")
+        print("3) Check Favorite Number")
+        print("4) Delete This User")
+        print("5) Update This User")
+        print("6) Exit")
+
+        choice = input("Enter your choice: ")
+
+        # ---- CHECK NAME ----
+        if choice == "1":
+            print(user_value["users"][mode_value]["name"])
+
+        # ---- CHECK AGE ----
+        elif choice == "2":
+            print(user_value["users"][mode_value]["age"])
+
+        # ---- CHECK FAVORITE NUMBER ----
+        elif choice == "3":
+            print(user_value["users"][mode_value]["favorite_number"])
+
+        # ---- DELETE USER ----
+        elif choice == "4":
+            ask = input(f"Are you sure you want to delete '{mode_value}'? (yes/no): ").lower()
+            if ask == "yes":
+                with open("Data_vault", "r") as f:
+                    delete_data = json.load(f)
+
+                del delete_data["users"][mode_value]
+
+                with open("Data_vault", "w") as f:
+                    json.dump(delete_data, f, indent=4)
+
+                print("User deleted.")
+                break  # exit menu
+
+        # ---- UPDATE USER ----
+        elif choice == "5":
+            print("What do you want to update?")
+            print("1) Name")
+            print("2) Age")
+            print("3) Favorite Number")
+
+            update_choice = input("Enter choice: ")
+
+            while update_choice not in ["1", "2", "3"]:
+                update_choice = input("Enter a valid choice: ")
+
+            # Load file ONCE
+            with open("Data_vault", "r") as f:
+                loaded_data = json.load(f)
+
+            if update_choice == "1":
+                new_name = input("Enter new name: ").strip().lower()
+                loaded_data["users"][mode_value]["name"] = new_name
+
+            elif update_choice == "2":
+                new_age = input("Enter new age: ").strip()
+                loaded_data["users"][mode_value]["age"] = new_age
+
+            elif update_choice == "3":
+                new_fav = input("Enter new favorite numbers (comma-separated): ")
+                new_fav = [int(x.strip()) for x in new_fav.split(",")]
+                loaded_data["users"][mode_value]["favorite_number"] = new_fav
+
+            # Save updated data
+            with open("Data_vault", "w") as f:
+                json.dump(loaded_data, f, indent=4)
+
+            print("User updated successfully!")
+
+        elif choice == "6":
+            print("Goodbye.")
+            break
+
+        else:
+            print("Invalid choice.")
 
 
