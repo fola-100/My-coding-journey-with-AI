@@ -731,5 +731,205 @@ def menu_option(mode_value, user_value):
 
         else:
             print("Invalid choice.")
+#✅ NEXT FEATURE (Step 7): List All Existing Users
+#This feature will:
+#Show the user which storage slots are currently used
+#Before they try to choose a slot
+#Or anytime in the menu
+#⭐ Where Should This Feature Go?
+#Option A — Add it inside menu_option()
+#Option B — Show list inside user_mode()
+#Before user picks a slot:
+#both
+#My Attempt
+import json
+
+# --------- main menu------
+def menu_option(mode_value, user_value):
+    while True:
+        print("Here are the option Available to use")
+        print("1)Check Name")
+        print("2)Check age")
+        print("3)Check favorite number")
+        print("4)Delete this user")
+        print("5)Update this user")
+        print("6)Exit")
+        print("7)Check used user mode")
+
+        choice = input("Enter your choice:")
+
+        if choice == "1":
+            result = user_value["users"][mode_value]["name"]
+            print(result)
+
+        elif choice == "2":
+            result = user_value["users"][mode_value]["age"]
+            print(result)
+
+        elif choice == "3":
+            result = user_value["users"][mode_value]["favorite_number"]
+            print(result)
+
+        elif choice == "4":
+            ask = input("Are you sure you want to delete data stored in " + mode_value + ": ")
+            if ask.lower().strip() == "yes":
+                with open("Data_vault", "r") as f:
+                    delete_data = json.load(f)
+
+                del delete_data["users"][mode_value]
+
+                with open("Data_vault", "w") as f:
+                    json.dump(delete_data, f, indent=4)
+
+                print("User data has been deleted")
+                return
+
+        elif choice == "5":
+            print("What do you want to update?")
+            print("1)Name")
+            print("2)Age")
+            print("3)Favorite Number")
+
+            update_choice = input("Enter choice:")
+
+            while update_choice not in ["1", "2", "3"]:
+                update_choice = input("Enter choice:")
+
+            with open("Data_vault", "r") as f:
+                loaded_data = json.load(f)
+
+            if update_choice == "1":
+                name_update = input("Enter new name:").strip().lower()
+                loaded_data["users"][mode_value]["name"] = name_update
+
+            elif update_choice == "2":
+                age_update = input("Enter new age:").strip()
+                loaded_data["users"][mode_value]["age"] = age_update
+
+            elif update_choice == "3":
+                fav_update = input("Enter new favorite numbers (comma separated): ").strip()
+                fav_update = [int(x) for x in fav_update.split(",")]
+                loaded_data["users"][mode_value]["favorite_number"] = fav_update
+
+            with open("Data_vault", "w") as f:
+                json.dump(loaded_data, f, indent=4)
+
+            print("User updated successfully")
+
+        elif choice == "6":
+            print("Goodbye")
+            break
+
+        elif choice == "7":
+            modes = ["user1", "user2", "user3"]
+            print("Here are the already used user mode:")
+
+            with open("Data_vault", "r") as f:
+                saved_data = json.load(f)
+
+            for mode in modes:
+                if mode in saved_data["users"]:
+                    print(mode)
+
+        else:
+            print("Invalid choice.")
+
+
+# --------- user mode select -------
+def user_mode():
+    try:
+        with open("Data_vault", "r") as f:
+            saved_data = json.load(f)
+    except (FileNotFoundError, json.decoder.JSONDecodeError):
+        saved_data = {"users": {}}
+
+    while True:
+        print("\nThere are only three available user storage areas.")
+        print("Here are the ones already used:")
+
+        users_modes = ["user1", "user2", "user3"]
+        for mode in users_modes:
+            if mode in saved_data["users"]:
+                print(f'{mode} is already used')
+
+        print("\n----Storage options----")
+        print("user1")
+        print("user2")
+        print("user3")
+
+        choice = input("Enter your choice:").lower().strip()
+
+        while choice not in ["user1", "user2", "user3"]:
+            print("Invalid choice")
+            choice = input("Enter your choice:").lower().strip()
+
+        if choice not in saved_data["users"]:
+            return choice
+        else:
+            print(f'Data already stored in {choice}')
+            continue
+
+
+# ===============================
+# Main program
+# ===============================
+
+value = user_mode()
+
+# Get user input
+user_name = input("Enter your name: ").lower().strip()
+user_age = input("Enter your age: ")
+fav_number = input("Enter your favorite numbers (comma separated): ")
+
+fav_number = [int(f.strip()) for f in fav_number.split(",")]
+
+# Load file OR create new
+try:
+    with open("Data_vault", "r") as file:
+        data = json.load(file)
+except (FileNotFoundError, json.decoder.JSONDecodeError):
+    data = {"users": {}}
+
+# Save or update user
+if value not in data["users"]:
+    data["users"][value] = {
+        "name": user_name,
+        "age": user_age,
+        "favorite_number": fav_number
+    }
+
+    with open("Data_vault", "w") as file:
+        json.dump(data, file, indent=4)
+
+elif value in data["users"]:
+    print("Data already exists for " + value)
+    question = input("Do you want to update this user?: ").lower().strip()
+
+    while question not in ["yes", "no"]:
+        question = input("Do you want to update this user?: ").lower().strip()
+
+    if question == "yes":
+        data["users"][value] = {
+            "name": user_name,
+            "age": user_age,
+            "favorite_number": fav_number
+        }
+
+        print("Data updated")
+
+        with open("Data_vault", "w") as file:
+            json.dump(data, file, indent=4)
+
+    else:
+        print("Data Entered will not be saved")
+
+# Load updated data
+with open("Data_vault", "r") as file:
+    user_data = json.load(file)
+
+# Run menu
+menu_option(value, user_data)
+
+
 
 
