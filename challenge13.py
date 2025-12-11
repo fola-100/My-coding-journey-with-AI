@@ -1160,8 +1160,182 @@ if respond=="yes":
    data["users"][value]={"name":name_value, "age":age_value,"favorite_number":number_value}
    with open("Data_vault","w")as file:
        json.dump(data, file, indent=4)
+#AI correction
+#Great — your code is very close, but there are three major bugs that will
+#cause problems soon**, especially when switching users, updating, or deleting.
+#I will fix your code step-by-step and give you the corrected full version.
+#✅ IMPORTANT BUGS IN YOUR CURRENT CODE
+#1. menu_option() uses user_value loaded before updates
+#After updating or deleting a user, you don’t reload the JSON file, so the menu still shows old values.
+#2. Switching users does not loop correctly
+#After switching users, your code saves new data but doesn’t go back to menu properly.
+#3. Delete user but still continue using old mode_value
+#After deletion, if the user chooses "no" to switching, the code will crash later.
+import json
+
+#==============================
+# MAIN MENU
+#==============================
+def menu_option(mode_value):
+    while True:
+        # Always load fresh data so we don't use outdated data
+        with open("Data_vault", "r") as f:
+            saved = json.load(f)
+
+        print("\nHere are the option Available to use")
+        print("1)Check Name")
+        print("2)Check age")
+        print("3)Check favorite number")
+        print("4)Delete this user")
+        print("5)Update this user")
+        print("6)Exit")
+        print("7)Check used user mode")
+        print("8)Switch user")
+
+        choice = input("Enter your choice: ")
+
+        if choice == "1":
+            print(saved["users"][mode_value]["name"])
+
+        elif choice == "2":
+            print(saved["users"][mode_value]["age"])
+
+        elif choice == "3":
+            print(saved["users"][mode_value]["favorite_number"])
+
+        #=====================
+        # DELETE USER
+        #=====================
+        elif choice == "4":
+            ask = input(f"Are you sure you want to delete {mode_value}? (yes/no): ").lower()
+            if ask == "yes":
+                del saved["users"][mode_value]
+                with open("Data_vault", "w") as f:
+                    json.dump(saved, f, indent=4)
+
+                print("User deleted successfully")
+                return "switch"   # Go choose another user
+            else:
+                print("Delete cancelled")
+
+        #=====================
+        # UPDATE USER
+        #=====================
+        elif choice == "5":
+            print("\nWhat do you want to update?")
+            print("1)Name")
+            print("2)Age")
+            print("3)Favorite Number")
+
+            update_choice = input("Enter choice: ")
+
+            if update_choice == "1":
+                new_name = input("Enter new name: ").strip().lower()
+                saved["users"][mode_value]["name"] = new_name
+
+            elif update_choice == "2":
+                new_age = input("Enter new age: ")
+                saved["users"][mode_value]["age"] = new_age
+
+            elif update_choice == "3":
+                fav = input("Enter new favorite numbers (comma separated): ")
+                fav = [int(x) for x in fav.split(",")]
+                saved["users"][mode_value]["favorite_number"] = fav
+
+            with open("Data_vault", "w") as f:
+                json.dump(saved, f, indent=4)
+
+            print("User updated successfully")
+
+        elif choice == "6":
+            print("Goodbye")
+            return None
+
+        elif choice == "7":
+            print("\nHere are the already used user modes:")
+            for m in ["user1", "user2", "user3"]:
+                if m in saved["users"]:
+                    print(m)
+
+        elif choice == "8":
+            check = input("Are you sure you want to switch user? ").lower()
+            if check == "yes":
+                return "switch"
+
+        else:
+            print("Invalid choice")
 
 
+#==============================
+# SELECT USER MODE
+#==============================
+def user_mode():
+    try:
+        with open("Data_vault", "r") as f:
+            saved_data = json.load(f)
+    except:
+        saved_data = {"users": {}}
+
+    while True:
+        print("\nThere are only three available user storage areas.")
+        print("Already used:")
+        for m in ["user1", "user2", "user3"]:
+            if m in saved_data["users"]:
+                print(f"{m} is already used")
+
+        print("\n----Storage options----")
+        print("user1, user2, user3")
+
+        choice = input("Choose a storage: ").lower()
+
+        while choice not in ["user1", "user2", "user3"]:
+            choice = input("Invalid, choose user1/user2/user3: ")
+
+        return choice
+
+
+#==============================
+# INPUT USER DATA
+#==============================
+def user_input():
+    name = input("Enter your name: ").lower().strip()
+    age = input("Enter your age: ")
+    fav = input("Enter favorite numbers (comma separated): ")
+    fav = [int(x.strip()) for x in fav.split(",")]
+    return name, age, fav
+
+
+#==============================
+# MAIN PROGRAM
+#==============================
+while True:
+    mode = user_mode()
+    name, age, numbers = user_input()
+
+    try:
+        with open("Data_vault", "r") as f:
+            data = json.load(f)
+    except:
+        data = {"users": {}}
+
+    # Save new or update existing
+    data["users"][mode] = {
+        "name": name,
+        "age": age,
+        "favorite_number": numbers
+    }
+
+    with open("Data_vault", "w") as f:
+        json.dump(data, f, indent=4)
+
+    # Open menu
+    action = menu_option(mode)
+
+    if action == "switch":
+        print("\nSwitching user...\n")
+        continue   # restart loop and pick new user
+    else:
+        break
 
 
 
