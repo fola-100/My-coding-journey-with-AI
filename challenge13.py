@@ -1697,7 +1697,18 @@ def menu_option(mode_value):
         else:
             print("Invalid choice.")
 
+#AI Correction
+        #elif choice == "9":
+        #doubled_numbers = []
+        #for number in saved["users"][mode_value]["favorite_number"]:
+         #   doubled_numbers.append(number * 2)
 
+        #saved["users"][mode_value]["favorite_number"] = doubled_numbers
+
+        #with open("Data_vault", "w") as f:
+         #   json.dump(saved, f, indent=4)
+
+        #print("Favourite number has been double " + str(doubled_numbers))
 
 
 
