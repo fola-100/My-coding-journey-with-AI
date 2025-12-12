@@ -1709,10 +1709,34 @@ def menu_option(mode_value):
          #   json.dump(saved, f, indent=4)
 
         #print("Favourite number has been double " + str(doubled_numbers))
-
-
-
-
-
-
+#🧩 CHALLENGE #3 — Add “Reset Favorite Numbers”
+#➤ Add a new menu option:
+#10) Reset favorite numbers to empty list
+#What Option 10 should do:
+#Ask the user:
+#Are you sure you want to reset favorite numbers?:
+#If they type "yes":
+#set
+#saved["users"][mode_value]["favorite_number"] = []
+#save the JSON file
+#print:
+#Favorite numbers have been reset.
+#If "no":
+#Reset cancelled.
+#📝 Rules
+#Do NOT copy my words exactly — write your own version.
+#Do NOT use a loop for this (it’s a simple assignment).
+#Do NOT modify other options.
+#Keep your code clean and consistent with your style.
+#My attempt
+#     elif choice=="10":
+#          check_in=input("Are you sure you want to reset favorite numbers?:")
+#           if check_in=="yes":
+#                del saved["users"][mode_value]["favorite_number"]
+#                with open("Data_vault","w")as f:
+#                    json.dump(saved,f,indent=4)
+#                print("Data favorite number has been erase successfully")
+#            else:
+#                print("Reset cancelled.")
+#this was the best of what i could come up with based on the rules you gave
 
