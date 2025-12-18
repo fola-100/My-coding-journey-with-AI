@@ -1917,7 +1917,110 @@ def menu_option(mode_value):
         else:
             print("Invalid choice.")
 
+#AI Correction
+#❌ 1. You are using a FILE for undo (not ideal)
+#with open("temporary", "w") as f:
+#    json.dump(saved["users"][mode_value]["favorite_number"], file, indent=4)
+#Why this is a problem:
+#Undo is session-based, not permanent
+#Files are slow and fragile
+#Undo should disappear when the program ends
+#You overwrite "temporary" every time → unsafe
+#🧠 Undo should live in MEMORY, not a file.
+#❌ 2. file variable does not exist
+#You wrote:
+#json.dump(saved["users"][mode_value]["favorite_number"], file, indent=4)
+#But you opened:
+#with open("temporary", "w") as f:
+#❌ 3. You only save favorite_number, not the full user
+#Undo must restore everything that changed, not just one field.
+#Example problem:
+#User updates name
+#Then clicks undo
+#Your undo logic only knows favorite numbers → ❌ broken
+#❌ 4. Undo option does NOTHING yet
+#Your undo block:
+#elif choice=="11":
+#   with open("temporary","r")as f:
+#       past_data=json.load(f)
+#Problems:
+#You load data
+#You do NOT restore it
+#You do NOT write back to Data_vault
+#You do NOT show confirmation
+#So undo never actually happens
+#❌ 5. Resetting favorite numbers incorrectly
+#saved["users"][mode_value]["favorite_number"]=""
+#This changes the type from:
+#list → string
+#Later your code expects a list (for doubling).
+#This will break other features.
+#🟡 Core Concept You Need (THIS IS THE KEY)
+#✅ Undo needs ONE VARIABLE
+#Not a file.
+#Something like (conceptually):
+#last_state = None
+#How it works logically:
+#Before any change:
+#Save a COPY of the user data
+#Make the change
+#If undo is selected:
+#Restore that saved copy
+#Clear undo after use
 
+#RE-ATTEMPT
+#--------- main menu------
+def menu_option(mode_value):
+    last_state=None
+    while True:
+        with open("Data_vault", "r") as f:
+            saved = json.load(f)
+
+
+        print("Here are the option Available to use")
+        print("1)Check Name")
+        print("2)Check age")
+        print("3)Check favorite number")
+        print("4)Delete this user")
+        print("5)Update this user")
+        print("6)Exit")
+        print("7)Check used user mode")
+        print("8)Switch user")
+        print("9)Double favorite numbers")
+        print("10)Reset favorite numbers")
+        print("11)Undo last change")
+
+        choice = input("Enter your choice:")
+
+        if choice == "1":
+            result = saved["users"][mode_value]["name"]
+            print(result)
+
+        elif choice == "2":
+            result = saved["users"][mode_value]["age"]
+            print(result)
+
+        elif choice == "3":
+            result = saved["users"][mode_value]["favorite_number"]
+            print(result)
+#DELETE USER
+        elif choice == "4":
+            ask = input("Are you sure you want to delete data stored in " + mode_value + ": ")
+            if ask.lower().strip() == "yes":
+                del saved["users"][mode_value]
+
+                with open("Data_vault", "w") as f:
+                    json.dump(saved, f, indent=4)
+                print("User data has been deleted")
+
+                #switch mode option
+                switch_option=input("Do you want to switch to another user?:")
+                while switch_option not in ["yes","no"]:
+                    switch_option = input("Do you want to switch to another user?")
+                if switch_option=="yes":
+                    return "switch"
+            else:
+                print("Delete cancelled")
 
 
 
