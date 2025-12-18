@@ -2050,5 +2050,163 @@ def menu_option(mode_value):
 #No tracker.
 #No update_choice.
 #No temp_file dictionary.
+#final correction
+#--------- main menu------
+def menu_option(mode_value):
+    last_state=None
+    while True:
+        with open("Data_vault", "r") as f:
+            saved = json.load(f)
+
+
+        print("Here are the option Available to use")
+        print("1)Check Name")
+        print("2)Check age")
+        print("3)Check favorite number")
+        print("4)Delete this user")
+        print("5)Update this user")
+        print("6)Exit")
+        print("7)Check used user mode")
+        print("8)Switch user")
+        print("9)Double favorite numbers")
+        print("10)Reset favorite numbers")
+        print("11)Undo last change")
+
+        choice = input("Enter your choice:")
+
+        if choice == "1":
+            result = saved["users"][mode_value]["name"]
+            print(result)
+
+        elif choice == "2":
+            result = saved["users"][mode_value]["age"]
+            print(result)
+
+        elif choice == "3":
+            result = saved["users"][mode_value]["favorite_number"]
+            print(result)
+#DELETE USER
+        elif choice == "4":
+            ask = input("Are you sure you want to delete data stored in " + mode_value + ": ")
+            if ask.lower().strip() == "yes":
+                del saved["users"][mode_value]
+
+                with open("Data_vault", "w") as f:
+                    json.dump(saved, f, indent=4)
+                print("User data has been deleted")
+
+                #switch mode option
+                switch_option=input("Do you want to switch to another user?:")
+                while switch_option not in ["yes","no"]:
+                    switch_option = input("Do you want to switch to another user?")
+                if switch_option=="yes":
+                    return "switch"
+            else:
+                print("Delete cancelled")
+
+#UPDATE USER
+
+        elif choice == "5":
+            #tracking user choice
+
+            print("What do you want to update?")
+            print("1)Name")
+            print("2)Age")
+            print("3)Favorite Number")
+
+            update_choice = input("Enter choice:")
+
+            while update_choice not in ["1", "2", "3"]:
+                update_choice = input("Enter choice:")
+
+            if update_choice == "1":
+                last_state=saved["users"][mode_value].copy()
+
+                name_update = input("Enter new name:").strip().lower()
+                saved["users"][mode_value]["name"] = name_update
+
+
+            elif update_choice == "2":
+
+                last_state=saved["users"][mode_value].copy()
+                age_update = input("Enter new age:").strip()
+                saved["users"][mode_value]["age"] = age_update
+
+            elif update_choice == "3":
+
+                while True:
+                    #storing file temporary
+                    last_state=saved["users"][mode_value].copy()
+                    fav_update = input("Enter new favorite numbers (comma separated): ").strip()
+                    try:
+                       fav_update = [int(x) for x in fav_update.split(",")]
+                       break
+                    except ValueError:
+                          print("invalid format! Enter only numbers separated by comma")
+
+
+                saved["users"][mode_value]["favorite_number"] = fav_update
+
+            with open("Data_vault", "w") as f:
+                json.dump(saved, f, indent=4)
+
+            print("User updated successfully")
+
+        elif choice == "6":
+            print("Goodbye")
+            return "no"
+
+        elif choice == "7":
+            modes = ["user1", "user2", "user3"]
+            print("Here are the already used user mode:")
+            for mode in modes:
+                if mode in saved["users"]:
+                    print(mode)
+
+        elif choice=="8":
+            check_in=input("Are you sure you want to switch user:")
+            if check_in=="yes":
+                return "switch"
+#DOUBLE FAV_NUMBER
+        elif choice=="9":
+
+            doubled_numbers = []
+            # SAVING DATA
+            last_state=saved["users"][mode_value].copy()
+
+            for number in saved["users"][mode_value]["favorite_number"]:
+                doubled_numbers.append(number * 2)
+
+            saved["users"][mode_value]["favorite_number"]=doubled_numbers
+
+            with open("Data_vault","w")as f:
+                json.dump(saved,f,indent=4)
+
+            print("Favourite number has been double " + str(doubled_numbers))
+#RESET FAV_NUMBER
+        elif choice=="10":
+            check_in=input("Are you sure you want to reset favorite numbers?:")
+            if check_in=="yes":
+             #SAVING PAST DATA
+                last_state=saved["users"][mode_value].copy()
+
+                saved["users"][mode_value]["favorite_number"]=[]
+                with open("Data_vault","w")as f:
+                    json.dump(saved,f,indent=4)
+                print("Favorite numbers have been reset.")
+
+            else:
+                print("Reset cancelled.")
+
+#UNDO LAST CHANGE FEATURE
+        elif choice=="11":
+            if last_state is None:
+                print("Nothing to undo")
+            else:
+                saved["users"][mode_value]=last_state
+                last_state=None
+
+            with open("Data_vault", "w") as f:
+                json.dump(saved, f, indent=4)
 
 
