@@ -2021,6 +2021,34 @@ def menu_option(mode_value):
                     return "switch"
             else:
                 print("Delete cancelled")
-
+#AI Correction
+#⚠️ What’s Missing (But You’re 90% There)
+#Right now, last_state exists…
+#but it is never used yet.
+#Undo systems have one golden rule:
+#🔒 Save state BEFORE mutation
+#You haven’t crossed that line yet — and that’s okay
+#❌ Current Problem
+#Right now:
+#Delete happens ❌
+#Update happens ❌
+#Double happens ❌
+#but last_state is still None.
+#So undo has nothing to restore.
+#✅ Correct Undo Logic (Conceptual Only)
+#Your undo option (choice == "11") should be this simple:
+#elif choice == "11":
+#    if last_state is None:
+#        print("Nothing to undo")
+#    else:
+#        saved["users"][mode_value] = last_state
+#        last_state = None
+#        with open("Data_vault", "w") as f:
+#            json.dump(saved, f, indent=4)
+#        print("Last change undone"
+#That’s it.
+#No tracker.
+#No update_choice.
+#No temp_file dictionary.
 
 
