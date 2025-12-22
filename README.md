@@ -18,3 +18,7 @@ So far, I’ve learned:
 - Functions  
 - Lists  
 - Error handling & file handling
+- dictionary
+- net loops
+- turple
+- 
