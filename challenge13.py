@@ -2834,7 +2834,29 @@ while True:
       elif action=="no":
           break
 
-
+#AI corrections
+#❌ Critical Problems (These WILL break multi-undo)
+#❌ Problem 1: You overwrite the stack instead of appending
+#Example (this is the biggest bug):
+#undo_stack = copy.deepcopy(saved["users"][mode_value])
+#This destroys the stack.
+#❌ Problem 2: Update User does NOT push to stack correctly
+#In choice 5, you should do this:
+#👉 Save state ONCE, before modifying anything
+#❌ Not inside each if
+#Right now:
+#You save inconsistently
+#Sometimes you don’t push at all
+#Sometimes you overwrite
+#❌ Problem 3: Reset favorite numbers does not push to stack
+#This line is wrong:
+#undo_stack = copy.deepcopy(saved["users"][mode_value])
+#Same overwrite problem again.
+#Use this pattern everywhere before modifying data:
+#undo_stack.append(copy.deepcopy(saved["users"][mode_value]))
+#🟢 Verdict
+#Status: 🟡 Almost approved
+#You understand undo correctly
 
 
 
