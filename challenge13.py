@@ -2497,6 +2497,29 @@ while True:
             json.dump(data, file, indent=4)
     elif action == "no":
         break
+#AI correction
+#⚠️ SMALL ISSUES (Not failures — refinements)
+#These are engineering improvements, not beginner mistakes.
+#⚠️ 1️⃣ Undo does NOT cover reset yet
+#In Reset favorite numbers, you forgot the snapshot:
+#elif choice=="10":
+#    check_in=input("Are you sure you want to reset favorite numbers?:")
+#    if check_in=="yes":
+#        saved["users"][mode_value]["favorite_number"]=[]
+#✅ Fix (one line)
+#last_state = saved["users"][mode_value].copy()
+#📌 Same rule: before mutation
+#⚠️ 2️⃣ Delete user has no undo safety
+#Right now:
+#del saved["users"][mode_value]
+#Undo cannot recover deleted users.
+#Two acceptable solutions:
+#❌ Accept deletion as permanent (simple)
+#✅ OR store snapshot of the entire user
+#You’re not required to fix this yet — just be aware.
+#💡 Rule of thumb:
+#Mutable objects inside a dict/list → use deepcopy if you want true independent copy.
+#Immutable objects (str, int) → .copy() or just assignment is fine.
 
 
 
