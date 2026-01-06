@@ -127,3 +127,24 @@ while True:
      if choice=="6":
          print("Goodbye")
          break
+
+#Lesson learnt written program
+#they are many way to check if a character has a unique character inside the string enter by the user
+#first method:
+#1)use is the string method :isalnum()
+#the second is to use a module
+#2)you can use the "string" module which allows you to assign method e.g
+#.punctuation, .digital
+#3)any() and all() but return a true or false value but while one check if all the whole value are TRUE
+#and only return if all are True the other one "any"check if one value is True and return True
+#i) so set and list function the same having similar method but the only or few difference is one use {}
+# and the other uses [] and if you need to store data where
+# you don't want it need for it to be  arranged in index order
+#4)a dic doesn't need to be created with is key, you can always add it later when you want call
+#the variable you used to call it.
+#QUESTION ASK WHEN WRITING CODE:
+#1)how do you  check for multi-rule password checks
+#What lesson learnt:
+#you have to check each individually you can not have all in one line like
+#string.punctuation.digits.hex-digital etc
+#You can use a for loop and use and to check
