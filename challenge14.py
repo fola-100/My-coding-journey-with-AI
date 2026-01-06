@@ -148,3 +148,42 @@ while True:
 #you have to check each individually you can not have all in one line like
 #string.punctuation.digits.hex-digital etc
 #You can use a for loop and use and to check
+
+#AI Correction
+#Issues:
+#ValueError should be FileNotFoundError or json.decoder.JSONDecodeError if the file is missing or empty.
+#You are opening the file with "r" in the except, but it should be "w" to write the empty dictionary.
+#data_storage is unnecessary here; you already have data_retriever.
+#✅ Fixed version:
+try:
+    with open("account_vault.json", "r") as f:
+        data_retriever = json.load(f)
+except (FileNotFoundError, json.decoder.JSONDecodeError):
+    data_retriever = {}
+    with open("account_vault.json", "w") as f:
+        json.dump(data_retriever, f, indent=4)
+    print("No account has been created yet")
+#2)2️⃣ Adding new account
+# Issues:
+#Your while password.isalnum(): only ensures the password contains non-alphanumeric, not unique characters.
+# That’s fine for now as a simple check.
+#data_storage variable was unnecessary; you can write directly to data_retriever.
+
+#3️⃣ Update password
+#Issues:
+#data_retriever["user_account"]["password"] → "user_account" is a string, not your variable. Use the variable:
+# data_retriever[value_entered]["password"].
+#The while loop for checking password does not prompt again correctly.
+# You fixed that above, just make sure it's consistent.
+#✅ Fixed:
+#data_retriever[value_entered]["password"] = password_entered
+#with open("account_vault.json", "w") as f:
+#    json.dump(data_retriever, f, indent=4)
+#print("Password has been updated successfully.")
+#4️⃣ Delete account
+#Issue:
+#You forgot continue if account does not exist, otherwise it tries to delete anyway → error.
+#5️⃣ Minor tips
+#Always use .json extension for clarity.
+#Make your menu loop until valid input consistently.
+#You could wrap each option in a function to make code cleaner
