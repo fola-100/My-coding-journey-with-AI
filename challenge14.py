@@ -187,3 +187,20 @@ except (FileNotFoundError, json.decoder.JSONDecodeError):
 #Always use .json extension for clarity.
 #Make your menu loop until valid input consistently.
 #You could wrap each option in a function to make code cleaner
+#5)data_storage = {}
+#but never use it.
+#👉 This is a thinking mistake, not a syntax error.
+#🔴 6). Infinite loop risk in Update (Option 4)
+#This part is dangerous logically:
+#while value_entered not in account_vault:
+#    print("They is no record of sure account name")
+#Why this is a problem
+#You never ask for input again inside the loop
+#User is stuck forever
+#5. No confirmation for delete (safety issue)
+#You delete immediately:
+#del account_vault[remove_name]
+#Real apps always:
+#Ask for confirmation
+#Allow cancel
+
