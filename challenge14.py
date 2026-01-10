@@ -203,4 +203,224 @@ except (FileNotFoundError, json.decoder.JSONDecodeError):
 #Real apps always:
 #Ask for confirmation
 #Allow cancel
+#🔥 NEXT CHALLENGES (do these in order)
+#🟢 Challenge 1: Confirmation system
+#Add confirmation for:
+#Delete account
+#Update password
+#(You already know how — reuse logic)
 
+#🟢 Challenge 2: Search feature
+#Allow user to:
+#Search accounts by partial name
+#Example:
+#Enter: face
+#Shows: facebook, faceit
+#This trains loop + string thinking
+
+#🟢 Challenge 3: Masked password display
+#When viewing accounts:
+#Ask: Show password? yes/no
+#Default: hide password (****)
+#This teaches security thinking
+
+#🟢 Challenge 4: Password strength feedback
+#Instead of just rejecting passwords:
+#Tell user WHY it’s weak
+#Too short
+#No symbols
+#Repeated characters
+#This builds real-world logic
+
+#🟢 Challenge 5: Refactor into functions (IMPORTANT)
+#Turn menu options into:
+#add_account()
+#view_accounts()
+#update_password()
+#delete_account()
+#This is the step that:
+#Makes long code readable
+
+#MY ATTEMPT
+import json
+import string
+
+#ADDING NEW ACCOUNT
+def add_account(account_safe):
+    # TAKE USER DETAIL AND CHECK IF IT STORAGE
+    account_name = input("Enter your account_name(Facebook,X):").lower().strip()
+    if account_name in account_safe:
+        print(f'An account named {account_name}  has been created already')
+        return None,None,None
+
+    username = input("Enter you name:")
+
+    # TAKE USER PASSWORD AND CHECK IF IT CONTAIN UNIQUE CHARACTERS
+    while True:
+        lock  = input("Enter password:")
+        no_symbols = not any(char in string.punctuation for char in lock )
+        has_digit = any(char in string.digits for char in lock )
+        unique = len(lock ) == len(set(lock ))
+        character_len = len(lock ) >= 6
+        if not (no_symbols and has_digit and unique and character_len):
+            # PRINTING WHICH OPTION WASN'T ENTER
+            if not no_symbols:
+                print("Ensure password has no uniques characters or symbols")
+            if not has_digit:
+                print("Ensure password has a number")
+            if not unique:
+                print("Ensure you password doesn't contain unique characters")
+            if not character_len:
+                print("Ensure password contain greater than 5 characters")
+        else:
+            break
+
+    return account_name,username,lock
+#VIWE SAVED ACCOUNTS
+def view_account(account_safe):
+    if account_safe:
+        print("No account has been saved yet")
+        return
+    check = input("Do you also want see password?(yes/no)?:")
+    if check == "yes":
+        for key, value in account_safe.items():
+              print(f'account name:{key}')
+              print(f'account password:{value["password"]}')
+
+    else:
+        for key in account_safe:
+                print(key)
+#VIEW ACCOUNT DETAILS
+def account_details(account_safe):
+    respond = input("Enter the account name you want to see:").lower().strip()
+    # CHECKING IF RESPOND IN DATA_RETRIEVER
+    if respond not in account_safe:
+        print("No account name called " + respond + " has been saved")
+        return
+
+    print('Here are your '+respond+' details')
+    print("username: " + account_safe[respond]["username"])
+    print(f'password:{account_safe[respond]["password"]}')
+
+#UPDATA ACCOUNT PASSWORD
+def update_password(account_safe):
+    # COLLECT AND CHECKING ACCOUNT TO BE UPDATE
+    account_name = input("Enter the account name you want to update:")
+    while account_name not in account_safe:
+        print("They is no record of sure account name")
+        account_name = input("Enter the account name you want to update:")
+
+    # COLLECTING NEW PASSWORD
+    password_entered = input("Enter new password:")
+    while True:
+        #CHECKING IF PASSWORD MEET
+        no_symbols=not any(letter in string.punctuation for letter in password_entered)
+        digit =any(letter in string.digits  for letter in password_entered)
+        unique=len(password_entered)== len(set(password_entered))
+        character_len=len(password_entered)>=6
+        check_list=[no_symbols,digit,unique,character_len]
+        result=all(char for char in check_list)
+
+        if result:
+            return password_entered,account_name
+        else:
+            if not no_symbols:
+                print("Ensure password has no uniques characters or symbols")
+            if not digit:
+                print("Ensure password contain digits")
+            if not unique:
+                 print("Ensure you password doesn't contain unique characters")
+            if not character_len:
+                print("Ensure password contain greater than 5 characters")
+
+            password_entered = input("Enter password:")
+
+#DELETE ACCOUNT
+def delete_account(account_safe):
+    remove_name = input("Enter the account name you want to delete:")
+    # CHECKING IF NAME TO BE REMOVED EXIST
+    if remove_name not in account_vault:
+        print("No sure account can be found")
+    # PASSWORD CONFIRMATION BEFORE DELETING
+    check = input("Are you show you want to delete your " + remove_name + " account?:")
+    while check not in ["yes", "no"]:
+        print("Enter only yes or no")
+        check = input("Are you show you want to delete your " + remove_name + " account?:")
+    if check == "no":
+       return
+    # DELETING ACCOUNT
+    del account_safe[remove_name]
+    with open("account_vault", "w") as f:
+        json.dump(account_vault, f, indent=4)
+    print(f'{remove_name} has been deleted successfully')
+
+
+# SEARCHING FOR ACCOUNT
+def search(account_safe):
+    name = input("Enter account name to search for:")
+    for account in account_safe:
+        if name in account:
+            print(account)
+
+
+while True:
+     try:
+        with open("account_vault", "r") as f:
+            account_vault = json.load(f)
+     except (FileNotFoundError,json.decoder.JSONDecodeError)  :
+            account_vault={}
+            with open("account_vault","w")as f:
+                json.dump(account_vault, f, indent=4)
+            print("No account has been created yet")
+
+    #-----main menu-----
+     print("\n")
+     print("(1)Add new account")
+     print("(2)View saved accounts")
+     print("(3)View account details")
+     print("(4)Update account password")
+     print("(5)Delete account")
+     print("6)Search for account ")
+     print("(7)Exit")
+
+     choice=input("Enter your choice:")
+     while choice not in ["1","2","3","4","5","6"]:
+         choice=input("Enter your choice:")
+
+#ADDING NEW ACCOUNT
+     if choice=="1":
+         (user_account,user_name,password)=add_account(account_vault)
+         # SAVING DATA
+         account_vault[user_account]={"username": user_name, "password": password}
+
+         with open("account_vault", "w") as f:
+             json.dump(account_vault, f, indent=4)
+
+
+#VIWE SAVED ACCOUNTS
+     if choice=="2":
+         view_account(account_vault)
+
+#VIEW ACCOUNT DETAILS
+     if choice=="3":
+         account_details(account_vault)
+
+#UPDATA ACCOUNT PASSWORD
+     if choice == "4":
+        password,account_entered=update_password(account_vault)
+        account_vault[account_entered]["password"]=password
+        with open("account_vault", "w") as f:
+            json.dump(account_vault, f, indent=4)
+            print("Password has been updated successfully.")
+#DELETE ACCOUNT
+     if choice=="5":
+         delete_account(account_vault)
+
+# SEARCHING FOR ACCOUNT
+     if choice=='6':
+         search(account_vault)
+
+#EXIST
+     if choice=="7":
+         print("Goodbye")
+         break
