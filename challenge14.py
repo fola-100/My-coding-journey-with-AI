@@ -424,3 +424,60 @@ while True:
      if choice=="7":
          print("Goodbye")
          break
+
+#AI-CORRECTION
+'''
+⚠️ Logical problem (important)
+Your variable naming is misleading:
+no_symbols = not any(char in string.punctuation for char in lock)
+But later you say:
+"Ensure password has no unique characters or symbols"
+This causes confusion between meaning and name.
+🧠 Thinking rule
+Variable names must describe what is TRUE, not what you wish they were.
+
+2)⚠️ Return-value danger (very important)
+You return:
+return None, None, None
+But later you always do:
+account_vault[user_account] = {...}
+🧠 Thinking rule
+If a function can fail, the caller MUST handle failure.
+Right now:
+If account exists → function returns None
+Main code still tries to use it
+This will crash
+This is a real-world bug, not theoretical.
+
+3)❌ Logic bug (serious)
+if account_safe:
+    print("No account has been saved yet")
+    return
+This is backwards logic.
+🧠 Thinking rule
+Empty dictionary → False
+Non-empty dictionary → True
+
+4)4️⃣ update_password()
+⚠️ Minor logic clarity issue
+result = all(char for char in check_list)
+This works, but the variable name char is misleading.
+🧠 Thinking rule
+Names should describe what they represent.
+
+5)5️⃣ delete_account()
+❌ Very important bug
+You wrote:
+if remove_name not in account_vault:
+But the function parameter is:
+def delete_account(account_safe):
+❌ Missing return on failure
+If account doesn’t exist:
+You print error
+But still continue deletion logic
+🧠 Thinking rule
+Functions should not depend on global variables.
+This function breaks isolation and relies on outer scope.
+That’s dangerous and unscalable.
+After an error, exit the function immediately.
+'''
