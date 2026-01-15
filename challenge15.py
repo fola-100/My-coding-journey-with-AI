@@ -100,5 +100,41 @@ if options == "3":
     return_value = register_user(name=input("Enter your name:"), age=input("Enter your age:"))
     for value in return_value:
         print(value)
+#AI Correction
+#🔴 Issue 1: validate_username returns TWO DIFFERENT TYPES
+#return responds   # list
+#return user_name  # string
+#Why this is dangerous
+#Now any code calling this function must ask:
+#“Am I getting a string or a list?”
+#That’s why things started breaking later.
 
+#🔴 Issue 2: validate_age is incomplete for project needs
+def validate_age(user_age):
+    try:
+        age=int(user_age)
+        return age
+    except ValueError:
+         return "Ensure age entered is a whole number"
+
+#What’s missing (based on project rules):
+#Age range check (13–120)
+#Empty input handling
+#Consistent return type (same issue as username)
+
+#🔴 Issue 3 (BIG ONE): Wrong function called in register_user
+#age_response = validate_username(age)
+#This should immediately feel wrong.
+#👉 This single line explains why you said:
+#“in level 3 i got stuck”
+#You weren’t stuck — the program logic broke.
+
+#🔴 Issue 4: register_user is doing too much
+storage=[]
+respond_vault={}
+#Right now register_user:
+#Re-validates empty inputs
+#Calls validators
+#Combines results
+#Returns different shapes (list, tuple, dict)
 
