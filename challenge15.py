@@ -228,5 +228,111 @@ if test=="3":
     return_value=register_user(name=input("Enter your name:"),age=input("Enter your age:"))
     for key,value in return_value.items():
         print(value)
+#AI CORRECTION
+#🔴 Secondary Problems (Important but Smaller)
+#Age returns the original string, not the int
+#This breaks data integrity later
+#register_user is doing type-detection
+#Validators should tell you success/failure, not force guessing
+#Errors and data are still mixed conceptually
+#You fixed consistency partially, but not meaningfully
+#VALIDATING NAME
+def validate_username(user_name):
+    error=[]
+    if not user_name:
+        error.append("Ensure you enter the name")
+    else:
+        if  not user_name.isalpha():
+          error.append("Ensure name only contains letter")
+        if user_name.isspace():
+            error.append("Ensure name doesn't contain space")
+        if len(user_name)<3:
+            error.append("Ensure name contains at least three characters")
+    if error:
+        return{"valid":False,
+               "errors":error}
+    else:
+        return {"valid":True,
+                "value":user_name}
 
+
+#VALIDATING AGE
+def validate_age(user_age):
+    if not user_age:
+        return {
+            "valid": False,
+            "errors": ["Ensure you enter age value"]
+        }
+
+    try:
+        age = int(user_age)
+    except ValueError:
+        return {
+            "valid": False,
+            "errors": ["Ensure age entered is a whole number"]
+        }
+
+    if not (13 <= age <= 120):
+        return {
+            "valid": False,
+            "errors": ["Ensure age is between the range of 13–120"]
+        }
+
+    return {
+        "valid": True,
+        "value": age
+    }
+
+#REGISTER USER
+def register_user(name,age):
+    name_result = validate_username(name)
+    age_result = validate_age(age)
+    errors=[]
+    if not age_result["valid"]:
+         errors.extend(age_result["errors"])
+    if not name_result["valid"]:
+        errors.extend(name_result["errors"])
+
+    if errors:
+        return{"success":False,
+               "error":errors
+        }
+
+    return{"success":True,
+           "user":{"name":name_result["value"],
+                   "age":age_result["value"]
+            }
+    }
+
+#-----menu----
+test=input("enter one option:")
+if test=="1":
+    # NAME VALIDATION
+ respond_value=validate_username(input("Enter a name:"))
+ if not respond_value["valid"]:
+     for each_value in respond_value["errors"]:
+         print(each_value)
+ elif respond_value["valid"]:
+      print(respond_value["value"])
+
+if test=="2":
+#AGE VALIDATION
+ respond_value=validate_age(input("Enter your age:"))
+ if not respond_value["valid"]:
+    for each_value in respond_value["errors"]:
+     print(each_value)
+ elif respond_value["valid"]:
+     print(respond_value["value"])
+
+
+if test=="3":
+    return_value=register_user(name=input("Enter your name:"),age=input("Enter your age:"))
+    if not return_value.get("success"):
+      for msg in return_value["error"]:
+          print(msg)
+    if return_value.get("success"):
+      user = return_value.get("user")
+      if user:
+            print(user["name"])
+            print(user["age"])
 
