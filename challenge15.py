@@ -336,3 +336,19 @@ if test=="3":
             print(user["name"])
             print(user["age"])
 
+#Lesson learnt
+#you don't always have to return each value separately you can save it inside a
+#container and return that
+#making sure a function is able to protect itself when from when ever it is called
+#is very important when create a function
+#when check basic field ensure you use simple design do not logic
+#which means the response can give the same output
+#each function should have its own dedicated task
+#when validating with a function the return should use different object
+#to separate between error and valid data
+#when creating a function you must ask yourself what the function is for
+#if the function is or going to be collecting data from external source
+#like api,the user, been called my other file the function should protect
+#iteself but if you know the function is going to be called inside the
+#file and will not get any external data it don't need to protect itself
+
