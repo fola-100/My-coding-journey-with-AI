@@ -475,4 +475,48 @@ def validate_username(user_name):
 #No single place to say “this username passed”
 #So the caller still cannot reliably use this function.
 
+#SECOND ATTEMPT
+def validate_rules(name):
+    # VALIDATING NAME
+    conditions = {"has_value": True,
+                  "only_letters": True,
+                  "no_space": True,
+                  "char_length": True,
+
+                      }
+
+    # IF THEY VALUE IN NAME
+    if not name:
+        conditions["has_value"] =False
+        return conditions
+
+    # IF THEY ARE ONLY LETTER
+    conditions["only_letters"] = name.isalpha()
+
+    # IF THEY ARE ONLY SPACE
+    conditions["no_space"] = not  " " in name
+
+    conditions["char_length"]=  len(name) > 3
+    return conditions
+
+
+def validate_username(user_name):
+    results = validate_rules(user_name)
+    error=[]
+    if not results["has_value"]:
+        error.append("Ensure you enter a name")
+    if not results["only_letters"]:
+        error.append("Ensure name only contains letters")
+    if not results["no_space"]:
+        error.append("Ensure name doesn't contain space")
+    if not results["char_length"]:
+        error.append( "Ensure name contains at least three characters")
+
+    if error:
+        return{"valid":False,
+               "errors":error
+        }
+    return{"valid":True,
+           "value":user_name}
+
 
