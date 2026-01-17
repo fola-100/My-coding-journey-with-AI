@@ -352,3 +352,89 @@ if test=="3":
 #iteself but if you know the function is going to be called inside the
 #file and will not get any external data it don't need to protect itself
 
+#🧩 Phase 2 — Step 1 Coding Challenge
+#🔹 Your Task
+#Create two functions:
+#1️⃣ check_username_rules(username)
+#This function:
+#Performs only checks
+#Does NOT create messages
+#Returns a dictionary of rule results
+'''
+{
+    "has_value": True,
+    "only_letters": False,
+    "min_length": True,
+    "no_spaces": True
+}
+'''
+#2️⃣ validate_username(username)
+#This function:
+#Calls check_username_rules
+#Translates failed rules into error messages
+#Returns the same structure as Phase 1
+'''
+{
+    "valid": False,
+    "errors": [...]
+}
+or
+{
+    "valid": True,
+    "value": username
+}
+
+'''
+#MY ATTEMPT
+#VALIDATING NAME
+def validate_rules(name):
+    conditions={"has_value":True,
+                "only_letters":False,
+                "no_space":True,
+                "char_length":False,
+
+
+    }
+
+    #IF THEY VALUE IN NAME
+    if not name:
+      conditions["has_value"]=False
+
+    #IF THEY ARE ONLY LETTER
+    if name.isalpha():
+       conditions["only_letters"]=True
+
+    #IF THEY ARE ONLY SPACE
+    if " " in name:
+       conditions["no_space"]=False
+
+    if len(name)>3:
+        conditions["char_length"]=True
+    return conditions
+
+
+def validate_username(user_name):
+    results = validate_rules(user_name)
+    storage_value = {}
+    if not results["has_value"]:
+        storage_value["has_value"] = {"valid": False,
+                                     "error":"Ensure you enter a name"
+                         }
+    else:
+        if not results["only_letters"]:
+           storage_value["only_letters"] = {"valid": False,
+                            "error": "Ensure name only contains letters"
+                            }
+           if not results["no_space"]:
+               storage_value["no_space"] = {"valid": False,
+                                "error": "Ensure name doesn't contain space"
+                                }
+           if not results["char_length"]:
+               storage_value["char_length"]={"valid": False,
+                       "error": "Ensure name contains at least three characters"
+                       }
+    return storage_value
+
+
+
+
