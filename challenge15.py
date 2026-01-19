@@ -582,4 +582,44 @@ def validate_age(user_age):
     return{"valid":True,
            "value":user_age
         }
-
+#AI CORRECTIONS
+#Important improvement(Real-world level fixes)
+#🔴 Issue 1: isdigit() + try/except duplication
+#You currently do both:
+#condition["whole_number"] = age_input.isdigit()
+#and
+#try:
+#   age = int(age_input)
+#except ValueError:
+#👉 You only need ONE.
+'''
+Better (real-world style):
+try:
+    age = int(age_input)
+    condition["whole_number"] = True
+except ValueError:
+    condition["whole_number"] = False
+    return condition
+'''
+#Why?
+#isdigit() fails for negative numbers (-1)
+#2)You already converted it to int(age) earlier.
+#Always return the cleaned value.
+#✅ Better:
+''''
+return {
+    "valid": True,
+    "value": age
+}
+'''
+#This avoids bugs later when math is needed
+#🔴 Issue 3: Magic numbers should be constants
+#Instead of:
+#13 < age <= 120
+#Use:
+'''
+MIN_AGE = 13
+MAX_AGE = 120
+condition["in_range"] = MIN_AGE < age <= MAX_AGE
+'''
+#This is professional-level code clarity
