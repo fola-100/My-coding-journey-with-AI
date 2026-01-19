@@ -521,5 +521,65 @@ def validate_username(user_name):
 #Excellent — this passes Phase 2 – Step 1 ✅
 #✅ APPROVED
 #You are officially operating at early–intermediate developer level now.
+#🚀 Project #1 — Phase 2, Step 2
+#🎯 Your Next Task
+#Refactor age validation to match the username pattern.
+#You must create:
+#1️⃣ check_age_rules(age_input)
+#Only evaluates rules
+#Returns booleans such as:
+#has_value
+#is_number
+#in_range
+#2️⃣ validate_age(age_input)
+#Calls check_age_rules
+#Translates failures into messages
+#Returns the same structure as before:
+#MY ATTEMPT
+#validating age rule
+def check_age_rules(age_input):
+    condition={"has_value":True,
+               "whole_number":True,
+               "in_range":True,
+    }
 
+    if not age_input:
+      condition["has_value"]=False
+      return condition
+
+    try:
+        condition["whole_number"]=age_input.isdigit()
+        if not condition["whole_number"]:
+           return condition
+        else:
+            age = int(age_input)
+    except ValueError:
+         condition["whole_number"]=False
+         return condition
+
+
+
+    condition["in_range"]= 13<age<=120
+
+
+    return condition
+
+#responds
+def validate_age(user_age):
+    result=check_age_rules(user_age)
+    if not result["has_value"]:
+        return{"valid":False,
+               "error":"Ensure you enter in a age value"
+        }
+    if not result["whole_number"]:
+        return{"valid":False,
+               "error":"Ensure age entered is a whole number"
+        }
+    if not result["in_range"]:
+         return{"valid":False,
+                "error":"Ensure age is between the range of 13-120"
+        }
+    return{"valid":True,
+           "value":user_age
+        }
 
