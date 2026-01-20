@@ -623,3 +623,75 @@ MAX_AGE = 120
 condition["in_range"] = MIN_AGE < age <= MAX_AGE
 '''
 #This is professional-level code clarity
+
+#4️⃣ Your Next Challenge (DO THIS NEXT) 🧠💻
+#🎯 Challenge 1 (continue same project):
+#Create email validation using the SAME pattern:
+#Rules:
+#Has value
+#Contains exactly one @
+#Contains . after @
+#No spaces
+#STRUCTURE:
+#check_email_rules(email)
+#validate_email(email)
+
+#MY ATTEMPT
+#EMAIL-VALIDATION
+def check_email_rules(address):
+    record={"has_value":True,
+               "symbol":True,
+               "dot": True,
+               "no_spaces":True
+    }
+    if not address:
+        record["has_value"]=False
+        return record
+
+    #CHECKING IF ONLY @ CONTAINS ONE
+    if not "@" in address:
+        record["symbol"]=False
+        return record
+    record["symbol"]=address.count("@")<=1
+
+    #CHECKING IF DOT COMES AFTER @
+    if record["symbol"]:
+      if "." not in address:
+        record["dot"]=False
+        return record
+      at=0
+      dot=0
+      for index,char in enumerate(address):
+          if "@" == char:
+              at=index
+          if "." == char:
+              dot=index
+      record["dot"]=at<dot
+
+    #CHECKING SPACES
+    record["no_spaces"] = not " " in address
+    return record
+
+#Response
+def validate_email(email):
+    result=check_email_rules(email)
+    if not result["has_value"]:
+        return{"valid":False,
+               "error":"Ensure you enter in a email address"
+        }
+    if not result["symbol"]:
+        return{"valid":False,
+               "error":"Ensure you enter in only one @"
+        }
+    if not result["dot"]:
+        return{"valid":False,
+               "error":"Ensure you enter in a dot after the @ symbol"
+        }
+    if not result["no-space"]:
+        return{"valid":False,
+               "error":"Ensure you remove all space"
+               }
+    return{"valid":True,
+           "value":email}
+
+
