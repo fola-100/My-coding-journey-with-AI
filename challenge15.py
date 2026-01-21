@@ -743,3 +743,65 @@ record["dot"] = dot != -1
 #Later in real systems you may want:
 #email = email.strip().lower()
 #For now, at least be consistent.
+
+#5️⃣ NEXT PROJECT STEP (Do This Next) 🔐
+#🎯 Password Validation (same project)
+#Rules:
+#Has value
+#Minimum 8 characters
+#At least one number
+#At least one letter
+#No spaces
+#Structure:
+#check_password_rules(password)
+#validate_password(password)
+#MY ATTEMPT
+def check_password_rules(password):
+    record={"has_value":False,
+            "no-space":True,
+            "char_length":True,
+            "number":True,
+            "letter":True
+    }
+    #CHECKING FOR VALUE
+    if password:
+        record["has_value"]=True
+        # CHECKING IF VALUE CONTAINS SPACE
+        record["no-space"] = " " not in password
+        # CHECKING LENGTH
+        record["char_length"] = len(password) >= 8
+        # CHECKING NUMBER
+        record["number"] = any(char.isdigit() for char in password)
+        # CHECKING LETTER
+        record["letter"] = any(char.isalpha() for char in password)
+    return record
+
+
+def validate_password(user_input):
+    result=check_password_rules(user_input)
+    error_vault=[]
+    user_input=user_input.lower()
+    if not result["has_value"]:
+     error_vault.append("Ensure you enter in a password value")
+
+    if not result["no-space"]:
+        error_vault.append("Ensure password dose not contain any space")
+
+    if not result["char_length"]:
+        error_vault.append("Ensure password contain at least eight character")
+
+    if not result["number"]:
+        error_vault.append("Ensure password contain at least one number")
+
+    if not result["letter"]:
+        error_vault.append("Ensure password contain at one letter")
+
+    if error_vault:
+        return {"valid":False,
+                "errors":error_vault
+        }
+
+    return{"valid":True,
+           "value":user_input
+
+    }
