@@ -694,4 +694,52 @@ def validate_email(email):
     return{"valid":True,
            "value":email}
 
+#AI CORRECTION
+#❌ Issue 1: Typo bug that will CRASH your code(KEY-ERROR)
+#In check_email_rules you used:
+"no_spaces"
+#But in validate_email you used:
+'''
+result["no-space"]
+FIX
+if not result["no_spaces"]:
+'''
+#❌ Issue 2: @ logic is incorrect for multiple @
+#You wrote:
+'''
+if not "@" in address:
+    record["symbol"] = False
+    return record
+'''
+#record["symbol"] = address.count("@") <= 1
+#This allows zero @ to pass the second check if the first block didn’t return.
+#✅ Correct logic
+'''
+record["symbol"] = address.count("@") == 1
+'''
+#One line. No ambiguity.
+#❌ Issue 3: Dot logic finds the LAST dot, not the FIRST after @
+#Your loop:
+'''
+for index, char in enumerate(address):
+    if "@" == char:
+        at = index
+    if "." == char:
+        dot = index
+'''
+#If email is:
+#name@gmail.co.uk
+#dot becomes the last dot, not the one after @.
+'''
+at = address.index("@")
+dot = address.find(".", at)
+record["dot"] = dot != -1
+'''
+#❌ Issue 4: Space check should happen EARLY
+#Spaces make everything invalid.
+#You should check it before complex logic.
 
+#❌ Issue 5: You return raw email, not cleaned email
+#Later in real systems you may want:
+#email = email.strip().lower()
+#For now, at least be consistent.
