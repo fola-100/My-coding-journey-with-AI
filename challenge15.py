@@ -834,3 +834,260 @@ record = {
 }
 '''
 #Then flip values when rules fail.
+#5️⃣ FINAL STEP OF THIS PROJECT 🚀
+#🎯 Build a register_user() function that uses:
+#validate_username
+#validate_age
+#validate_email
+#validate_password
+#Return:
+'''
+{
+  "valid": False,
+  "errors": {
+     "username": [...],
+     "email": "...",
+     "password": [...]
+  }
+}
+{
+  "valid": True,
+  "user": {
+      "username": "...",
+      "age": ...,
+      "email": "..."
+  }
+}
+'''
+#MY ATTEMPT
+#VALIDATING NAME
+def validate_rules(name):
+    # VALIDATING NAME
+    conditions = {"has_value": True,
+                  "only_letters": True,
+                  "no_space": True,
+                  "char_length": True,
+
+                      }
+
+    # IF THEY VALUE IN NAME
+    if not name:
+        conditions["has_value"] =False
+        return conditions
+
+    # IF THEY ARE ONLY LETTER
+    conditions["only_letters"] = name.isalpha()
+
+    # IF THEY ARE ONLY SPACE
+    conditions["no_space"] = not  " " in name
+
+    conditions["char_length"]=  len(name) > 3
+    return conditions
+
+#Reponse
+def validate_username(name):
+    results = validate_rules(name)
+    error=[]
+    if not results["has_value"]:
+        error.append("Ensure you enter a name")
+    if not results["only_letters"]:
+        error.append("Ensure name only contains letters")
+    if not results["no_space"]:
+        error.append("Ensure name doesn't contain space")
+    if not results["char_length"]:
+        error.append( "Ensure name contains at least three characters")
+
+    if error:
+        return{"valid":False,
+               "errors":error
+        }
+    return{"valid":True,
+           "value":user_name}
+
+#validating age rule
+def check_age_rules(age_input):
+    condition={"has_value":True,
+               "whole_number":True,
+               "in_range":True,
+    }
+
+    if not age_input:
+      condition["has_value"]=False
+      return condition
+
+    try:
+        condition["whole_number"]=age_input.isdigit()
+        if not condition["whole_number"]:
+           return condition
+        else:
+            age = int(age_input)
+    except ValueError:
+         condition["whole_number"]=False
+         return condition
+    minimum=13
+    maximum=120
+    condition["in_range"]= minimum<age<=maximum
+
+
+    return condition
+
+#responds
+def validate_age(age):
+    # VALIDATING AGE
+    result=check_age_rules(age)
+    if not result["has_value"]:
+        return{"valid":False,
+               "error":["Ensure you enter in a age value"]
+        }
+    if not result["whole_number"]:
+        return{"valid":False,
+               "error":["Ensure age entered is a whole number"]
+        }
+    if not result["in_range"]:
+         return{"valid":False,
+                "error":["Ensure age is between the range of 13-120"]
+        }
+    return{"valid":True,
+           "value":user_age
+        }
+#EMAIL-VALIDATION
+def check_email_rules(address):
+    record={"has_value":True,
+               "symbol":True,
+               "dot": True,
+               "no_spaces":True
+    }
+    if not address:
+        record["has_value"]=False
+        return record
+        # CHECKING SPACES
+    if " " in address:
+        record["no_spaces"] =False
+        return record
+
+        #CHECKING IF ONLY @ CONTAINS ONE
+    record["symbol"]=address.count("@")==1
+    if not record["symbol"]:
+        return record
+    #CHECKING IF DOT COMES AFTER @
+    at = address.index("@")
+    dot = address.find(".", at)
+    record["dot"] = dot != -1
+    return record
+
+#Response
+def validate_email(email):
+    result=check_email_rules(email)
+    error=[]
+    if not result["has_value"]:
+      error.append("Ensure you enter in a email address")
+
+    if not result["no_spaces"]:
+        error.append("Ensure you remove all space")
+
+    if not result["symbol"]:
+        error.append("Ensure you enter in only one @")
+
+    if not result["dot"]:
+        error.append("Ensure you enter in a dot after the @ symbol")
+    if error:
+        return{"valid":False,
+               "error":error
+
+               }
+
+    return{"valid":True,
+           "value":email}
+
+def check_password_rules(password):
+    record = {
+        "has_value": True,
+        "no_spaces": True,
+        "char_length": True,
+        "number": True,
+        "letter": True
+    }
+
+    if not password:
+        record["has_value"] = False
+        return record
+
+    record["no_spaces"] = " " not in password
+    record["char_length"] = len(password) >= 8
+    record["number"] = any(char.isdigit() for char in password)
+    record["letter"] = any(char.isalpha() for char in password)
+
+    return record
+
+
+def validate_password(user_input):
+    result = check_password_rules(user_input)
+    errors = []
+
+    if not result["has_value"]:
+        errors.append("Ensure you enter a password value")
+
+    if not result["no_spaces"]:
+        errors.append("Ensure password does not contain spaces")
+
+    if not result["char_length"]:
+        errors.append("Ensure password contains at least 8 characters")
+
+    if not result["number"]:
+        errors.append("Ensure password contains at least one number")
+
+    if not result["letter"]:
+        errors.append("Ensure password contains at least one letter")
+
+    if errors:
+        return {"valid": False, "errors": errors}
+
+    return {"valid": True, "value": user_input}
+
+
+#REGISTER USER
+def register_user(name,age,email,password):
+    name_result = validate_username(name)
+    age_result = validate_age(age)
+    email_result=validate_email(email)
+    password_result=validate_password(password)
+
+    errors=[]
+    if not age_result["valid"]:
+         errors.extend(age_result["error"])
+    if not name_result["valid"]:
+        errors.extend(name_result["errors"])
+    if not email_result["valid"]:
+         errors.extend(email_result["error"])
+    if not password_result["valid"]:
+        errors.extend(password_result["errors"])
+    if errors:
+        return{"success":False,
+               "error":errors
+        }
+    return {"success":True,
+            "value":{"name":name_result["value"],
+                     "age": age_result["value"],
+                      "email":email_result["value"],
+                       "password":password_result["value"]
+             }
+
+    }
+
+if test=="4":
+    user_name = input("Enter your name:").lower()
+    user_age = input("Enter your age:")
+    user_email=input("Enter in your email-address:")
+    user_password=input("Enter in your password:")
+
+    return_value=register_user(user_name, user_age, user_email, user_password)
+    if not return_value.get("success"):
+      for msg in return_value["error"]:
+          print(msg)
+    if return_value.get("success"):
+      user= return_value["value"]
+      if isinstance(user, dict):
+          print("name: "+user["name"])
+          print("age"+user["age"])
+          print("email"+user["email"])
+          print("password"+user["password"])
