@@ -65,5 +65,58 @@ if not response["valid"]:
 if response["valid"]:
     print(response["success"])
     print(storage)
+#AI CORRECTION
+#But this challenge was about data modeling, and you
+#accidentally drifted into registration logic + I/O, which comes later.
+#❌ Critical Issues (Must Fix)
+#1️⃣ You violated the project rules (important)
+#Rule you broke:
+#❌ No input()
+#❌ No printing
+#❌ Just structure + explanation
+#🚨 This turns a data-layer project into an interface-layer project.
+#Why this matters
+#In real systems:
+#database logic ≠ user interaction
+#mixing them causes bugs and security issues
+#👉 Fix:
+#Remove all input() and print() from this project step.
 
+#2️⃣ Your storage structure is too weak
+#You ended up with:
+#storage[email] = password
+#This works now, but it’s a trap.
+#🚨 Why it’s a problem:
+#No room for expansion
+#Can’t add username, status, role, attempts, etc.
+#Forces redesign later
+
+#3️⃣ check_user does unnecessary looping
+#for each_address in vault:
+#    if email == each_address:
+#🚨 This ignores the strength of dictionaries.
+#You already chose the right data structure, but didn’t use it properly.
+#👉 Ask yourself:
+#How do dictionaries check existence?
+#What operation is O(1) instead of looping?
+
+#4️⃣ Password rule is unrealistic (but fixable)
+#condition = lock.isalpha()
+#This enforces:
+#❌ no numbers
+#❌ no symbols
+#You already know from Project 1 this is too weak.
+#👉 Fix is not “add more rules” yet —
+#The real issue is where password rules belong in this project.
+#(Hint: this project is about authentication, not password policy.)
+
+#5️⃣ Inconsistent return contracts
+#Sometimes you return:
+#{"valid": True, "success": email}
+#Other times:
+#{"valid": True, "success": "email has been saved successfully"}
+#🚨 This breaks predictability.
+#In backend systems:
+#success should mean one thing
+#data should be under a consistent key (e.g. value)
 
