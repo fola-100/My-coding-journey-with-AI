@@ -287,3 +287,64 @@ users = {
 #user exists but inactive
 #malformed lookup request (non-string email)
 #You will handle these — just not at the storage layer.
+
+#🚀 What Happens Next (Project 2 — Step 2)
+#Now that storage is correctly modeled, next challenge:
+#🔐 Login Verification Engine
+#You will:
+#accept email + password
+#look up user in users
+#compare credentials
+#return structured success/error responses
+#⚠️ No hashing yet
+#⚠️ No input()
+#⚠️ No printing
+#MY ATTEMPT
+def password_check(address,data_storage,lock,):
+    if not lock:
+        return{"valid":False,
+               "error":"No password enter",
+               "success":None}
+
+    if  lock not in data_storage[address]["password"]:
+        return{"valid":False,
+               "error":"invalid password",
+               "success":None}
+    return{"valid":True,
+           "error":None,
+           "success":lock}
+
+
+def email_check(email, data_vault):
+    if not email:
+        return{"valid":False,
+               "error":"email address empty",
+               "success":None}
+    if email not in data_vault:
+        return {"valid": False,
+                "error": "email dose to exist",
+                "success": None}
+    return{"valid":True,
+           "error":None,
+           "success":email}
+
+
+def login_verification(address,password,data_base):
+    email_result=email_check(address,data_base)
+    errors = []
+    if not email_result["valid"]:
+        errors.append(email_result["error"])
+        return{"valid":False,
+               "error":errors,
+               "login":None}
+
+    password_result = password_check(address, data_base, password)
+    if not password_result["valid"]:
+        errors.append(password_result["error"])
+        return{"valid":False,
+               "error":errors,
+               "login":None}
+
+    return{"valid":True,
+            "error":None,
+            "login":"login successful"}
