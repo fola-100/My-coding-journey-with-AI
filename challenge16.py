@@ -161,3 +161,50 @@ def store_user(email_storage,inbox,lock):
                "success":email_storage["vault"],
                "error":None}
 storage = {}
+
+#SECOND ATTEMPT
+def check_user(vault, email,):
+    if not email :
+      return {"valid":False,
+              "error":"Email empty"}
+
+    if email in vault:
+        return{"valid":False,
+                "error":"Duplicate Name"}
+    return{"valid":True,
+           "success":email}
+
+def password_checker(lock):
+
+    if not lock:
+        return {"valid":False,
+                "error":"Password empty"}
+    return{"valid":True,
+           "success":lock}
+
+def store_user(email_storage,inbox,lock):
+    result = {"email":check_user(email_storage,inbox),
+              "password":password_checker(lock)
+    }
+    errors=[]
+    if not result["email"]["valid"]:
+        errors.append(result["email"]["error"])
+
+    if not result["password"]['valid']:
+        errors.append(result["password"]["error"])
+    if errors:
+        return{"valid":False,
+               "success":None,
+               "error":errors}
+    else:
+        email_storage["vault"] = {result["email"]["success"]:{"password":result["password"]["success"]}
+                                  }
+
+        return{"valid":True,
+               "success":email_storage["vault"],
+               "error":None}
+
+
+
+
+storage = {}
