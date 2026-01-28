@@ -208,3 +208,82 @@ def store_user(email_storage,inbox,lock):
 
 
 storage = {}
+
+#AI Correction
+#1️⃣ The Core Problem (Big Picture)
+#You are still solving the wrong problem.
+#What the task WAS:
+#Model stored users
+#No validation. No creation. No passwords rules. No “duplicate email” checks.
+#What your code is STILL doing:
+#Registration logic ❌
+#Validation logic ❌
+#Password checking ❌
+#Writing into storage ❌
+#You built a mini registration system again, just lighter.
+
+#2️⃣ Specific Issues in Your Code
+#❌ Issue 1: check_user should not exist (yet)
+'''
+def check_user(vault, email):
+'''
+#This function:
+#checks empty email
+#checks duplicates
+#🚨 That is registration behavior, not storage modeling.
+#At the data layer:
+#users either exist or don’t
+#the storage does not care why
+
+#❌ Issue 2: Password checker is out of scope
+'''
+def password_checker(lock):
+'''
+#Again — validation logic.
+#Stored data assumes:
+#“This data already passed validation earlier”
+
+#❌ Issue 3: You are mutating storage inside logic
+#email_storage["vault"] = { ... }
+#This:
+#overwrites previous users
+#nests storage awkwardly
+#makes lookup harder, not easier
+
+#❌ Issue 4: Storage shape is unstable
+#After calling store_user, your storage becomes:
+'''
+{
+  "vault": {
+     "email": { "password": "123" }
+  }
+}
+'''
+#But earlier you were checking:
+#if email in vault:
+#🚨 That check is now wrong.
+#This means your data model fights your logic — a red flag.
+
+#4️⃣ ✅ PROFESSIONAL DATA MODEL (Correct Solution)
+#Here is the correct, clean, expandable user storage model:
+'''
+users = {
+    "alice@example.com": {
+        "password": "hashed_password_here",
+        "active": True,
+        "login_attempts": 0
+    },
+    "bob@example.com": {
+        "password": "another_hash",
+        "active": False,
+        "login_attempts": 3
+    }
+}
+'''
+#5 Edge Cases (What You Should Be Thinking)
+#These are NOT coded yet, only understood:
+#empty users dictionary
+#email not found during lookup
+#user exists but inactive
+#malformed lookup request (non-string email)
+#You will handle these — just not at the storage layer.
