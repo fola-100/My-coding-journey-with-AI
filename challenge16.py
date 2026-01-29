@@ -403,3 +403,55 @@ if lock not in data_storage[address]["password"]:
 #These seem small, but:
 #error messages are part of API contracts
 #clarity matters when systems grow
+
+#Second Attempt
+def password_check(address,data_storage,lock,):
+    if not lock:
+        return{"valid":False,
+               "error":"password empty",
+               "success":None}
+    try:
+       if lock != data_storage[address]["password"]:
+          return{"valid":False,
+                 "error":"invalid password",
+                 "success":None}
+    except KeyError:
+        return{"valid":False,
+               "error":"wrong address",
+               "success":None}
+
+    return{"valid":True,
+           "error":None,
+           "success":lock}
+
+
+def email_check(email, data_vault):
+    if not email:
+        return{"valid":False,
+               "error":"email address empty",
+               "success":None}
+    if email not in data_vault:
+        return {"valid": False,
+                "error": "email dose not exist",
+                "success": None}
+    return{"valid":True,
+           "error":None,
+           "success":email}
+
+
+def login_verification(address,password,data_base):
+    email_result=email_check(address,data_base)
+    if not email_result["valid"]:
+        return{"valid":False,
+               "error":email_result["error"],
+               "login":None}
+
+    password_result = password_check(address, data_base, password)
+    if not password_result["valid"]:
+        return{"valid":False,
+               "error":password_result["error"],
+               "login":None}
+
+    return{"valid":True,
+            "error":None,
+            "login":address}
