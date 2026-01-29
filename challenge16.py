@@ -348,3 +348,58 @@ def login_verification(address,password,data_base):
     return{"valid":True,
             "error":None,
             "login":"login successful"}
+#AI CORRECTION
+#You are very close. The remaining issues are not about syntax — they’re about logic precision and contracts.
+#Issues to Fix (Important)
+#1️⃣ Password comparison logic is wrong
+'''
+if lock not in data_storage[address]["password"]:
+'''
+#Why this is a problem:
+#password is a string
+#in checks substring membership, not equality
+#This means:
+#Stored password: "password123"
+#User enters: "pass"
+#✅ Your code would accept it
+#🚨 That’s a security bug.
+#👉 Ask yourself:
+#Should passwords be contained in the stored value?
+#Or should they match exactly?
+#2️⃣ password_check assumes email is always valid
+#data_storage[address]["password"]
+#You do check email first — good — but:
+#password_check itself is not safe in isolation
+#If reused incorrectly later, it will crash with KeyError
+#Backend rule:
+#Every function should protect its own assumptions or clearly document them
+#Right now it silently assumes:
+#address exists in data_storage
+#3️⃣ Inconsistent meaning of success
+#Example:
+'''
+"success": lock
+'''
+#and later:
+'''
+"login": "login successful"
+'''
+#Problems:
+#success sometimes means data
+#sometimes means status
+#sometimes is unused
+#Backend contracts should be predictable.
+#4️⃣ Error list is unnecessary at this stage
+#You do:
+#errors = []
+#errors.append(...)
+#But login is fail-fast:
+#one error ends the process
+#You don’t gain anything by collecting a list here.
+#5️⃣ Small but important naming issues
+"email dose to exist"
+#and
+"No password enter"
+#These seem small, but:
+#error messages are part of API contracts
+#clarity matters when systems grow
