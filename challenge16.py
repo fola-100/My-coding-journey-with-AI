@@ -479,3 +479,22 @@ def login_verification(address,password,data_base):
 #Break tests
 #Look unprofessional
 #Become painful to fix later
+
+
+#lesson learnt
+#1)they is no need to check if database is empty inside function
+#because its function is to check if a value exist
+#2)when create a validation system they are two type of system one is a
+#rule engine system and the other is a validator service system
+#you use rule engine system when you know the project you are written is going
+#to be scale,or you are still planning on using that those rules,and you
+# use the other if you want quick response and even duo a function job is to
+#do one task you adding a response is not breaking the rule the response is
+#just asking is still answering a that question is the email good or not
+#3)they are different layer to a project they are the user interface project
+#layer, data storage layer, system validation area,
+#it important to ensure the response produce the same consistent output so
+#it important that in each function response the if using a dict the filed type
+#should stay the same
+#when writing a response for a failed validation always response with make
+#sure the response answer the question "what is wrong with this data?"
