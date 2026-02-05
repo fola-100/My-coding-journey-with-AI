@@ -625,4 +625,47 @@ def exist_account(user):
     return {"valid":True,
             "error":None,
             "success":user}
+#AI CORRECTION
+❌ 1. Password check logic is reversed (SERIOUS)
+'''
+if key == data_vault[gmail]["password"]:
+    return {"valid": False, "error": "Incorrect Password"}
+'''
+#This says:
+#“If the password is correct → it is incorrect”
+#That’s inverted logic.
+#What you meant:
+#❌ reject if NOT equal
+#✅ accept if equal
+#❌ 2. Password rules are being re-validated during login (design bug)
+#result = password_validator(key)
+#This is wrong conceptually.
+#Why?
+#Password rules are enforced at registration
+#Login should only verify identity, not strength
+#Example problem:
+#User registers with strong password ✔
+#Later logs in with same password ✔
+#But if rules change → login breaks ❌
+#This is a real-world authentication mistake.
+#❌ 3. password_validator returns no value on success
+#return {"valid": True, "success": None}
+#This loses information.
+#At minimum, success should return:
+#confirmation OR
+#the password (or hashed version later)
+#Right now, success gives you nothing.
+#4 Design feedback (important, but not blockers)
+#⚠️ Deposit & withdrawal mutate state directly
+#This is acceptable for now, but note:
+#Later you’ll want:
+#rules() → pure
+#validator() → pure
+#apply_transaction() → mutation
+#You’re already 70% there.
+#⚠️ Naming clarity
+#Some names blur intent:
+#exist_account → actually logout
+#gmail_check → checks existence, not format
+#Names matter more as projects grow.
 
