@@ -295,3 +295,85 @@ def withdraw_validator(log_status,amount,data_bank,lock):
 def exist_account():
     status= None
     return status
+#AI CORRECTION
+#2️⃣ Critical Issues (these MUST be fixed) ❌
+#❌ 1. Global variable violation (BIG ONE)
+#current_user = None
+#You explicitly broke the project constraint:
+#❌ No global variables for current user
+#Why this matters:
+#Makes testing harder
+#Breaks multi-user logic
+#Causes hidden state bugs
+#💡 Fix idea (not code):
+#Pass current_user as a parameter and return updated state.
+#❌ 2. Password check logic is WRONG
+#if key not in data_vault[gmail]["password"]:
+#This allows:
+#partial matches
+#security bypasses
+#❌ 3. Inconsistent password rules (logic conflict)
+#You enforce:
+#password must contain symbol
+#password must contain number
+#But later during login:
+#password_check()
+#does NOT enforce the same rules — it only checks existence.
+#This causes rule drift:
+#user registers with strict rules
+#login uses weaker rules
+#⚠️ In real systems, this causes auth bugs.
+#❌ 4. withdrawal_rules logic bug
+#if status is None:
+#    return {"valid": True, "error": "No user logged in"}
+#This is logically impossible.
+#If no user is logged in:
+#valid must be False
+#This will silently allow invalid flows.
+#❌ 5. exist_account() is meaningless
+'''
+def exist_account():
+    status = None
+    return status
+'''
+#This function:
+#doesn’t affect state
+#doesn’t modify anything
+#doesn’t log out
+#It gives a false sense of logout security.
+
+#3️⃣ Design Feedback (important but not “bugs”)
+#⚠️ Email validation responsibility leak
+#Your email validator:
+#checks format
+#checks uniqueness
+#checks storage
+#This is okay for now, but long-term:
+#format validation
+#existence checks
+#storage rules
+#should be separate layers.
+#You’re close — just not split yet.
+
+#⚠️ Mixed error shapes
+#Sometimes:
+#"error": "string"
+#Sometimes:
+#"error": []
+#This forces extra checks later.
+#Rule of thumb:
+#errors should always be a list
+
+#4️⃣ Questions your brain SHOULD have asked (reflection)
+#These are the questions I would ask you after submission — exactly as you wanted:
+#🧠 Q1: What happens if two users try to log in?
+#Your global current_user breaks instantly.
+#🧠 Q2: Can someone bypass password rules during login?
+#Yes — partial string match bug.
+#🧠 Q3: What guarantees logout actually logs out?
+#Right now — nothing.
+#🧠 Q4: Are validation rules reused or duplicated?
+#They are duplicated in places → risk of inconsistency.
+#🧠 Q5: Can I test this without user input?
+#With globals → very hard.
+
