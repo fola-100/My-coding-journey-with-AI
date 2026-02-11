@@ -202,4 +202,82 @@ def history(session, account, safe):
            "error":None,
            "success":safe[account]["history"]}
 
+#AI CORRECTIONS
+#⚠️ 1. Critical Bug in balance_check
+#if data_storage[address]["balance"]<=amount_result["success"]:
+#This means:
+#If balance is 100
+#User tries to withdraw 100
+#It will FAIL.
+#Because you're saying:
+#if balance <= amount → error
 
+#⚠️ 2. Dangerous Assumption in apply_transaction
+#data_vault[user]["history"].append(f'{action}:{amount}')
+#This assumes every user has "history".
+#But look at your database:
+'''
+"ofolaranmi@gmail.com":{"password":"mide1"}
+'''
+#This user has:
+#❌ no balance
+#❌ no history
+#If you try to transact on this account → KeyError.
+#So you must decide:
+#either:
+#Always guarantee new accounts are created like this:
+#{"password": "...", "balance": 0, "history": []}
+#Or:
+#Add a defensive check before appending.
+#Right now your structure is inconsistent.
+#You return:
+'''
+return{"type":choice,
+       "amount":value,
+       "balance_after":result["success"]}
+But on error you return:
+
+return{"valid":False,
+       "error":login_result["error"],
+       "success":None}
+'''
+#So your function returns two different structures.
+#That makes frontend/UI logic messy.
+
+#⚠️ 4. choice Validation — YES, You Should Add It
+#You asked:
+#should i add edge case to check if spelling of deposit or withdrawal is correct?
+#YES.
+#Because right now:
+'''
+apply_transaction(value, address, safe, choice)
+'''
+#If someone enters:
+'''
+choice = "banana"
+our history becomes:
+["banana:500"]
+That’s bad data integrity
+'''
+#⚠️ 5. Double Password Check in Withdrawal
+#Inside withdrawal():
+#You call login_validator()
+#Then later you call password_validator() again
+#This is redundant because login already validated password.
+#Not dangerous — but inefficient design.
+
+#🧠 Important Design Question
+#Right now:
+#Every deposit and withdrawal requires login again.
+#Is that what you want?
+#In real systems:
+#User logs in once
+#Session stays active
+#Transactions don't require password every time
+#Your earlier version used current_user.
+#This version removed session tracking.
+#So decide:
+#Stateless model (validate every time)
+#OR
+#Stateful session model
+#Both are valid. But choose one intentionally.
