@@ -479,5 +479,6 @@ But still continue deletion logic
 Functions should not depend on global variables.
 This function breaks isolation and relies on outer scope.
 That’s dangerous and unscalable.
+
 After an error, exit the function immediately.
 '''
