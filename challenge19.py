@@ -35,3 +35,26 @@ class Product:
 
     def total_value(self):
         return float(self.quantity) * float(self.price)
+#AI CORRECTION
+#❌ What’s Wrong
+#1️⃣ You used the wrong separator
+#The challenge clearly said:
+"name|price|quantity"
+#But you wrote:
+#name,price,quantity = data.split(",")
+#That splits using a comma , not |.
+#That means your code will break for:
+"Phone|300|5"
+#This violates the constraint.
+#2️⃣ You did NOT convert price and quantity to integers inside the classmethod
+#The constraint said:
+#price and quantity must be stored as integers (not strings)
+#Right now you are storing them as strings:
+#return cls(name, price, quantity)
+#Then inside total_value() you are converting them to float:
+#return float(self.quantity) * float(self.price)
+#That’s not correct design.
+#3️⃣ Using float instead of int
+#The challenge required integers.
+#You used float().
+#Even though it works mathematically, it violates the requirement.
