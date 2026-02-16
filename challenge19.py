@@ -149,6 +149,17 @@ def total_accounts(cls):
 '''
 @classmethod
 '''
+#Also you didn’t implement logic.
+#SECOND ATTEMPT
+class Account:
+    next_id=1
+    def __init__(self,user_name):
 
+        self.user_name=user_name
+        self.id=+Account.next_id
+
+    @classmethod
+    def total_accounts(cls):
+        return cls.next_id
 
 
