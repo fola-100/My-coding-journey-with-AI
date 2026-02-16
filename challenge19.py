@@ -109,3 +109,46 @@ class Account:
 
    def total_accounts(cls):
 #am stuck on what to do
+
+#❌ First Big Issue
+#You wrote:
+def __int__(self, user_name):
+#That is wrong.
+#It must be:
+def __init__(self, username):
+#__int__ is something completely
+# different in Python(used for number conversion).
+#❌ Second Issue
+#You wrote:
+'''
+self.id = user_name
+self.id = Account.next_id
+'''
+#Two problems:
+
+#You overwrote
+#self.id twice.
+#You never stored username.
+#You need:
+#self.username = username
+#self.id = ...
+#❌ Third Issue
+#You wrote:
+'''
+@classmethod
+def next_id(cls):
+'''
+#But next_id is supposed to be a class variable, not a method.
+#It should exist at the top of the class like this:
+#❌ Fourth Issue
+#You started:
+'''
+def total_accounts(cls):
+'''
+#But you forgot:
+'''
+@classmethod
+'''
+
+
+
