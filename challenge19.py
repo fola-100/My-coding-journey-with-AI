@@ -73,3 +73,39 @@ class Product:
 
     def total_value(self):
         return self.quantity * self.price
+
+#NEXT CHALLENGE
+#You are building a User Registration System
+#🎯 Goal
+#Create a class called Account.
+#The class must:
+#1️⃣ Have these instance attributes:
+#id
+#username
+#2️⃣ Have a class variable:
+#next_id = 1
+#This will track what ID should be assigned next
+#3️⃣ The __init__ method must:
+#Take only username
+#Automatically assign:
+#self.id = Account.next_id
+#Then increment next_id by 1
+#So every new account gets a new ID automatically.
+#4️⃣ Add a class method:
+'''
+@classmethod
+'''
+#def total_accounts(cls):
+#This method should return how many accounts have been created so far.
+#MY ATTMEPT
+
+class Account:
+    def __int__(self,user_name,):
+        self.id=user_name
+        self.id=Account.next_id
+
+    @classmethod
+    def next_id(cls):
+
+   def total_accounts(cls):
+#am stuck on what to do
