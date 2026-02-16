@@ -58,3 +58,18 @@ class Product:
 #The challenge required integers.
 #You used float().
 #Even though it works mathematically, it violates the requirement.
+#SECOND ATTEMPT
+class Product:
+    def __init__(self,name,price,quantity):
+        self.name=name
+        self.price=price
+        self.quantity=quantity
+
+    @classmethod
+
+    def from_string(cls, data):
+        name,price,quantity=data.split("|")
+        return cls(name,int(price),int(quantity))
+
+    def total_value(self):
+        return self.quantity * self.price
