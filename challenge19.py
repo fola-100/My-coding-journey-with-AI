@@ -161,5 +161,36 @@ class Account:
     @classmethod
     def total_accounts(cls):
         return cls.next_id
+#CORRECTION
+#❌ Problem 1: You Are Not Incrementing
+#You wrote:
+#self.id = +Account.next_id
+#That + does NOTHING useful.
+#It just means:
+#self.id = Account.next_id
+#You never increased next_id.
+#So every account will get:
+#1
+#over and over.
+#❌ Problem 2: total_accounts Logic Is Still Wrong
+#You wrote:
+#return cls.next_id
+#But remember the logic:
+#If 3 accounts are created:
+#IDs assigned: 1, 2, 3
+#next_id becomes: 4
+#So returning next_id gives 4 — which is incorrect.
+#You must calculate based on what next_id represents
+class Account:
+    next_id = 1
+
+    def __init__(self, username):
+        self.username = username
+        self.id = Account.next_id
+        Account.next_id += 1
+
+    @classmethod
+    def total_accounts(cls):
+        return cls.next_id - 1
 
 
