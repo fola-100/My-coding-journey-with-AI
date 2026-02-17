@@ -111,12 +111,15 @@ class Account:
 #am stuck on what to do
 
 #❌ First Big Issue
-#You wrote:
+'''You wrote:
 def __int__(self, user_name):
+'''
 #That is wrong.
 #It must be:
+'''
 def __init__(self, username):
 #__int__ is something completely
+'''
 # different in Python(used for number conversion).
 #❌ Second Issue
 #You wrote:
@@ -193,4 +196,66 @@ class Account:
     def total_accounts(cls):
         return cls.next_id - 1
 
+#Bank Account System
+#🎯 Goal
+#Create a class called BankAccount.
+#The class must:
+#1️⃣ Have instance attributes:
+#id
+#owner
+#balance
+#2️⃣ Have a class variable:
+#next_id = 1
+#3️⃣ __init__ must:
+#Accept owner and balance
+#If balance is negative → raise a ValueError
+#Automatically assign:
+#self.id = BankAccount.next_id
+#Increment next_id
+#4️⃣ Add a class method:
+'''
+@classmethod
+def from_string(cls, data_str):
+'''
+#String format: "owner|balance"
+#Must convert balance to int
+#Must return a new object
+#5️⃣ Add an instance method:
+'''
+def deposit(self, amount):
+'''
+#Increase balance
+#Amount must be positive
+#If not → raise ValueError
+#6️⃣ Add a class method:
+'''
+@classmethod
+def total_accounts(cls):
+'''
+#Return how many accounts were created
+#My Attempt
+class BankAccount:
+    next_id=1
+    def __init__(self,owner,balance):
+        balance=int(balance)
+        if balance<=0:
+            raise ValueError("Balance must be greater than 0")
 
+        self.id=BankAccount.next_id
+        self.owner=owner
+        self.balance=balance
+        BankAccount.next_id+=1
+
+    @classmethod
+    def from_string(cls,data_str):
+        name,bal=data_str.split("|")
+        return cls(name,bal)
+    def deposit(self,amount):
+        amount=int(amount)
+        if amount<=0:
+            raise ValueError("Balance must be greater than 0")
+        else:
+            self.balance+=amount
+    @classmethod
+    def total_accounts(cls):
+       return cls.next_id-1
