@@ -259,3 +259,28 @@ class BankAccount:
     @classmethod
     def total_accounts(cls):
        return cls.next_id-1
+#AI CORRECTION
+#1️⃣ Your balance validation says:
+#if balance <= 0:
+#The requirement said:
+#Prevent negative starting balances
+#That means:
+#balance < 0
+#Right now you are also preventing someone from opening an account with 0 balance.
+
+#2️⃣ Your error message inside deposit
+#You wrote:
+'''
+raise ValueError("Balance must be greater than 0")
+'''
+#That message is wrong contextually.
+#It should say something like:
+"Deposit amount must be greater than 0"
+#Clear error messages matter in real systems.
+#3️⃣ Minor Design Improvement (Advanced Thinking)
+#Inside __init__, you converted:
+#balance = int(balance)
+#That works.
+#But since from_string is responsible for parsing external data,
+#some engineers would prefer conversion there instead.
+#Both designs are acceptable — but understanding the separation of responsibility is advanced thinking.
