@@ -284,3 +284,78 @@ raise ValueError("Balance must be greater than 0")
 #But since from_string is responsible for parsing external data,
 #some engineers would prefer conversion there instead.
 #Both designs are acceptable — but understanding the separation of responsibility is advanced thinking.
+
+#Scenario (Backend Banking System)
+#You are improving your BankAccount system.
+#Right now, someone can do this:
+'''
+acc = BankAccount("Olamide", 500)
+acc.balance = 1000000000   # 😑 cheating
+'''
+#That should NOT be allowed.
+#🎯 Goal
+#Create a class called SecureBankAccount.
+#The class must:
+#1️⃣ Have instance attributes:
+#id
+#owner
+#a private balance attribute
+#The balance must NOT be directly accessible like:
+#acc.balance
+#It should not exist as a public attribute.
+#2️⃣ Have a class variable:
+#next_id = 1
+#Auto-increment ID like before.
+#3️⃣ __init__ must:
+#Accept owner and balance
+#Prevent negative balance
+#Store balance privately
+#Assign ID automatically
+#4️⃣ Add a method:
+#def get_balance(self):
+#5️⃣ Add methods:
+'''
+def deposit(self, amount)
+def withdraw(self, amount)
+'''
+#Rules:
+#Amount must be positive
+#Cannot withdraw more than available balance
+#Must raise ValueError if invalid
+#6️⃣ Add:
+'''
+@classmethod
+def total_accounts(cls)
+'''
+#Return total created accounts.
+#MY ATTEMPT
+class SecureBankAccount:
+    next_id=1
+
+    def __init__(self,owner,balance):
+        balance=int(balance)
+        self.id=SecureBankAccount.next_id
+        self.owner=owner
+        self.__balance=balance
+        SecureBankAccount.next_id+=1
+
+    def get_balance(self):
+        return self.__balance
+
+    def deposit(self,amount):
+        amount=int(amount)
+        if amount<0:
+            raise ValueError("Deposit amount must be greater than zero")
+        self.__balance+=amount
+
+    def withdraw(self,amount):
+        amount=int(amount)
+        if amount<0:
+            raise ValueError("Withdrawal amount must be greater than zero")
+        if self.__balance<amount:
+            raise ValueError("Withdrawal amount is greater than balance available")
+        self.__balance-=amount
+
+    @classmethod
+    def total_id(cls):
+        return cls.next_id-1
