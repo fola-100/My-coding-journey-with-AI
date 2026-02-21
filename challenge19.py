@@ -359,3 +359,88 @@ class SecureBankAccount:
     @classmethod
     def total_id(cls):
         return cls.next_id-1
+
+#🏦 Digital Wallet System (Professional Style)
+#You are building the backend logic for a fintech startup in Nigeria.
+#You must design a Digital Wallet system.
+#🎯 Requirements
+#1️⃣ Create a Class: DigitalWallet
+#The wallet must have:
+#owner (string)
+#balance (default = 0)
+#transactions (list that stores transaction history)
+#2️⃣ Methods Required
+#✅ deposit(amount)
+#Adds money to balance
+#Adds transaction string:
+"Deposited ₦5000"
+#Reject negative deposits
+#✅ withdraw(amount)
+#Subtracts money if balance is enough
+#Adds transaction string:
+"Withdrew ₦2000"
+#if insufficient funds:
+#Print "Insufficient funds"
+#Do NOT change balance
+#✅ transfer(amount, other_wallet)
+#Sends money to another DigitalWallet object
+#Should:
+#Withdraw from sender
+#Deposit to receiver
+#Add transaction:
+"Transferred ₦1000 to Tunde"
+#✅ show_balance()
+#Returns current balance
+#✅ show_transactions()
+#Prints all transactions
+#MY ATTEMPT
+class DigitalWallet:
+    def __init__(self,owner,history="",balance=0):
+     #history and bal is set to zero and empty in a case where a new wallet
+        balance=int(balance)
+        self.owner=owner
+        self.transactions=[history]
+        self.balance=balance
+
+    def deposit(self,amount):
+        amount=int(amount)
+        if amount<=0:
+            raise ValueError("Deposit amount must be greater than zero")
+        self.balance+=amount
+        self.transactions.append(f'Deposited:N{amount}')
+    def withdraw(self,amount):
+        amount=int(amount)
+        if amount<0:
+            raise ValueError("Withdraw amount must be greater than zero")
+        if self.balance<amount:
+            raise ValueError("Insufficient funds")
+        self.balance-=amount
+        self.transactions.append(f'Withdraw: N{amount}')
+
+    def transfer(self,amount,other_wallet):
+        amount = int(amount)
+        if amount < 0:
+            raise ValueError("Withdraw amount must be greater than zero")
+        if self.balance < amount:
+            raise ValueError("Insufficient funds")
+        self.balance -= amount
+        self.other_wallet=other_wallet
+        self.other_wallet.balance+=amount
+        self.transactions.append(f'Transferred {amount} to {self.other_wallet.owner}')
+
+    def show_balance(self):
+        return self.balance
+
+    def show_transaction(self):
+        return self.transactions
+
+
+
+debug=DigitalWallet(input("Enter in your name:"),"deposit:500",500)
+print(debug.balance)
+debug_test=DigitalWallet("yemi")
+debug.deposit(300)
+debug.withdraw(100)
+debug.withdraw(200)
+debug.transfer(400,debug_test)
+print(debug.balance)
