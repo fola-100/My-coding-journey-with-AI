@@ -444,3 +444,44 @@ debug.withdraw(100)
 debug.withdraw(200)
 debug.transfer(400,debug_test)
 print(debug.balance)
+
+#❌ Issues You Must Fix
+#1️⃣ Bad transactions Initialization (Very Important)
+def __init__(self,owner,history="",balance=0):
+    self.transactions=[history]
+#Problem:
+#Every new wallet starts with:
+#[""]
+#That means there is always a fake transaction inside.
+#Professionally:
+#self.transactions = []
+#Transactions should start empty.
+#2️⃣ Transfer Logic Is Not Professional
+#You wrote:
+#self.balance -= amount
+#self.other_wallet = other_wallet
+#self.other_wallet.balance += amount
+#❌ Problem:
+#You are directly modifying another object's balance.
+#That breaks encapsulation thinking.
+#3️⃣ You Didn’t Add Receiver Transaction History
+#Requirement says:
+#Transfer should log:
+"Transferred ₦1000 to Tunde"
+#But what about the receiver?
+#Receiver should also have something like:
+"Received ₦1000 from Olamide"
+#4️⃣ Wrong Behavior for Insufficient Funds
+#The requirement said:
+#If insufficient funds:
+#Print "Insufficient funds"
+#Do NOT change balance
+#You are doing:
+raise ValueError("Insufficient funds")
+#That crashes the program.
+#We are building backend logic, not stopping the entire app.
+#5️⃣ Method Name Typo
+#You wrote:
+#def show_transaction(self):
+#Requirement says:
+#show_transactions()
