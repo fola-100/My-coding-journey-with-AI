@@ -485,3 +485,43 @@ raise ValueError("Insufficient funds")
 #def show_transaction(self):
 #Requirement says:
 #show_transactions()
+#AI CORRECTION
+class DigitalWallet:
+    def __init__(self,owner,balance=0):
+     #history and bal is set to zero and empty in a case where a new wallet
+        balance=int(balance)
+        self.owner=owner
+        self.transactions=[]
+        self.balance=balance
+
+    def deposit(self,amount):
+        amount=int(amount)
+        if amount<=0:
+            print("Deposit amount must be greater than zero")
+            return False
+        self.balance+=amount
+        self.transactions.append(f'Deposited:N{amount}')
+        return True
+
+    def withdraw(self,amount):
+        amount=int(amount)
+        if amount<0:
+            print("Withdraw amount must be greater than zero")
+            return False
+        if self.balance<amount:
+            print("Insufficient funds")
+            return False
+        self.balance-=amount
+        self.transactions.append(f'Withdraw: N{amount}')
+        return True
+
+    def transfer(self,amount,other_wallet):
+        if self.withdraw(amount):
+          other_wallet.deposit(amount)
+          self.transactions.append(f'Transferred N{amount} to {other_wallet.owner}')
+          other_wallet.transactions.append(f'Received N{amount} from {self.owner}')
+    def show_balance(self):
+        return self.balance
+
+    def show_transactions(self):
+        return self.transactions
