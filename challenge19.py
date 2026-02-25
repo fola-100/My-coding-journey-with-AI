@@ -742,3 +742,85 @@ find_account()
 #Be added to balance
 #Be recorded in transactions
 #Right now your create_account does neither
+
+#Second attempt
+class BankAccount:
+    account_created = 1001
+    def __init__(self,owner,balance=0,):
+        self.owner=owner
+        self.account_number=BankAccount.account_created
+        self.balance=balance
+        self.transactions=[]
+        BankAccount.account_created+=1
+
+    def deposit(self,amount):
+        amount=int(amount)
+        if amount<=0:
+            print("Deposit must be greater than zero")
+            return False
+        self.balance+=amount
+        self.transactions.append(f'Account:{self.account_number} |'
+                                 f'Owner:{self.owner} |'
+                                 f'Balance{self.balance}')
+
+        return True
+    def withdraw(self,amount):
+        amount=int(amount)
+        if amount<=0:
+           print("Withdrawal amount must be greater than zero")
+           return False
+        if self.balance<amount:
+            print("Withdraw amount is greater than balance available ")
+            return False
+        self.balance-=amount
+        self.transactions.append((f'Account:{self.account_number}|'
+                                  f' Owner:{self.owner}|'
+                                  f' Balance{self.balance}'))
+        return True
+    def show_details(self):
+        return (f'Account:{self.account_number}|'
+                f'Owner:{self.owner}|'
+                f'Balance{self.balance}|')
+
+class Bank:
+    def __init__(self,name):
+        self.name=name
+        self.accounts=[]
+
+    def create_account(self,owner,initial_deposit=0):
+        storage=BankAccount(owner,initial_deposit)
+        self.accounts.append(storage)
+        return storage
+
+    def find_account(self,account_number):
+        for account_details in self.accounts:
+            if account_details.account_number==account_number:
+                return account_details
+        print("Account not found")
+        return None
+
+    def transfer(self, sender_account,receiver_account_number,amount ):
+        sender= self.find_account(sender_account)
+        if not sender:
+           print("Sender Account number does not exist ")
+           return sender
+        receiver=self.find_account(receiver_account_number)
+        if not receiver:
+           print("Receiver Account number does not exist")
+           return receiver
+        result=sender.withdraw(amount)
+        if result:
+          deposit_result=receiver.deposit(amount)
+          if deposit_result:
+            print("Transaction successful")
+            return True
+          else:
+              return False
+        else:
+            return False
+
+    def total_bank_balance(self):
+        total=0
+        for account in self.accounts:
+            total+=account.balance
+        return total
