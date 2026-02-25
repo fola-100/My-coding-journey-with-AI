@@ -678,3 +678,67 @@ class Bank:
         for account in self.accounts:
             total+=account.balance
         return total
+
+#AI CORRECTION
+#❌ Problem 1 — create_account() is Wrong
+#Your version:
+def create_account(self):
+    storage=BankAccount(self.name)
+#🚨 Issue
+#You are using self.name (bank name) as account owner
+#You are not accepting owner
+#You are not accepting initial_deposit
+#But the requirement was:
+#create_account(owner, initial_deposit=0)
+#So it should allow:
+#acc1 = my_bank.create_account("Olamide", 10000)
+#Your version cannot do that
+#❌ Problem 2 — Default Balance in BankAccount
+#You wrote:
+def __init__(self,owner,balance=500)
+#Why is default 500?
+#The requirement said default should be 0.
+#This is a design mistake.
+#❌ Problem
+#3 — show_details()
+#Is Wrong
+#Requirement:
+#Account: 1001
+#Owner: Ola_mide
+#Balance: ₦5000
+#Your
+#version:
+#return self.transactions
+#🚨 That
+#returns
+#transaction
+#history — not account
+#details.
+#❌ Problem 4 — Transaction Log Format Error
+#In withdraw:
+self.transactions.append(f'Account:{amount}'
+                         f'Owner:{self.owner}'
+                         f'Balance{self.balance}')
+#You accidentally wrote:
+Account: {amount}
+#Instead of:
+Account: {self.account_number}
+
+#That’s a real - world logging bug.
+
+#❌ Problem 5 — transfer() Signature Wrong
+#Requirement:
+#transfer(sender_account_number, receiver_account_number, amount)
+#Your version:
+def transfer(self, sender_account, receiver_account_number, amount)
+#That part is fine.
+#BUT:
+#You manually looped twice to find accounts instead of using your own find_account() method.
+#Professionally, we reuse logic.
+#You already wrote:
+find_account()
+#❌ Problem 6 — Missing Initial Deposit in Account Creation
+#When creating account with initial money, that money should:
+#Be added to balance
+#Be recorded in transactions
+#Right now your create_account does neither
