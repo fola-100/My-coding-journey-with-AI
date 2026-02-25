@@ -486,6 +486,7 @@ raise ValueError("Insufficient funds")
 #Requirement says:
 #show_transactions()
 #AI CORRECTION
+''''''
 class DigitalWallet:
     def __init__(self,owner,balance=0):
      #history and bal is set to zero and empty in a case where a new wallet
@@ -525,3 +526,155 @@ class DigitalWallet:
 
     def show_transactions(self):
         return self.transactions
+
+#🔥 Challenge #2 — Mini Banking System
+#You are building the core logic for a small digital bank.
+#This time, we are not just modeling a wallet.
+#We are modeling the Bank itself.
+#🎯 Objective
+#You must design two classes:
+#BankAccount
+#Bank
+#This tests:
+#Class-to-class interaction
+#Lists of objects
+#Searching objects
+#Encapsulation
+#Method coordination
+#🏦 Class 1: BankAccount
+#Attributes
+#owner (string)
+#balance (default = 0)
+#account_number (auto-generated number)
+#transactions (list)
+#Requirements
+#🔢 Account Number
+#Each new account must automatically get a unique account number.
+#Example:
+#First account → 1001
+#Second → 1002
+#Third → 1003
+#You must implement this using a class variable.
+#Methods Required
+#✅ deposit(amount)
+#Add to balance
+#Add transaction
+#Reject invalid deposits
+#✅ withdraw(amount)
+#Subtract if sufficient
+#Add transaction
+#Print message if insufficient
+#✅ show_details()
+#Return formatted string:
+#Account: 1001
+#Owner: Olamide
+#Balance: ₦5000
+
+#🏛 Class 2: Bank
+#The Bank manages multiple accounts.
+#Attributes
+#name
+#accounts (a list storing BankAccount objects)
+#Methods Required
+#✅ create_account(owner, initial_deposit=0)
+#Creates a new BankAccount
+#Adds it to bank’s account list
+#Returns the account object
+#✅ find_account(account_number)
+#Searches accounts list
+#Returns the account object
+#If not found → print "Account not found"
+#✅ transfer(sender_account_number, receiver_account_number, amount)
+#Find both accounts
+#Withdraw from sender
+#Deposit to receiver
+#Only complete transfer if withdraw succeeds
+#✅ total_bank_balance()
+#Returns total money across all accounts
+#MY ATTEMPT
+class BankAccount:
+    account_created = 1001
+    def __init__(self,owner,balance=500,):
+        self.owner=owner
+        self.account_number=BankAccount.account_created
+        self.balance=balance
+        self.transactions=[]
+        BankAccount.account_created+=1
+
+    def deposit(self,amount):
+        amount=int(amount)
+        if amount<=0:
+            print("Deposit must be greater than zero")
+            return False
+        self.balance+=amount
+        self.transactions.append(f'Account:{self.account_number} Owner:{self.owner} Balance:{self.balance} ')
+
+        return True
+    def withdraw(self,amount):
+        amount=int(amount)
+        if amount<=0:
+           print("Withdrawal amount must be greater than zero")
+           return False
+        if self.balance<amount:
+            print("Withdraw amount is greater than balance available ")
+            return False
+        self.balance-=amount
+        self.transactions.append(f'Account:{amount}'
+                                 f'Owner:{self.owner}'
+                                 f'Balance{self.balance}')
+        return True
+    def show_details(self):
+        return self.transactions
+
+class Bank:
+    def __init__(self,name):
+        self.name=name
+        self.accounts=[]
+
+    def create_account(self):
+        storage=BankAccount(self.name)
+        self.accounts.append(storage)
+        return storage
+
+    def find_account(self,account_number):
+        for account_details in self.accounts:
+            if account_details.account_number==account_number:
+                return account_details
+        print("Account not found")
+        return None
+
+    def transfer(self,sender_account,receiver_account_number,amount ):
+        sender=False
+        receiver=False
+        sender_details=None
+        receiver_details=None
+        for account in self.accounts:
+            if account.account_number==sender_account:
+                sender_details=account
+                sender=True
+        if not sender:
+           print("Sender Account number those not exist ")
+           return sender
+        for account in self.accounts:
+            if account.account_number == receiver_account_number:
+                receiver = True
+                receiver_details=account
+        if not receiver:
+           print("Receiver Account number those not exist")
+           return receiver
+        result=sender_details.withdraw(amount)
+        if result:
+          deposit_result=receiver_details.deposit(amount)
+          if deposit_result:
+            print("Transaction successful")
+            return True
+          else:
+              return False
+        else:
+            return False
+
+    def total_bank_balance(self):
+        total=0
+        for account in self.accounts:
+            total+=account.balance
+        return total
