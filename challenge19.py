@@ -824,3 +824,121 @@ class Bank:
         for account in self.accounts:
             total+=account.balance
         return total
+#❌ 1️⃣ Initial Deposit Logic Is Not Professional
+#Right now:
+#storage = BankAccount(owner, initial_deposit)
+#This directly sets balance.
+#But professional systems do NOT directly set balance like this.
+#Why?
+#Because:
+#It bypasses validation
+#It bypasses transaction logging
+#If initial_deposit is 10000,
+#it should be recorded in transactions.
+#Right now it is not.
+
+#❌ 2️⃣ Transaction Log Format Is Weak
+#Right now you log:
+f'Account:{self.account_number} |Owner:{self.owner} |Balance{self.balance}'
+#The is logs the entire account snapshot.
+#Professionally, logs should record the action, not full state.
+#Better format:
+"Deposited ₦500"
+"Withdrew ₦300"
+#❌ 3️⃣ Minor Formatting Issue
+#In show_details:
+'''
+return (f'Account:{self.account_number}|'
+        f'Owner:{self.owner}|'
+        f'Balance{self.balance}|')
+'''
+#You are missing spaces and currency formatting.
+#🧠 Level Assessment
+#You are no longer just “learning classes.”
+#You now understand:
+#Class variables
+#Object interaction
+#Encapsulation logic
+#Validation flow
+#Method reuse
+#Conditional transaction execution
+#🎓 Final Professional Version (For Learning)
+class BankAccount:
+    account_created = 1001
+
+    def __init__(self, owner):
+        self.owner = owner
+        self.account_number = BankAccount.account_created
+        self.balance = 0
+        self.transactions = []
+        BankAccount.account_created += 1
+
+    def deposit(self, amount):
+        amount = int(amount)
+        if amount <= 0:
+            print("Deposit must be greater than zero")
+            return False
+
+        self.balance += amount
+        self.transactions.append(f"Deposited ₦{amount}")
+        return True
+
+    def withdraw(self, amount):
+        amount = int(amount)
+        if amount <= 0:
+            print("Withdrawal amount must be greater than zero")
+            return False
+
+        if self.balance < amount:
+            print("Insufficient funds")
+            return False
+
+        self.balance -= amount
+        self.transactions.append(f"Withdrew ₦{amount}")
+        return True
+
+    def show_details(self):
+        return (
+            f"Account: {self.account_number}\n"
+            f"Owner: {self.owner}\n"
+            f"Balance: ₦{self.balance}"
+        )
+
+
+class Bank:
+    def __init__(self, name):
+        self.name = name
+        self.accounts = []
+
+    def create_account(self, owner, initial_deposit=0):
+        account = BankAccount(owner)
+        self.accounts.append(account)
+
+        if initial_deposit > 0:
+            account.deposit(initial_deposit)
+
+        return account
+
+    def find_account(self, account_number):
+        for account in self.accounts:
+            if account.account_number == account_number:
+                return account
+
+        print("Account not found")
+        return None
+
+    def transfer(self, sender_acc_num, receiver_acc_num, amount):
+        sender = self.find_account(sender_acc_num)
+        receiver = self.find_account(receiver_acc_num)
+
+        if not sender or not receiver:
+            return False
+
+        if sender.withdraw(amount):
+            receiver.deposit(amount)
+            return True
+
+        return False
+
+    def total_bank_balance(self):
+        return sum(account.balance for account in self.accounts)
