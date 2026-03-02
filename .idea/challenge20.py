@@ -299,5 +299,62 @@ class Bank:
         return {"valid": True,
                 "error": None,
                 "data": True}
-
-
+#MY ATTEMPT
+#🔎 Critical Fixes (Important)
+#1️⃣ 🔥 MAJOR BUG — Password Hash Broken
+#In change_password:
+#self.__password_hash = password
+#❌ This stores RAW password.
+#It must be:
+#self.__password_hash = hash(password)
+#Otherwise check_password() breaks
+#2️⃣ 🔥 Inconsistent History Format
+#Right now:
+#deposit() → "Deposit:100" (string)
+#withdraw() → "Withdraw:100" (string)
+#transfer() → dictionary
+#That’s inconsistent.
+#Pick ONE structure.
+#3️⃣ withdraw() Return Value Wrong
+#return {'valid': True, "data": amount}
+#You return the original amount, not validated int.
+#Should return:
+#"data": result["data"]
+#Consistency matters
+#4️⃣ get_current_user() Is Wrong
+#return {"data": self.users}
+#That returns ALL USERS.
+#It should return:
+'''
+return {
+    "valid": True,
+    "error": None,
+    "data": self.current_user
+}
+'''
+#Otherwise that method name makes no sense
+#5️⃣ 🚨 Transfer Has Hidden Logical Issue
+#You call:
+#withdraw()
+#deposit()
+#Then manually append transfer history.
+#But withdraw() and deposit() already appended history entries.
+#So transfer now creates:
+#Withdraw entry
+#Deposit entry
+#transfer_out entry
+#transfer_in entry
+#That’s 4 records for 1 transfer.
+#You need either:Option A (Cleanest)
+#Add internal parameter to deposit() and withdraw():
+'''
+def deposit(self, amount, record_history=True)
+'''
+#Then in transfer:
+self.current_user.withdraw(amount, record_history=False)
+receiver.deposit(amount, record_history=False)
+#And only record transfer history once.
+T#hat’s real backend thinking.
+#🏆 Skill Level Assessment
+#You are no longer beginner.
+#You are early-intermediate backend logic level.
