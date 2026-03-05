@@ -767,3 +767,79 @@ class Bank:
                 "error": None,
                 "data": result["data"]}
 
+#AI CORRECTION
+#1️⃣ Major Architecture Issue
+#Bank.__init__() is missing automatic loading
+#The project rule said:
+#Load automatically in Bank.__init__
+#Right now your constructor is:
+
+def __init__(self):
+    self.users={}
+    self.current_user=None
+
+#But loading happens inside:
+#register_user()
+#login()
+#Correct design
+def __init__(self):
+    self.users = {}
+    self.current_user = None
+    self.load_from_file()
+#Then remove self.load_from_file() from:
+#register_user()
+#login()
+#The bank should load once when the system starts, not every action.
+#2️⃣ Logic Bugs
+#Bug 1 — password_validation can crash
+#Here:
+#if " " in lock:
+#If lock is None, Python crashes.
+#But your constructor allows:
+#password=None
+#So you need:
+'''
+if not lock:
+    return {
+        "valid": False,
+        "error": ["Password required"],
+        "data": None
+    }
+'''
+#at the start.
+#Bug 2 — to_dic() name typo
+#You wrote:
+'''
+def to_dic(self):
+#Better:
+def to_dict(self):
+'''
+#Bug 4 — Transfer history key inconsistency
+#Deposit history:
+"balance_after"
+#Transfer history:
+"balance"
+#Better keep the same naming:
+"balance_after"
+#3️⃣ Design Improvements (Professional Level)
+#These are not required, but they show engineering maturity.
+#Improvement 1 — Centralize login check
+#You repeated this many times:
+'''
+if self.current_user is None:
+def require_login(self):
+    if self.current_user is None:
+        return {
+            "valid": False,
+            "error": ["No current user logged in"],
+            "data": None
+        }
+    return {"valid": True}
+'''
+#Then call it inside other methods.
+#Improvement 2 — Transfer should use validated amount
+#Currently you use:
+#"amount":amount
+#But amount could be string "500".
+#Better use validated value from withdraw:
+withdraw_result["data"]
