@@ -242,9 +242,28 @@ def menu():
                break
        else:
            print("Number entered is not part of the available option ")
-
-
-if __name__=="__main__":
+    if __name__=="__main__":
    menu()
+
+#AI CORRECTION ON SECOND ATTEMPT 
+
+#⚠️ Minor Issues Remaining
+#These are not blocking, just improvements.
+#Issue 1 — Menu Option Validation
+#Right now:
+#option = input("Enter option number:")
+#If user enters:
+#abc, 10,blank
+#It still passes to logic.
+
+#Issue 2— Printing raw data
+#Right now when viewing expenses:
+#print(result["data"])
+#This prints raw JSON-style dictionaries.
+#Example output:
+#Food | 500 | 2026-03-17 | Lunch
+
+
+
 
 
