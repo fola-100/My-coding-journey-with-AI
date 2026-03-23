@@ -33,3 +33,67 @@ Example:
 3. Show total
 4. Filter by category
 5. Exit
+
+SECOND CODING CHALLENGES
+Project 2 — Expense Manager v2
+
+We will extend your existing program with real product features.
+
+New Features
+
+1️⃣ Delete an expense
+
+User can remove a saved expense.
+
+Example:
+
+1 | food | 500 | lunch | 2026-03-17
+2 | transport | 200 | taxi | 2026-03-17
+
+User enters:
+
+Delete expense #: 2
+
+Expense gets removed from JSON.
+
+2️⃣ Edit an expense
+
+User can modify a saved record.
+
+Example:
+
+Edit expense #: 1
+
+User chooses field to change.
+
+3️⃣ Monthly summary
+
+Example:
+
+Month: 2026-03
+Total spent: 4500
+
+Optional advanced version:
+
+Food: 2000
+Transport: 1500
+Bills: 1000
+
+4️⃣ Pretty printing expenses
+
+Instead of this:
+
+[{'expense_amount': 500, ...}]
+
+You show:
+
+ID | CATEGORY | AMOUNT | DATE | DESCRIPTION
+------------------------------------------------
+1  | food     | 500    | 2026-03-17 | lunch
+2  | transport| 200    | 2026-03-17 | taxi
+
+5️⃣ Expense IDs
+
+Instead of relying on list position implicitly, we show the index as ID.
+
+
