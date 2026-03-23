@@ -453,6 +453,38 @@ def view_by_category(category):
 if __name__=="__main__":
     total_expense()
 
+#AI CORRECTION THIRD ATTEMPT
+#⚠️ Issue 1 — Lost Useful Error Message
+'''
+Your current code:
+
+except ValueError:
+    return {
+        "result": False,
+        "error": ["data enter was incorrect"],
+        "data": None
+    }
+
+Problem:
+'''
+#The real error message from the model is lost.
+#Issue 2 — Repeated Dictionary Structures
+#You repeatedly write:
+#return {"result": False, "error": ..., "data": None}
+#Not wrong, but eventually we would create a helper function like:
+#success(data)
+#failure(error)
+#Not required now, but good to know.
+
+#ISSUE3
+#⚠️ Issue 3 — if not expense_info in save_to_json
+#This check is unnecessary.
+#Because save_to_json() only receives ExpenseObject.
+#And ExpenseObject is always truthy.
+#So this check will never trigger.
+#Not a bug, just dead code.
+
+
 
 
     
