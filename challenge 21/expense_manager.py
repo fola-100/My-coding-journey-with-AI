@@ -275,8 +275,36 @@ def view_by_category(category):
     return{"result":False,
            "error":["Category can not be found in expenses record"],
            "data":None}
-
-if __name__=="__main__":
+    if __name__=="__main__":
     total_expense()
+    
+    #AI CORRECTION 
+#Issues / Problems
+#1)create_object() function ignores validation
+#expense_details = expense.ExpenseObject(...)
+#return {"result": True, "error": None, "data": expense_details}
+#Even if creation fails, it returns result: True
+#Should wrap in try/except to catch ValueError from model
+
+#2)Function naming / responsibilities
+#data_storage() is confusing — it does:
+#Create object
+#Save to JSON
+#Consider renaming to add_expense() to be clearer
+
+#3)Redundant checks
+#In data_storage():
+#if not expense_info["result"]:
+
+#4)Currently, create_object() always returns True → dead code
+#Use of get() in total_expense() and view_by_category()
+#Safe, but you assume JSON always has correct keys
+#Could fail if JSON manually edited
+#No separation between object creation and UI input
+#Currently expense_manager depends on main.py to provide all 4 parameters
+#This is okay for now, but in the future manager should handle defaults / validations
+
+
+
 
     
