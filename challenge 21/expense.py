@@ -67,4 +67,23 @@ storage_format = {
 #managing default date
 #converting itself to dictionary
 
-This keeps business logic cleaner.
+#SECOND ATTEMPT 
+class ExpenseObject:
+    def __init__(self,amount,category,description,date):
+        if amount<=0 or not isinstance(amount,int):
+            raise ValueError("amount must be greater than zero")
+        if not category or not isinstance(category,str):
+            raise ValueError("Expense category was not entered")
+        if not description or not isinstance(description,str):
+            raise ValueError("NO description on expense what entered")
+
+        self.amount=amount
+        self.category=category
+        self.description=description
+        self.date=date
+
+    def to_dict(self):
+        return {"expense_amount": self.amount,
+                       "expense_description": self.description,
+                          "expense_date": self.date,
+                          "expense_category":self.category} 
