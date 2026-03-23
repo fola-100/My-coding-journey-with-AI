@@ -121,42 +121,59 @@ not isinstance(amount, int)
 #The model could normalize:
 #category.lower()
 # FULL AI CORRECTION 
+
+#REDESIGN FILE for Project 2 — Expense Manager v2
 from datetime import datetime
 
 class ExpenseObject:
-    def __init__(self,amount,category=None,description=None,date=None):
-        if not category or not isinstance(category, str):
+
+    def __init__(self, amount, category=None, description=None, date=None, id_created=None):
+       expense_created = 1
+       if id_created:
+          try:
+              int(id_created)
+          except ValueError:
+              raise ValueError("ID must be a whole number")
+
+          expense_created+=id_created
+
+
+       if not category or not isinstance(category, str):
             raise ValueError("Expense category was not entered or category was not a string")
-        if not description or not isinstance(description, str):
+       if not description or not isinstance(description, str):
             raise ValueError("NO description on expense what entered or description was not a string")
      # ENSURE DATA CONTAIN NO SPACE
-        category = category.strip().lower()
-        description = description.strip().lower()
+       category = category.strip().lower()
+       description = description.strip().lower()
 
-        if not isinstance(amount,(int,float)):
+       if not isinstance(amount,(int,float)):
             raise ValueError("Your number can only be float or integer")
 
-        if amount<=0 :
+       if amount<=0 :
             raise ValueError("amount must be greater than zero")
 
-        if date:
+       if date:
             try:
               datetime.strptime(date, "%Y-%m-%d")
             except ValueError:
                 raise ValueError("date must follow this format(YYYY-MM-DD)")
 
-        if not date:
-            date=datetime.now().strftime("%Y-%m-%d")
-
-        self.amount=amount
-        self.category=category
-        self.description=description
-        self.date=date
+       if not date:
+        date=datetime.now().strftime("%Y-%m-%d")
+       self.amount = amount
+       self.expense_id =  expense_created
+       self.category = category
+       self.description = description
+       self.date = date
 
     def to_dict(self):
-        return {"expense_amount": self.amount,
+        return {"expense_id":self.expense_id,
+            "expense_amount": self.amount,
                        "expense_description": self.description,
                           "expense_date": self.date,
-                          "expense_category":self.category}
+                          "expense_category":self.category} 
+
+
+
 
 
