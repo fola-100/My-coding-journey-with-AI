@@ -172,8 +172,44 @@ class ExpenseObject:
                        "expense_description": self.description,
                           "expense_date": self.date,
                           "expense_category":self.category} 
+ #AI CORRECTIOIN 
+#❌ Problem 1 — ID Logic is Wrong
+#Your code:
+#expense_created = 1
+#if id_created:
+#    expense_created += id_created
+#Why this is wrong
+#Example:
+#last id = 5
+#new id = 1 + 5 = 6 ✅ (works)
+#BUT...
+#What if JSON is:
+#[1, 2, 5]   (missing 3,4)
+#Your logic → still gives 6 ❌ (not always safe)
+#Worse problem:
+#expense_created = 1  # resets every time object is created
+#So ID logic is not persistent or reliable.
 
+#❌ Problem 2 — Model Should NOT Control ID Generation
+#This is a big architecture mistake.
+#expense_manager → passes id
+#expense_object → modifies id
+#That’s confusion.
+#Correct Design:
+#👉 Model should NOT generate IDs
+#👉 Manager should generate IDs
 
+#❌ Problem 3 — ID Validation is Weak
+#You wrote:
+#if id_created:
+#This fails for:
+#id_created = 0
+#Because 0 is falsy
 
+#❌ Problem 4 — Naming Confusion
+#expense_created
+#id_created
+#expense_id
+#Too many similar names → easy to confuse.
 
 
