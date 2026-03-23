@@ -212,4 +212,47 @@ class ExpenseObject:
 #expense_id
 #Too many similar names → easy to confuse.
 
+#SECOND ATTEMPT 
+from datetime import datetime
+
+class ExpenseObject:
+
+    def __init__(self, amount, category=None, description=None, date=None, id_created=0):
+       if id_created :
+         id_created = int(id_created)
+
+       if not category or not isinstance(category, str):
+            raise ValueError("Expense category was not entered or category was not a string")
+       if not description or not isinstance(description, str):
+            raise ValueError("NO description on expense what entered or description was not a string")
+     # ENSURE DATA CONTAIN NO SPACE
+       category = category.strip().lower()
+       description = description.strip().lower()
+
+       if not isinstance(amount,(int,float)):
+            raise ValueError("Your number can only be float or integer")
+
+       if amount<=0 :
+            raise ValueError("amount must be greater than zero")
+
+       if date:
+            try:
+              datetime.strptime(date, "%Y-%m-%d")
+            except ValueError:
+                raise ValueError("date must follow this format(YYYY-MM-DD)")
+
+       if not date:
+        date=datetime.now().strftime("%Y-%m-%d")
+       self.amount = amount
+       self.expense_id = id_created
+       self.category = category
+       self.description = description
+       self.date = date
+
+    def to_dict(self):
+        return {"expense_id":self.expense_id,
+            "expense_amount": self.amount,
+                       "expense_description": self.description,
+                          "expense_date": self.date,
+                          "expense_category":self.category}
 
