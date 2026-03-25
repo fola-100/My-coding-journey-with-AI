@@ -488,6 +488,32 @@ def menu():
 if __name__=="__main__":
     menu()
 
+#AI CORRECTION ON REDESING MADE FROM Expense Manager version2
+#✅ 4. FIX: delete ID type inconsistency (small but important)
+#🔧 Replace:
+#id_number=input("Enter in ID of expense to be deleted:")
+#✅ With:
+#id_number = input("Enter in ID of expense to be deleted:").strip()
+#(Prevents hidden spaces causing bugs)
+✅ 3. FIX: Wrong table display order
+#❌ You wrote:
+#print("ID|CATEGORY|AMOUNT|DATE|DESCRIPTION")
+#print(f'{user_id} |{ amount} |{date} |{description} |{category} ')
+#👉 Order is wrong
+#✅ Fix:
+#print("ID|CATEGORY|AMOUNT|DATE|DESCRIPTION")
+#print(f'{user_id} |{category} |{amount} |{date} |{description}')
+#✅ 1. FIX: account_info() (BIG BUG)
+#❌ Problem:
+#You force everything to int, even description/category.
+#🔧 Replace this:
+#value=int(input("Enter in category new value:"))
+#while not value:
+#    value = int(input("Enter in category new value:"))
+
+
+
+
 
 
 
