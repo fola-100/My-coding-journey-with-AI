@@ -41,5 +41,22 @@ def common_word(text):
     result=most_common, max_count
     return success(result)
 
+def text_summary(text):
+    result=count_content(text)
+
+    total_words=result["data"]
+
+    result=total_lines(text)
+    total_text_line=result["data"]
+
+    result=common_word(text)
+    most_common_word=result["data"]
+
+    summary_result={"total_word":total_words,
+                    "total_lines":total_text_line,
+                    "common_word":most_common_word}
+    return summary_result
+
 if __name__=="__main__":
-   common_word()
+   book=""
+   print(text_summary(book))
