@@ -1,8 +1,8 @@
 import file_loader
 import text_analyzer
+
 def main():
     # COLLECT TEXT
-    text_file=""
     return_value=path()
     if return_value=="search for file in folder":
         folder_name = folder_path()
@@ -13,29 +13,21 @@ def main():
             if not result["result"]:
                 print(result["error"])
                 return None
-
-            # DISPLAY FILE FOUND IN FOLDER
+            # GIVE SUMMARY OF FILE FOUND IN FOLDER
             files = result["data"]
-            print("List of folder found")
+            if not files:
+                print("No text file found in folder")
+                return None
             for each_file in files:
-                print(each_file)
-            # FILE USER ENTER FILE LOOKING FOR
-            file_name = input("Enter in file name searching for:")
-            while True:
-                if file_name and file_name in files:
-                    full_path = f'{name}/{file_name}'
-                    result = file_loader.get_text(full_path)
-                    if result["result"]:
-                       text_file=result["data"]
-                       break
-
-                    else:
-                        print(result["error"])
-                        return None
-
+                full_path = f'{name}/{each_file}'
+                result = file_loader.get_text(full_path)
+                if result["result"]:
+                    text_file = result["data"]
+                    analysis=text_analyzer.text_summary(text_file)
+                    print(analysis["data"])
                 else:
-                    print("File name not seen")
-                    file_name = input("Enter in file name searching for:")
+                    print(result["error"])
+                    return None
 
     elif  return_value=="enter in file path":
         file_path = get_file_path()
@@ -44,68 +36,19 @@ def main():
             result = file_loader.get_text(name)
             if result["result"]:
                 text_file = result["data"]
+                analysis=text_analyzer.text_summary(text_file)
+                print(analysis["data"])
 
             else:
                 print(result["error"])
                 return None
 
-    # ----CARRYING OPERATION WITH TASK----
-    while True:
-        option=menu()
-        option=option.lower()
-        if "exist"== option:
-            print("Exist program")
-            return None
-
-        elif "number of word"==option:
-             result = text_analyzer.count_content(text_file)
-             # RETURN TOTAL NUMBER OF WORDS
-             if result["result"]:
-                print(result["data"])
-
-        elif "number of lines" == option:
-            result = text_analyzer.total_lines(text_file)
-            if result["result"]:
-                print(result["data"])
-
-        elif "check most common word" == option:
-             result = text_analyzer.common_word(text_file)
-             print(result)
-
-             if result["result"]:
-                print(result["data"])
-
-        elif "tex summary" ==option:
-            result=text_analyzer.text_summary(text_file)
-            print(result["data"])
-
-def menu():
-    print("___menu_option___")
-    print("1)Number of words")
-    print("2)Number of lines")
-    print("3)Check most common word")
-    print("4)Text summary")
-    print("5)exist")
-    choice = input(">:")
-    while choice not in ["1", "2", "3", "4","5"]:
-        print("option not available")
-        choice = input(">:")
-    if choice == "1":
-        return "number of word"
-    elif choice == "2":
-        return "number of lines"
-    elif choice == "3":
-        return  "check most common word"
-    elif choice=="4":
-        return "tex summary"
-    else:
-        return "exist"
-
+    return None
 
 
 def get_file_path():
     """ USER HAS TWO CHOICE HARDCODE FILE PATH OR ENTER INPUT IT"""
-    file_path=None
+    file_path =None
     if file_path is None:
        while True:
             file_path=input("Enter in file path:")
@@ -116,7 +59,9 @@ def get_file_path():
             else:
                   print("No folder name entered")
 
-    return file_path
+    return {"result":True,
+            "error":None,
+            'data':file_path}
 
 def folder_path():
     while True:
