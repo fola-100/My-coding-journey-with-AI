@@ -27,7 +27,7 @@ def get_text(file_path):
     except FileNotFoundError:
         return error("file not found")
 
-#if __name__=="__main__":
+
 
 
 
