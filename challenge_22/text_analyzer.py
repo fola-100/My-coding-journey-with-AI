@@ -57,21 +57,16 @@ def text_summary(text):
 
 def top_three_common_words(text):
     word_found = {}
-    most_common = {}
     clean_text = text.translate(str.maketrans("", "", string.punctuation))
     words = clean_text.lower().split()
 
     for each_word in words:
         word_found[each_word] = word_found.get(each_word, 0) + 1
     if not word_found:
-        return error("No words found")
-
-    each_word_total = word_found.values()
-    highest_values=sorted(each_word_total, reverse=True)[:3]
-    for word,number in  word_found.items():
-        if number in highest_values:
-            most_common[word]=number
-    return success(most_common)
+        return success([])
+    sorted_words=sorted(word_found.items(),key=lambda x:x[1],reverse=True)
+    top_three=sorted_words[:3]
+    return success(top_three)
 
 if __name__=="__main__":
    book=""
