@@ -1,0 +1,13 @@
+#Coding Challenge
+🧠 Scenario:
+Yemi runs a small daily expense tracking business.
+He currently writes everything on paper and keeps losing track.
+
+He wants a Python program that:
+
+records expenses
+categorizes them (food, transport, etc.)
+saves them
+can show summaries
+
+BUT… he wants it built in a way that can grow into a real app later.
