@@ -62,24 +62,31 @@ def text_summary(text,number):
     return success(summary_result)
 
 def top_n_common_words(text,n):
+    if not isinstance(n, int):
+        return error("n must be a whole number")
+
+    if n<=0:
+        return error(f'n must be greater than 0')
+
+    stop_words = {"the", "is", "and", "in", "of"}
+
     word_found = {}
+
     clean_text = text.translate(str.maketrans("", "", string.punctuation))
     words = clean_text.lower().split()
+
     for each_word in words:
-        if each_word in["the","is","and","in","of"]:
-            pass
-        else:
-            word_found[each_word] = word_found.get(each_word, 0) + 1
+        if each_word not in stop_words:
+          word_found[each_word] = word_found.get(each_word, 0) + 1
+
     if not word_found:
         return success([])
-    if not isinstance(n,int):
-        return error("Number enter to see top positon is not a whole number")
-    if len(word_found)< n :
-        return error(f'Number enter is greater than number of common word found')
 
     sorted_words=sorted(word_found.items(),key=lambda x:x[1],reverse=True)
-    top_three=sorted_words[:n]
-    return success(top_three)
+
+    top_n=sorted_words[:n]
+
+    return success(top_n)
 
 if __name__=="__main__":
    book=""
