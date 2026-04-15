@@ -50,9 +50,15 @@ def text_summary(text):
       return result
     most_common_word=result["data"]
 
+    result=top_three_common_words(text)
+    if not result["result"]:
+        return result
+    top_three_words=result["data"]
+
     summary_result={"total_words":total_words,
                     "total_lines":total_text_line,
-                    "common_word":most_common_word}
+                    "common_word":most_common_word,
+                    "top_3_words":top_three_words}
     return success(summary_result)
 
 def top_three_common_words(text):
