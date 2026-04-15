@@ -35,6 +35,8 @@ def common_word(text):
     return success(result)
 
 def text_summary(text,number):
+    if not isinstance(number, int):
+        return error("number must be an integer")
     result = count_words(text)
     if not result["result"]:
         return result
@@ -53,12 +55,12 @@ def text_summary(text,number):
     result=top_n_common_words(text,number)
     if not result["result"]:
         return result
-    top_three_words=result["data"]
+    top_n_words=result["data"]
 
     summary_result={"total_words":total_words,
                     "total_lines":total_text_line,
                     "common_word":most_common_word,
-                    "top_3_words":top_three_words}
+                    "top_n_words":top_n_words}
     return success(summary_result)
 
 def top_n_common_words(text,n):
